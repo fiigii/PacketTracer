@@ -3,12 +3,14 @@ using System.Runtime.Compilexservices.Intrinsics;
 
 internal class SpherePacket
 {
-    public PointerPacket Centers {get; private set;}
+    public VectorPacket Centers {get; private set;}
     public Vector256<float> Radiuses {get; private set;}
+    public Surface Surfaces {get; private set;}
 
     public SpherePacket(Sphere sphere)
     {
-        Centers = new PointerPacket(AVX.Set1(sphere.Centers.X), AVX.Set1(sphere.Centers.Y), AVX.Set1(sphere.Centers.Z));
+        Centers = new VectorPacket(AVX.Set1(sphere.Centers.X), AVX.Set1(sphere.Centers.Y), AVX.Set1(sphere.Centers.Z));
         Radiuses = AVX.Set1(sphere.Radius);
+        Surfaces = sphere.Sphere;
     }
 }

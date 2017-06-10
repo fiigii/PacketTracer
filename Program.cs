@@ -1,7 +1,6 @@
 ﻿using System;
 
-namespace PacketTracer
-{
+
     class Program
     {
         static void Main(string[] args)
@@ -9,4 +8,4 @@ namespace PacketTracer
             Console.WriteLine("Hello World!");
         }
     }
-}
+
