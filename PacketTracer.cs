@@ -12,7 +12,7 @@ internal class PacketTracer
         Hight = _hight;
     }
 
-    internal unsafe void RenderVectorized(Scene scene, Color[] rgb)
+    internal unsafe void RenderVectorized(Scene scene, int[] rgb)
     {
         Camera camera = scene.Camera;
         for (int y = 0; y < Hight; y++)
@@ -30,22 +30,26 @@ internal class PacketTracer
                 var rayPacket = new RayPacket(new VectorPacket(camera.Pos, dirs), scene, 0);
                 var colors = TraceRayVectorized(rayPacket, scene, 0);
 
-                fixed (Color* output = &rgb[x + stride])
+                // Writ into memory via xmm registers
+                var SoA = colors.FastTranspose();
+                var intSoA = SoA.ConvertToIntRGB();
+                var m0 = (Vector128<int>)intSoA.Rs;
+                var m1 = (Vector128<int>)intSoA.Gs;
+                var m2 = (Vector128<int>)intSoA.Bs;
+                var m3 = AVX2.ExtractVector128(inSoA.Rs, 1);
+                var m4 = AVX2.ExtractVector128(inSoA.Gs, 1);
+                var m5 = AVX2.ExtractVector128(inSoA.Bs, 1);
+
+
+                /* Writ into memory via ymm registers
+                */
+                var SoA = colors.Transpose();
+                var intSoA = SoA.ConvertToIntRGB();
+
+                fixed (int* output = &rgb[x + stride])
                 {
-                    // Writ into memory via xmm registers
-                    var inSoA = colors.FastTranspose();
-                    var m0 = (Vector128<float>)inSoA.xs;
-                    var m1 = (Vector128<float>)inSoA.ys;
-                    var m2 = (Vector128<float>)inSoA.zs;
-                    var m3 = AVX.ExtractVector128(inSoA.xs, 1);
-                    var m4 = AVX.ExtractVector128(inSoA.ys, 1);
-                    var m5 = AVX.ExtractVector128(inSoA.zs, 1);
-
-
-                    /* Writ into memory via ymm registers
-                     */
-                    var SoA = colors.Transpose();
                     
+
                 }
             }
         }
@@ -54,7 +58,7 @@ internal class PacketTracer
 
     private ColorPacket TraceRayVectorized(RayPacket rayPacket, Scene scene, int depth)
     {
-
+        
     }
 
     private VectorPacket GetVectorPacket(Vector256<float> x, float y, Camera camera)
