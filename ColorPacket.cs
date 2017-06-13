@@ -29,7 +29,7 @@ internal static class ColorPacketMethods
     public static ColorPacket BackgroundColor = new ColorPacket(AVX.SetZero<float>());
 }
 
-internal class IntRGBPacket
+internal struct IntRGBPacket
 {
     public Vector256<int> Rs {get; private set;}
     public Vector256<int> Gs {get; private set;}

@@ -27,6 +27,12 @@ internal class SpherePacket: ObjectPacket
         var discs = AVX.Subtract(AVX.Multiply(Radiuses, Radiuses), AVX.Subtract(VectorPacket.DotProduct(eo, eo), AVX.Multiply(v, v)));
         var dists = AVX.Sqrt(discs);
         var zeroDiscMask = AVX.GetCompareVector256Float(discs, AVX.SetZero<float>(), CompareLessThanOrderedNonSignaling);
+
+        var nullInter = AVX.Set1(Intersections.Null);
+        var filterV = AVX.Or(AVX.And(zeroVMask, nullInter), AVX.AndNot(zeroVMask, dists));
+        var filterD = AVX.Or(AVX.And(zeroDiscMask, nullInter), AVX.AndNot(zeroDiscMask, filterV));
+
+        intersections.Distances = filterD;
         return intersections;
     }
 }
