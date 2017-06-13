@@ -15,9 +15,9 @@ internal static class ColorPacketMethods
         var gsMask = greaterThan(colors.ys, one);
         var bsMask = greaterThan(colors.zs, one);
 
-        var rs = AVX.Or(AVX.And(rsMask, one), AVX.AndNot(rsMask, colors.xs));
-        var gs = AVX.Or(AVX.And(gsMask, one), AVX.AndNot(gsMask, colors.ys));
-        var bs = AVX.Or(AVX.And(bsMask, one), AVX.AndNot(bsMask, colors.zs));
+        var rs = AVX.BlendVariable(colors.xs, one, rsMask);
+        var gs = AVX.BlendVariable(colors.ys, one, gsMask);
+        var bs = AVX.BlendVariable(colors.zs, one, bsMask);
 
         var rsInt = AVX.ConvertToVector256Int(AVX.Multiply(rs, max));
         var gsInt = AVX.ConvertToVector256Int(AVX.Multiply(gs, max));

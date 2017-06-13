@@ -29,8 +29,8 @@ internal class SpherePacket: ObjectPacket
         var zeroDiscMask = AVX.GetCompareVector256Float(discs, AVX.SetZero<float>(), CompareLessThanOrderedNonSignaling);
 
         var nullInter = AVX.Set1(Intersections.Null);
-        var filterV = AVX.Or(AVX.And(zeroVMask, nullInter), AVX.AndNot(zeroVMask, dists));
-        var filterD = AVX.Or(AVX.And(zeroDiscMask, nullInter), AVX.AndNot(zeroDiscMask, filterV));
+        var filterV = AVX.BlendVariable(dists, nullInter, zeroVMask);
+        var filterD = AVX.BlendVariable(filterV, nullInter, zeroDiscMask);
 
         intersections.Distances = filterD;
         return intersections;
