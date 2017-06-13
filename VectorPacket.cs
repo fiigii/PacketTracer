@@ -1,8 +1,6 @@
-using System.Runtime.Compilexservices.Intrinsics.Intel;
-using System.Runtime.Compilexservices.Intrinsics;
+using System.Runtime.CompilerServices.Intrinsics.Intel;
+using System.Runtime.CompilerServices.Intrinsics;
 using System;
-
-using Common;
 
 internal struct VectorPacket
 {
@@ -11,6 +9,13 @@ internal struct VectorPacket
     public Vector256<float> zs {get; private set;}
 
     public readonly static int PacketSize = 8;
+
+    public VectorPacket(Vector256<float> init)
+    {
+        xs = init;
+        ys = init;
+        zs = init;
+    }
 
     public VectorPacket(Vector v)
     {
@@ -34,9 +39,9 @@ internal struct VectorPacket
         var m03 = (Vector256<float>)SSE2.Load(&vectors[0]); // load lower halves
         var m14 = (Vector256<float>)SSE2.Load(&vectors[4]);
         var m25 = (Vector256<float>)SSE2.Load(&vectors[8]);
-        m03 = AVX.Insert(m03, SSE2.Load(&vectors[12], 1));  // load higher halves
-        m14 = AVX.Insert(m14, SSE2.Load(&vectors[16], 1));
-        m25 = AVX.Insert(m25, SSE2.Load(&vectors[20], 1));
+        m03 = AVX.Insert(m03, SSE2.Load(&vectors[12]), 1);  // load higher halves
+        m14 = AVX.Insert(m14, SSE2.Load(&vectors[16]), 1);
+        m25 = AVX.Insert(m25, SSE2.Load(&vectors[20]), 1);
 
         var xy = AVX.Shuffle(m14, m25, ShuffleControl(2, 1, 3, 2));
         var yz = AVX.Shuffle(m03, m14, ShuffleControl(1, 0, 2, 1));
@@ -51,7 +56,7 @@ internal struct VectorPacket
 
     private static byte ShuffleControl(byte z, byte y, byte x, byte w)
     {
-        return (z<<6) | (y<<4) | (x<<2) | w;
+        return (byte)((z<<(byte)6) | (y<<(byte)4) | (x<<(byte)2) | w);
     }
 
     // Convert SoA VectorPacket to AoS
@@ -103,6 +108,11 @@ internal struct VectorPacket
         return new VectorPacket(AVX.Subtract(left.xs, right.xs), AVX.Subtract(left.ys, right.ys), AVX.Subtract(left.zs, right.zs));
     }
 
+    public static VectorPacket operator /(VectorPacket left, VectorPacket right)
+    {
+        return new VectorPacket(AVX.Divide(left.xs, right.xs), AVX.Divide(left.ys, right.ys), AVX.Divide(left.zs, right.zs));
+    }
+
     public static Vector256<float> DotProduct (VectorPacket left, VectorPacket right)
     {
         var _xs = AVX.Multiply(left.xs, right.xs);
@@ -131,9 +141,9 @@ internal struct VectorPacket
         return AVX.Sqrt(length);
     }
 
-    public VectorPacket normalize()
+    public VectorPacket Normalize()
     {
-        var length = this.lengthes();
+        var length = this.Lengthes();
         return new VectorPacket(AVX.Divide(xs, length), AVX.Divide(ys, length), AVX.Divide(zs, length));
     }
 }

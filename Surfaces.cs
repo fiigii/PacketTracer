@@ -13,31 +13,31 @@ internal static class Surfaces
             delegate (Vector pos)
             {
                 return ((Math.Floor(pos.Z) + Math.Floor(pos.X)) % 2 != 0)
-             ? new Color(1, 1, 1)
-             : new Color(0.02, 0.0, 0.14);
+             ? new Color(1f, 1f, 1f)
+             : new Color(0.02f, 0.0f, 0.14f);
             },
             delegate (Vector pos) { return new Color(1, 1, 1); },
             delegate (Vector pos)
             {
                 return ((Math.Floor(pos.Z) + Math.Floor(pos.X)) % 2 != 0)
-             ? .1
-             : .5;
+             ? .1f
+             : .5f;
             },
-            150);
+            150f);
 
 
 
     public static readonly Surface Shiny =
         new Surface(
-            delegate (Vector pos) { return new Color(1, 1, 1); },
-            delegate (Vector pos) { return new Color(.5, .5, .5); },
-            delegate (Vector pos) { return .7; },
-            250);
+            delegate (Vector pos) { return new Color(1f, 1f, 1f); },
+            delegate (Vector pos) { return new Color(.5f, .5f, .5f); },
+            delegate (Vector pos) { return .7f; },
+            250f);
 
     public static readonly Surface MatteShiny =
         new Surface(
-            delegate (Vector pos) { return new Color(1, 1, 1); },
-            delegate (Vector pos) { return new Color(.25, .25, .25); },
-            delegate (Vector pos) { return .7; },
-            250);
+            delegate (Vector pos) { return new Color(1f, 1f, 1f); },
+            delegate (Vector pos) { return new Color(.25f, .25f, .25f); },
+            delegate (Vector pos) { return .7f; },
+            250f);
 }

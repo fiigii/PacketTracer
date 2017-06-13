@@ -1,3 +1,6 @@
+using System.Runtime.CompilerServices.Intrinsics.Intel;
+using System.Runtime.CompilerServices.Intrinsics;
+
 internal class PlanePacket
 {
     public VectorPacket Norms {get; private set;}

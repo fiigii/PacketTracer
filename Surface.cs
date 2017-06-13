@@ -9,13 +9,13 @@ internal class Surface
 {
     public Func<Vector, Color> Diffuse;
     public Func<Vector, Color> Specular;
-    public Func<Vector, double> Reflect;
-    public double Roughness;
+    public Func<Vector, float> Reflect;
+    public float Roughness;
 
     public Surface(Func<Vector, Color> Diffuse,
                     Func<Vector, Color> Specular,
-                    Func<Vector, double> Reflect,
-                    double Roughness)
+                    Func<Vector, float> Reflect,
+                    float Roughness)
     {
         this.Diffuse = Diffuse;
         this.Specular = Specular;

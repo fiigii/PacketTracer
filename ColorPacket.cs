@@ -1,14 +1,14 @@
-using System.Runtime.Compilexservices.Intrinsics.Intel;
-using System.Runtime.Compilexservices.Intrinsics;
+using System.Runtime.CompilerServices.Intrinsics.Intel;
+using System.Runtime.CompilerServices.Intrinsics;
 
 using ColorPacket = VectorPacket;
 
-public class ColorPacketMethods
+internal static class ColorPacketMethods
 {
-    public IntRGBPacket ConvertToIntRGB(this ColorPacket colors)
+    public static IntRGBPacket ConvertToIntRGB(this VectorPacket colors)
     {
-        var one = AVX.Set1<float>(1.0);
-        var max = AVX.Set1<float>(255.0);
+        var one = AVX.Set1<float>(1.0f);
+        var max = AVX.Set1<float>(255.0f);
 
         var greaterThan = AVX.GetCompareVector256Float(CompareGreaterThanOrderedNonSignaling);
         var rsMask = greaterThan(colors.xs, one);
@@ -25,13 +25,15 @@ public class ColorPacketMethods
 
         return new IntRGBPacket(rsInt, gsInt, bsInt);
     }
+
+    public static ColorPacket BackgroundColor = new ColorPacket(AVX.SetZero<float>());
 }
 
-public class IntRGBPacket
+internal class IntRGBPacket
 {
     public Vector256<int> Rs {get; private set;}
     public Vector256<int> Gs {get; private set;}
-    public Vector256<int> Gs {get; private set;}
+    public Vector256<int> Bs {get; private set;}
 
     public IntRGBPacket(Vector256<int> _rs, Vector256<int> _gs, Vector256<int>_bs)
     {
