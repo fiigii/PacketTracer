@@ -4,4 +4,9 @@ internal class Plane : SceneObject
     public float Offset;
 
     public Plane(Vector norm, float offset, Surface surface) : base(surface) { Norm = norm; Offset = offset; }
+
+    public override ObjectPacket ToPacket()
+    {
+        return new PlanePacket(this);
+    }
 }

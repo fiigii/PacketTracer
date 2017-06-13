@@ -12,12 +12,12 @@ internal class PlanePacket: ObjectPacket
         Offsets = AVX.Set1(plane.Offset);
     }
 
-    public override Intersections Intersect(RayPacket rayPacket)
+    public override Intersections Intersect(RayPacket rayPacket, int index)
     {
         var denom = VectorPacket.DotProduct(Norms, rayPacket.Dirs)
         var dist = AVX.Divide(VectorPacket.DotProduct(Norms, rayPacket.Starts), AVX.Subtract(AVX.SetZero<float>(), denom));
         var gtMask = AVX.CompareVector256Float(denom, AVX.SetZero<float>, CompareGreaterThanOrderedNonSignaling);
         var reslut = AVX.Or(AVX.And(gtMask, AVX.Set1(Intersections.Null)), AVX.AndNot(gtMask, dist));
-        return new Intersections(reslut, this);
+        return new Intersections(reslut, AVX.Set1<int>(index));
     }
 }

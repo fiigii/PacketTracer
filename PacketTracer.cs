@@ -49,8 +49,6 @@ internal class PacketTracer
                 var SoA = colors.Transpose();
                 var intSoA = SoA.ConvertToIntRGB();
                 */
-
-                
             }
         }
 
@@ -59,6 +57,24 @@ internal class PacketTracer
     private ColorPacket TraceRay(RayPacket rayPacket, Scene scene, int depth)
     {
 
+    }
+
+    private Intersections MinIntersections(RayPacket rayPacket, Scene scene)
+    {
+        Intersect mins = Intersections.Null;
+        int index = 0
+        foreach (SceneObject obj in scene.Things)
+        {
+            var objPacket = obj.ToPacket();
+            var orgIsect = objPacket.Intersect(rayPacket);
+            if (!orgIsect.AllNullIntersections())
+            {
+                var nullMinMask = AVX.CompareVector256Float(min, Intersections.Null, CompareEqualOrderedNonSignaling);
+                var lessMinMask = AVX.CompareVector256Float(min, orgIsect, CompareGreaterThanOrderedNonSignaling);
+                min
+            }
+            index++;
+        }
     }
 
     private VectorPacket GetVectorPacket(Vector256<float> x, Vector256<float> y, Camera camera)

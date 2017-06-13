@@ -12,13 +12,13 @@ internal class SpherePacket: ObjectPacket
         Radiuses = AVX.Set1(sphere.Radius);
     }
 
-    public override Intersections Intersect(RayPacket rayPacket)
+    public override Intersections Intersect(RayPacket rayPacket, int index)
     {
-        var intersections = NullIntersections(this);
+        var intersections = Intersections.Null;
         var eo = Centers - rayPacket.Starts;
         var v = VectorPacket.DotProduct(eo, rayPacket.Dirs);
         var zeroVMask = AVX.GetCompareVector256Float(v, AVX.SetZero<float>(), CompareLessThanOrderedNonSignaling);
-        var allOneMask = AVX.CompareVector256Float(v, v, CompareNotEqualUnorderedNonSignaling);
+        var allOneMask = AVX.CompareVector256Float(v, v, CompareEqualOrderedNonSignaling);
         if(AVX.TestC(zeroVMask, allOneMask))
         {
             return intersections; // Null Intersections
@@ -33,6 +33,7 @@ internal class SpherePacket: ObjectPacket
         var filterD = AVX.BlendVariable(filterV, nullInter, zeroDiscMask);
 
         intersections.Distances = filterD;
+        intersections.Thing = AVX.Set1<int>(index);
         return intersections;
     }
 }
