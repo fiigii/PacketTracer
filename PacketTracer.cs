@@ -66,15 +66,19 @@ internal class PacketTracer
         foreach (SceneObject obj in scene.Things)
         {
             var objPacket = obj.ToPacket();
-            var orgIsect = objPacket.Intersect(rayPacket);
+            var orgIsect = objPacket.Intersect(rayPacket, index);
             if (!orgIsect.AllNullIntersections())
             {
                 var nullMinMask = AVX.CompareVector256Float(min, Intersections.Null, CompareEqualOrderedNonSignaling);
                 var lessMinMask = AVX.CompareVector256Float(min, orgIsect, CompareGreaterThanOrderedNonSignaling);
-                min
+                var minDis = AVX.BlendVariable(mins.Distances, orgIsect.Distances, AVX.Or(nullMinMask, lessMinMask));
+                mins.Distances = minDis;
+                var minIndex = AVX.BlendVariable(mins.ThingIndex, AVX.Set1(index), AVX.Or(nullMinMask, lessMinMask)); //CSE
+                mins.ThingIndex = minIndex;
             }
             index++;
         }
+        return mins;
     }
 
     private VectorPacket GetVectorPacket(Vector256<float> x, Vector256<float> y, Camera camera)
