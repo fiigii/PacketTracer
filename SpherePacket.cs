@@ -17,7 +17,7 @@ internal class SpherePacket: ObjectPacket
         var intersections = Intersections.Null;
         var eo = Centers - rayPacket.Starts;
         var v = VectorPacket.DotProduct(eo, rayPacket.Dirs);
-        var zeroVMask = AVX.GetCompareVector256Float(v, AVX.SetZero<float>(), CompareLessThanOrderedNonSignaling);
+        var zeroVMask = AVX.CompareVector256Float(v, AVX.SetZero<float>(), CompareLessThanOrderedNonSignaling);
         var allOneMask = AVX.CompareVector256Float(v, v, CompareEqualOrderedNonSignaling);
         if(AVX.TestC(zeroVMask, allOneMask))
         {
@@ -26,14 +26,19 @@ internal class SpherePacket: ObjectPacket
 
         var discs = AVX.Subtract(AVX.Multiply(Radiuses, Radiuses), AVX.Subtract(VectorPacket.DotProduct(eo, eo), AVX.Multiply(v, v)));
         var dists = AVX.Sqrt(discs);
-        var zeroDiscMask = AVX.GetCompareVector256Float(discs, AVX.SetZero<float>(), CompareLessThanOrderedNonSignaling);
+        var zeroDiscMask = AVX.CompareVector256Float(discs, AVX.SetZero<float>(), CompareLessThanOrderedNonSignaling);
 
-        var nullInter = AVX.Set1(Intersections.Null);
-        var filterV = AVX.BlendVariable(dists, nullInter, zeroVMask);
-        var filterD = AVX.BlendVariable(filterV, nullInter, zeroDiscMask);
+        var nullInter = AVX.Set1(Intersections.NullValue);
+        var filter = AVX.BlendVariable(dists, nullInter, AVX.Or(zeroVMask, zeroDiscMask));
 
-        intersections.Distances = filterD;
-        intersections.Thing = AVX.Set1<int>(index);
+        intersections.Distances = filter;
+        intersections.ThingIndex = AVX.Set1<float>(index);
         return intersections;
+    }
+
+    public override VectorPacket Normal(VectorPacket pos)
+    {
+        var tmp = pos - Centers;
+        return tmp.Normalize();
     }
 }

@@ -14,10 +14,15 @@ internal class PlanePacket: ObjectPacket
 
     public override Intersections Intersect(RayPacket rayPacket, int index)
     {
-        var denom = VectorPacket.DotProduct(Norms, rayPacket.Dirs)
+        var denom = VectorPacket.DotProduct(Norms, rayPacket.Dirs);
         var dist = AVX.Divide(VectorPacket.DotProduct(Norms, rayPacket.Starts), AVX.Subtract(AVX.SetZero<float>(), denom));
         var gtMask = AVX.CompareVector256Float(denom, AVX.SetZero<float>, CompareGreaterThanOrderedNonSignaling);
-        var reslut = AVX.Or(AVX.And(gtMask, AVX.Set1(Intersections.Null)), AVX.AndNot(gtMask, dist));
-        return new Intersections(reslut, AVX.Set1<int>(index));
+        var reslut = AVX.Or(AVX.And(gtMask, AVX.Set1(Intersections.NullValue)), AVX.AndNot(gtMask, dist));
+        return new Intersections(reslut, AVX.Set1<float>((float)index));
+    }
+
+    public override VectorPacket Normal(VectorPacket pos)
+    {
+        return Norms;
     }
 }

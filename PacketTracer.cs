@@ -56,29 +56,43 @@ internal class PacketTracer
 
     private ColorPacket TraceRay(RayPacket rayPacket, Scene scene, int depth)
     {
-
+        var isect = MinIntersections(rayPacket, scene);
+        if(isect.AllNullIntersections())
+        {
+            return ColorPacketHelper.BackgroundColor;
+        }
+        return Shade(isect, rayPacket, scene,depth);
     }
 
     private Intersections MinIntersections(RayPacket rayPacket, Scene scene)
     {
-        Intersect mins = Intersections.Null;
-        int index = 0
+        Intersections mins = Intersections.Null;
+        int index = 0;
         foreach (SceneObject obj in scene.Things)
         {
             var objPacket = obj.ToPacket();
             var orgIsect = objPacket.Intersect(rayPacket, index);
             if (!orgIsect.AllNullIntersections())
             {
-                var nullMinMask = AVX.CompareVector256Float(min, Intersections.Null, CompareEqualOrderedNonSignaling);
-                var lessMinMask = AVX.CompareVector256Float(min, orgIsect, CompareGreaterThanOrderedNonSignaling);
+                var nullMinMask = AVX.CompareVector256Float(mins, Intersections.Null.Distances, CompareEqualOrderedNonSignaling);
+                var lessMinMask = AVX.CompareVector256Float(mins, orgIsect.Distances, CompareGreaterThanOrderedNonSignaling);
                 var minDis = AVX.BlendVariable(mins.Distances, orgIsect.Distances, AVX.Or(nullMinMask, lessMinMask));
                 mins.Distances = minDis;
-                var minIndex = AVX.BlendVariable(mins.ThingIndex, AVX.Set1(index), AVX.Or(nullMinMask, lessMinMask)); //CSE
+                var minIndex = AVX.BlendVariable(mins.ThingIndex, AVX.Set1((float)index), AVX.Or(nullMinMask, lessMinMask)); //CSE
                 mins.ThingIndex = minIndex;
             }
             index++;
         }
         return mins;
+    }
+
+    private ColorPacket Shade(Intersections isect, RayPacket rayPacket, Scene scene, int depth)
+    {
+        var colors = ColorPacketHelper.BackgroundColor;
+        var ds = rayPacket.Dirs;
+        var pos = isect.Distances * ds + rayPacket.Starts;
+        //var normals =
+        return colors; 
     }
 
     private VectorPacket GetVectorPacket(Vector256<float> x, Vector256<float> y, Camera camera)

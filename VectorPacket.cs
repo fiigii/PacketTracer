@@ -130,6 +130,11 @@ internal struct VectorPacket
                                AVX.Subtract(AVX.Multiply(left.xs, right.ys), AVX.Multiply(left.ys, right.xs)));
     }
 
+    public static VectorPacket operator *(Vector256<float> left, VectorPacket right)
+    {
+        return new VectorPacket(AVX.Multiply(left, right.xs), AVX.Multiply(left, right.ys), AVX.Multiply(left, right.zs));
+    }
+
     public Vector256<float> Lengthes()
     {
         var _x = AVX.Multiply(xs, xs);

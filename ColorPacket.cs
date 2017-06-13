@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices.Intrinsics;
 
 using ColorPacket = VectorPacket;
 
-internal static class ColorPacketMethods
+internal static class ColorPacketHelper
 {
     public static IntRGBPacket ConvertToIntRGB(this VectorPacket colors)
     {

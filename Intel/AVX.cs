@@ -612,9 +612,9 @@ namespace System.Runtime.CompilerServices.Intrinsics.Intel
         public static Vector256<double> Subtract(Vector256<double> left, Vector256<double> right) { throw new NotImplementedException(); }
 
         // int _mm_testc_ps (__m128 a, __m128 b)
-        public static bool TestC(Vector256<float> left, Vector256<float> right) { throw new NotImplementedException(); }       
+        public static bool TestC(Vector128<float> left, Vector128<float> right) { throw new NotImplementedException(); }       
         // int _mm_testc_pd (__m128d a, __m128d b)
-        public static bool TestC(Vector256<double> left, Vector256<double> right) { throw new NotImplementedException(); }
+        public static bool TestC(Vector128<double> left, Vector128<double> right) { throw new NotImplementedException(); }
 
         // int _mm256_testc_si256 (__m256i a, __m256i b)
         // int _mm256_testc_ps (__m256 a, __m256 b)
