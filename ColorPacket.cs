@@ -10,7 +10,7 @@ internal static class ColorPacketHelper
         var one = AVX.Set1<float>(1.0f);
         var max = AVX.Set1<float>(255.0f);
 
-        var greaterThan = AVX.GetCompareVector256Float(CompareGreaterThanOrderedNonSignaling);
+        var greaterThan = AVX.GetCompareVector256Float(FloatComparisonMode.CompareGreaterThanOrderedNonSignaling);
         var rsMask = greaterThan(colors.xs, one);
         var gsMask = greaterThan(colors.ys, one);
         var bsMask = greaterThan(colors.zs, one);

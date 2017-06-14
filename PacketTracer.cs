@@ -11,6 +11,10 @@ internal class PacketTracer
 
     public PacketTracer(int _width, int _hight)
     {
+        if(_width % VectorPacket.PacketSize != 0)
+        {
+            _width += VectorPacket.PacketSize - _width % VectorPacket.PacketSize;
+        }
         Width = _width;
         Hight = _hight;
     }
@@ -32,9 +36,9 @@ internal class PacketTracer
                 // Writ into memory via xmm registers
                 var SoA = colors.FastTranspose();
                 var intSoA = SoA.ConvertToIntRGB();
-                var m0 = (Vector128<int>)intSoA.Rs;
-                var m1 = (Vector128<int>)intSoA.Gs;
-                var m2 = (Vector128<int>)intSoA.Bs;
+                var m0 = AVX.GetLowerHalf<int>(intSoA.Rs);
+                var m1 = AVX.GetLowerHalf<int>(intSoA.Gs);
+                var m2 = AVX.GetLowerHalf<int>(intSoA.Bs);
                 var m3 = AVX2.ExtractVector128(intSoA.Rs, 1);
                 var m4 = AVX2.ExtractVector128(intSoA.Gs, 1);
                 var m5 = AVX2.ExtractVector128(intSoA.Bs, 1);
@@ -74,8 +78,8 @@ internal class PacketTracer
             var orgIsect = objPacket.Intersect(rayPacket, index);
             if (!orgIsect.AllNullIntersections())
             {
-                var nullMinMask = AVX.CompareVector256Float(mins, Intersections.Null.Distances, CompareEqualOrderedNonSignaling);
-                var lessMinMask = AVX.CompareVector256Float(mins, orgIsect.Distances, CompareGreaterThanOrderedNonSignaling);
+                var nullMinMask = AVX.CompareVector256Float(mins.Distances, Intersections.Null.Distances, FloatComparisonMode.CompareEqualOrderedNonSignaling);
+                var lessMinMask = AVX.CompareVector256Float(mins.Distances, orgIsect.Distances, FloatComparisonMode.CompareGreaterThanOrderedNonSignaling);
                 var minDis = AVX.BlendVariable(mins.Distances, orgIsect.Distances, AVX.Or(nullMinMask, lessMinMask));
                 mins.Distances = minDis;
                 var minIndex = AVX.BlendVariable(mins.ThingIndex, AVX.Set1((float)index), AVX.Or(nullMinMask, lessMinMask)); //CSE

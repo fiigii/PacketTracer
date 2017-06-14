@@ -21,8 +21,9 @@ internal class Intersections
 
     public bool AllNullIntersections()
     {
-        var cmp = AVX.CompareVector256Float(Distances, AVX.Set1<float>(Intersections.NullValue), CompareEqualOrderedNonSignaling);
-        var mask = AVX.CompareVector256Float(Distances, Distances, CompareEqualOrderedNonSignaling); //Not efficient 
-        return AVX.TestC(cmp, mask);
+        var cmp = AVX.CompareVector256Float(Distances, AVX.Set1<float>(Intersections.NullValue), FloatComparisonMode.CompareEqualOrderedNonSignaling);
+        var zero = AVX.SetZero<int>();
+        var mask = AVX2.CompareEqual(zero, zero); 
+        return AVX.TestC(cmp, AVX.StaticCast<int, float>(mask));
     }
 }

@@ -42,22 +42,22 @@ namespace System.Runtime.CompilerServices.Intrinsics.Intel
         public static Vector256<double> AndNot(Vector256<double> left, Vector256<double> right) { throw new NotImplementedException(); }
 
         // __m256 _mm256_blend_ps (__m256 a, __m256 b, const int imm8)
-        private static Vector256<float> Blend(Vector256<float> left, Vector256<float> right, byte control) { throw new NotImplementedException(); }
+        public static Vector256<float> Blend(Vector256<float> left, Vector256<float> right, byte control) { throw new NotImplementedException(); }
         public static BlendVector256Delegate<float> GetBlendVector256Float(byte control)
         {
             return (left, right) => Blend(left, right, control);
         }
         // __m256d _mm256_blend_pd (__m256d a, __m256d b, const int imm8)
-        private static Vector256<double> Blend(Vector256<double> left, Vector256<double> right, byte control) { throw new NotImplementedException(); }
+        public static Vector256<double> Blend(Vector256<double> left, Vector256<double> right, byte control) { throw new NotImplementedException(); }
         public static BlendVector256Delegate<double> GetBlendVector256Double(byte control)
         {
             return (left, right) => Blend(left, right, control);
         }
         
         // __m256 _mm256_blendv_ps (__m256 a, __m256 b, __m256 mask)
-        public static Vector256<float> BlendVariable(Vector256<float> left, Vector256<float> right, Vector256<uint> mask) { throw new NotImplementedException(); }
+        public static Vector256<float> BlendVariable(Vector256<float> left, Vector256<float> right, Vector256<float> mask) { throw new NotImplementedException(); }
         // __m256d _mm256_blendv_pd (__m256d a, __m256d b, __m256d mask)
-        public static Vector256<double> BlendVariable(Vector256<double> left, Vector256<double> right, Vector256<ulong> mask) { throw new NotImplementedException(); }
+        public static Vector256<double> BlendVariable(Vector256<double> left, Vector256<double> right, Vector256<double> mask) { throw new NotImplementedException(); }
 
         // __m128 _mm_broadcast_ss (float const * mem_addr)
         public static Vector128<float> BroadcastVector128Scalar(ref float source) { throw new NotImplementedException(); }
@@ -77,28 +77,28 @@ namespace System.Runtime.CompilerServices.Intrinsics.Intel
         public static Vector256<double> Ceiling(Vector256<double> value) { throw new NotImplementedException(); }
 
         // __m128 _mm_cmp_ps (__m128 a, __m128 b, const int imm8)
-        private static Vector128<float> CompareVector128Float(Vector128<float> left, Vector128<float> right, FloatComparisonMode mode) { throw new NotImplementedException(); }
+        public static Vector128<float> CompareVector128Float(Vector128<float> left, Vector128<float> right, FloatComparisonMode mode) { throw new NotImplementedException(); }
         public static CompareVector128Delegate<float> GetCompareVector128Float(FloatComparisonMode mode)
         {
             return (left, right) => CompareVector128Float(left, right, mode);
         }
 
         // __m128d _mm_cmp_pd (__m128d a, __m128d b, const int imm8)
-        private static Vector128<double> CompareVector128Double(Vector128<double> left, Vector128<double> right, FloatComparisonMode mode) { throw new NotImplementedException(); }
+        public static Vector128<double> CompareVector128Double(Vector128<double> left, Vector128<double> right, FloatComparisonMode mode) { throw new NotImplementedException(); }
         public static CompareVector128Delegate<double> GetCompareVector128Double(FloatComparisonMode mode)
         {
             return (left, right) => CompareVector128Double(left, right, mode);
         }
 
         // __m256 _mm256_cmp_ps (__m256 a, __m256 b, const int imm8)
-        private static Vector256<float> CompareVector256Float(Vector256<float> left, Vector256<float> right, FloatComparisonMode mode) { throw new NotImplementedException(); }
+        public static Vector256<float> CompareVector256Float(Vector256<float> left, Vector256<float> right, FloatComparisonMode mode) { throw new NotImplementedException(); }
         public static CompareVector256Delegate<float> GetCompareVector256Float(FloatComparisonMode mode)
         {
             return (left, right) => CompareVector256Float(left, right, mode);
         }
 
         // __m256d _mm256_cmp_pd (__m256d a, __m256d b, const int imm8)
-        private static Vector256<double> CompareVector256Double(Vector256<double> left, Vector256<double> right, FloatComparisonMode mode) { throw new NotImplementedException(); }
+        public static Vector256<double> CompareVector256Double(Vector256<double> left, Vector256<double> right, FloatComparisonMode mode) { throw new NotImplementedException(); }
         public static CompareVector256Delegate<double> GetCompareVector256Double(FloatComparisonMode mode)
         {
             return (left, right) => CompareVector256Double(left, right, mode);
@@ -128,7 +128,7 @@ namespace System.Runtime.CompilerServices.Intrinsics.Intel
         public static Vector256<double> Divide(Vector256<double> left, Vector256<double> right) { throw new NotImplementedException(); }
 
         // __m256 _mm256_dp_ps (__m256 a, __m256 b, const int imm8)
-        private static Vector256<float> DotProduct(Vector256<float> left, Vector256<float> right, byte control) { throw new NotImplementedException(); }
+        public static Vector256<float> DotProduct(Vector256<float> left, Vector256<float> right, byte control) { throw new NotImplementedException(); }
         public static DotProductVectro256Delegate GetDotProductVector256Float(byte control)
         {
             return (left, right) => DotProduct(left, right, control);
@@ -144,71 +144,81 @@ namespace System.Runtime.CompilerServices.Intrinsics.Intel
 
 
         // __int8 _mm256_extract_epi8 (__m256i a, const int index)
-        private static sbyte ExtractSbyte<T>(Vector256<T> value, byte index) where T : struct { throw new NotImplementedException(); }
+        public static sbyte ExtractSbyte<T>(Vector256<T> value, byte index) where T : struct { throw new NotImplementedException(); }
         public static ExtractSbyteVector256Delegate<T> GetExtractSbyte<T>(byte index) where T : struct
         {
             return (value) => ExtractSbyte(value, index);
         }
         // __int8 _mm256_extract_epi8 (__m256i a, const int index)
-        private static byte ExtractByte<T>(Vector256<T> value, byte index) where T : struct { throw new NotImplementedException(); }
+        public static byte ExtractByte<T>(Vector256<T> value, byte index) where T : struct { throw new NotImplementedException(); }
         public static ExtractByteVector256Delegate<T> GetExtractByte<T>(byte index) where T : struct
         {
             return (value) => ExtractByte(value, index);
         }
         // __int16 _mm256_extract_epi16 (__m256i a, const int index)
-        private static short ExtractShort<T>(Vector256<T> value, byte index) where T : struct { throw new NotImplementedException(); }
+        public static short ExtractShort<T>(Vector256<T> value, byte index) where T : struct { throw new NotImplementedException(); }
         public static ExtractShortVector256Delegate<T> GetExtractShort<T>(byte index) where T : struct
         {
             return (value) => ExtractShort(value, index);
         }
         // __int16 _mm256_extract_epi16 (__m256i a, const int index)
-        private static ushort ExtractUshort<T>(Vector256<T> value, byte index) where T : struct { throw new NotImplementedException(); }
+        public static ushort ExtractUshort<T>(Vector256<T> value, byte index) where T : struct { throw new NotImplementedException(); }
         public static ExtractUShortVector256Delegate<T> GetExtractUshort<T>(byte index) where T : struct
         {
             return (value) => ExtractUshort(value, index);
         }
         // __int32 _mm256_extract_epi32 (__m256i a, const int index)
-        private static int ExtractInt<T>(Vector256<T> value, byte index) where T : struct { throw new NotImplementedException(); }
+        public static int ExtractInt<T>(Vector256<T> value, byte index) where T : struct { throw new NotImplementedException(); }
         public static ExtractIntVector256Delegate<T> GetExtractInt<T>(byte index) where T : struct
         {
             return (value) => ExtractInt(value, index);
         }
         // __int32 _mm256_extract_epi32 (__m256i a, const int index)
-        private static uint ExtractUint<T>(Vector256<T> value, byte index) where T : struct { throw new NotImplementedException(); }
+        public static uint ExtractUint<T>(Vector256<T> value, byte index) where T : struct { throw new NotImplementedException(); }
         public static ExtractUintVector256Delegate<T> GetExtractUint<T>(byte index) where T : struct
         {
             return (value) => ExtractUint(value, index);
         }
         // __int64 _mm256_extract_epi64 (__m256i a, const int index)
-        private static long ExtractLong<T>(Vector256<T> value, byte index) where T : struct { throw new NotImplementedException(); }
+        public static long ExtractLong<T>(Vector256<T> value, byte index) where T : struct { throw new NotImplementedException(); }
         public static ExtractLongVector256Delegate<T> GetExtractLong<T>(byte index) where T : struct
         {
             return (value) => ExtractLong(value, index);
         }
         // __int64 _mm256_extract_epi64 (__m256i a, const int index)
-        private static ulong ExtractUlong<T>(Vector256<T> value, byte index) where T : struct { throw new NotImplementedException(); }
+        public static ulong ExtractUlong<T>(Vector256<T> value, byte index) where T : struct { throw new NotImplementedException(); }
         public static ExtractUlongVector256Delegate<T> GetExtractUlong<T>(byte index) where T : struct
         {
             return (value) => ExtractUlong(value, index);
         }
 
         //__m128 _mm256_extractf128_ps (__m256 a, const int imm8)
-        private static Vector128<float> ExtractVector128(Vector256<float> value, byte index) { throw new NotImplementedException(); }
+        public static Vector128<float> ExtractVector128(Vector256<float> value, byte index) { throw new NotImplementedException(); }
         public static Extract128Vector256Delegate<float> GetExtractVector128Float(byte index)
         {
             return (value) => ExtractVector128(value, index);
         }
         // __m128d _mm256_extractf128_pd (__m256d a, const int imm8)
-        private static Vector128<double> ExtractVector128(Vector256<double> value, byte index) { throw new NotImplementedException(); }
+        public static Vector128<double> ExtractVector128(Vector256<double> value, byte index) { throw new NotImplementedException(); }
         public static Extract128Vector256Delegate<double> GetExtractVector128Double(byte index)
         {
             return (value) => ExtractVector128(value, index);
         }
 
+        // __m256d _mm256_castpd128_pd256 (__m128d a)
+        // __m256 _mm256_castps128_ps256 (__m128 a)
+        // __m256i _mm256_castsi128_si256 (__m128i a)
+        public static Vector256<T> ExtendTo256<T>(Vector128<T> value) where T : struct { throw new NotImplementedException(); }
+
         // __m256 _mm256_floor_ps (__m256 a)
         public static Vector256<float> Floor(Vector256<float> value) { throw new NotImplementedException(); }
         // __m256d _mm256_floor_pd (__m256d a)
         public static Vector256<double> Floor(Vector256<double> value) { throw new NotImplementedException(); }
+
+        // __m128d _mm256_castpd256_pd128 (__m256d a)
+        // __m128 _mm256_castps256_ps128 (__m256 a)
+        // __m128i _mm256_castsi256_si128 (__m256i a)
+        public static Vector128<T> GetLowerHalf<T>(Vector256<T> value) where T : struct { throw new NotImplementedException(); }
 
         // __m256 _mm256_hadd_ps (__m256 a, __m256 b)
         public static Vector256<float> HorizontalAdd(Vector256<float> left, Vector256<float> right) { throw new NotImplementedException(); }
@@ -221,63 +231,63 @@ namespace System.Runtime.CompilerServices.Intrinsics.Intel
         public static Vector256<double> HorizontalSubtract(Vector256<double> left, Vector256<double> right) { throw new NotImplementedException(); }
 
         // __m256i _mm256_insert_epi8 (__m256i a, __int8 i, const int index)
-        private static Vector256<T> InsertSbyte<T>(Vector256<T> value, sbyte data, byte index) where T : struct { throw new NotImplementedException(); }
+        public static Vector256<T> InsertSbyte<T>(Vector256<T> value, sbyte data, byte index) where T : struct { throw new NotImplementedException(); }
         public static InsertSbyteVector256Delegate<T> GetInsertSbyte<T>(byte index) where T : struct
         {
             return (value, data) => InsertSbyte(value, data, index);
         }
         // __m256i _mm256_insert_epi8 (__m256i a, __int8 i, const int index)
-        private static Vector256<T> InsertByte<T>(Vector256<T> value, byte data, byte index) where T : struct { throw new NotImplementedException(); }
+        public static Vector256<T> InsertByte<T>(Vector256<T> value, byte data, byte index) where T : struct { throw new NotImplementedException(); }
         public static InsertByteVector256Delegate<T> GetInsertByte<T>(byte index) where T : struct
         {
             return (value, data) => InsertByte(value, data, index);
         }
         // __m256i _mm256_insert_epi16 (__m256i a, __int16 i, const int index)
-        private static Vector256<T> InsertShort<T>(Vector256<T> value, short data, byte index) where T : struct { throw new NotImplementedException(); }
+        public static Vector256<T> InsertShort<T>(Vector256<T> value, short data, byte index) where T : struct { throw new NotImplementedException(); }
         public static InsertShortVector256Delegate<T> GetInsertShort<T>(byte index) where T : struct
         {
             return (value, data) => InsertShort(value, data, index);
         }
         // __m256i _mm256_insert_epi16 (__m256i a, __int16 i, const int index)
-        private static Vector256<T> InsertUshort<T>(Vector256<T> value, ushort data, byte index) where T : struct { throw new NotImplementedException(); }
+        public static Vector256<T> InsertUshort<T>(Vector256<T> value, ushort data, byte index) where T : struct { throw new NotImplementedException(); }
         public static InsertUshortVector256Delegate<T> GetInsertUshort<T>(byte index) where T : struct
         {
             return (value, data) => InsertUshort(value, data, index);
         }
         // __m256i _mm256_insert_epi32 (__m256i a, __int32 i, const int index)
-        private static Vector256<T> InsertInt<T>(Vector256<T> value, int data, byte index) where T : struct { throw new NotImplementedException(); }
+        public static Vector256<T> InsertInt<T>(Vector256<T> value, int data, byte index) where T : struct { throw new NotImplementedException(); }
         public static InsertIntVector256Delegate<T> GetInsertInt<T>(byte index) where T : struct
         {
             return (value, data) => InsertInt(value, data, index);
         }
         // __m256i _mm256_insert_epi32 (__m256i a, __int32 i, const int index)
-        private static Vector256<T> InsertUint<T>(Vector256<T> value, uint data, byte index) where T : struct { throw new NotImplementedException(); }
+        public static Vector256<T> InsertUint<T>(Vector256<T> value, uint data, byte index) where T : struct { throw new NotImplementedException(); }
         public static InsertUintVector256Delegate<T> GetInsertUint<T>(byte index) where T : struct
         {
             return (value, data) => InsertUint(value, data, index);
         }
         // __m256i _mm256_insert_epi64 (__m256i a, __int64 i, const int index)
-        private static Vector256<T> InsertLong<T>(Vector256<T> value, long data, byte index) where T : struct { throw new NotImplementedException(); }
+        public static Vector256<T> InsertLong<T>(Vector256<T> value, long data, byte index) where T : struct { throw new NotImplementedException(); }
         public static InsertLongVector256Delegate<T> GetInsertLong<T>(byte index) where T : struct
         {
             return (value, data) => InsertLong(value, data, index);
         }
         // __m256i _mm256_insert_epi64 (__m256i a, __int64 i, const int index)
-        private static Vector256<T> InsertUlong<T>(Vector256<T> value, ulong data, byte index) where T : struct { throw new NotImplementedException(); }
+        public static Vector256<T> InsertUlong<T>(Vector256<T> value, ulong data, byte index) where T : struct { throw new NotImplementedException(); }
         public static InsertUlongVector256Delegate<T> GetInsertUlong<T>(byte index) where T : struct
         {
             return (value, data) => InsertUlong(value, data, index);
         }
 
         // __m256 _mm256_insertf128_ps (__m256 a, __m128 b, int imm8)
-        private static Vector256<float> Insert(Vector256<float> value, Vector128<float> data, byte index) { throw new NotImplementedException(); }
+        public static Vector256<float> Insert(Vector256<float> value, Vector128<float> data, byte index) { throw new NotImplementedException(); }
         public static Insert128Vector256Delegate<float> GetInsertVector128Float(byte index)
         {
             return (value, data) => Insert(value, data, index);
         }
 
         // __m256d _mm256_insertf128_pd (__m256d a, __m128d b, int imm8)
-        private static Vector256<double> Insert(Vector256<double> value, Vector128<double> data, byte index) { throw new NotImplementedException(); }
+        public static Vector256<double> Insert(Vector256<double> value, Vector128<double> data, byte index) { throw new NotImplementedException(); }
         public static Insert128Vector256Delegate<double> GetInsertVector128Double(byte index)
         {
             return (value, data) => Insert(value, data, index);
@@ -388,39 +398,39 @@ namespace System.Runtime.CompilerServices.Intrinsics.Intel
         public static Vector256<double> Or(Vector256<double> left, Vector256<double> right) { throw new NotImplementedException(); }
 
         // __m128 _mm_permute_ps (__m128 a, int imm8)
-        private static Vector128<float> Permute(Vector128<float> value, byte control) { throw new NotImplementedException(); }
+        public static Vector128<float> Permute(Vector128<float> value, byte control) { throw new NotImplementedException(); }
         public static PermuteVector128Delegate<float> GetPermuteVector128Float(byte control)
         {
             return (value) => Permute(value, control);
         }
         // __m128d _mm_permute_pd (__m128d a, int imm8)
-        private static Vector128<double> Permute(Vector128<double> value, byte control) { throw new NotImplementedException(); }
+        public static Vector128<double> Permute(Vector128<double> value, byte control) { throw new NotImplementedException(); }
         public static PermuteVector128Delegate<double> GetPermuteVector128Double(byte control)
         {
             return (value) => Permute(value, control);
         }
 
         // __m256 _mm256_permute_ps (__m256 a, int imm8)
-        private static Vector256<float> Permute(Vector256<float> value, byte control) { throw new NotImplementedException(); }
+        public static Vector256<float> Permute(Vector256<float> value, byte control) { throw new NotImplementedException(); }
         public static PermuteVector256Delegate<float> GetPermuteVector256Float(byte control)
         {
             return (value) => Permute(value, control);
         }
         // __m256d _mm256_permute_pd (__m256d a, int imm8)
-        private static Vector256<double> Permute(Vector256<double> value, byte control) { throw new NotImplementedException(); }
+        public static Vector256<double> Permute(Vector256<double> value, byte control) { throw new NotImplementedException(); }
         public static PermuteVector256Delegate<double> GetPermuteVector256Double(byte control)
         {
             return (value) => Permute(value, control);
         }
 
         // __m256 _mm256_permute2f128_ps (__m256 a, __m256 b, int imm8)
-        private static Vector256<float> Permute2x128(Vector256<float> left, Vector256<float> right, byte control) { throw new NotImplementedException(); }
+        public static Vector256<float> Permute2x128(Vector256<float> left, Vector256<float> right, byte control) { throw new NotImplementedException(); }
         public static Permute2x128Delegate<float> GetPermute2x128Float(byte control)
         {
             return (left, right) => Permute2x128(left, right, control);
         }
         // __m256d _mm256_permute2f128_pd (__m256d a, __m256d b, int imm8)
-        private static Vector256<double> Permute2x128(Vector256<double> left, Vector256<double> right, byte control) { throw new NotImplementedException(); }
+        public static Vector256<double> Permute2x128(Vector256<double> left, Vector256<double> right, byte control) { throw new NotImplementedException(); }
         public static Permute2x128Delegate<double> GetPermute2x128Double(byte control)
         {
             return (left, right) => Permute2x128(left, right, control);
@@ -526,13 +536,13 @@ namespace System.Runtime.CompilerServices.Intrinsics.Intel
         public static Vector256<T> SetZero<T>() where T : struct { throw new NotImplementedException(); }
 
         // __m256 _mm256_shuffle_ps (__m256 a, __m256 b, const int imm8)
-        private static Vector256<float> Shuffle(Vector256<float> value, Vector256<float> right, byte control) { throw new NotImplementedException(); }
+        public static Vector256<float> Shuffle(Vector256<float> value, Vector256<float> right, byte control) { throw new NotImplementedException(); }
         public static ShuffleTwoVector256Delegate<float> GetShuffleVector256Float(byte control)
         {
             return (left, right) => Shuffle(left, right, control);
         }
         // __m256d _mm256_shuffle_pd (__m256d a, __m256d b, const int imm8)
-        private static Vector256<double> Shuffle(Vector256<double> value, Vector256<double> right, byte control) { throw new NotImplementedException(); }
+        public static Vector256<double> Shuffle(Vector256<double> value, Vector256<double> right, byte control) { throw new NotImplementedException(); }
         public static ShuffleTwoVector256Delegate<double> GetShuffleVector256Double(byte control)
         {
             return (left, right) => Shuffle(left, right, control);
@@ -542,6 +552,14 @@ namespace System.Runtime.CompilerServices.Intrinsics.Intel
         public static Vector256<float> Sqrt(Vector256<float> value) { throw new NotImplementedException(); }
         // __m256d _mm256_sqrt_pd (__m256d a)
         public static Vector256<double> Sqrt(Vector256<double> value) { throw new NotImplementedException(); }
+
+        // __m256 _mm256_castpd_ps (__m256d a)
+        // __m256i _mm256_castpd_si256 (__m256d a)
+        // __m256d _mm256_castps_pd (__m256 a)
+        // __m256i _mm256_castps_si256 (__m256 a)
+        // __m256d _mm256_castsi256_pd (__m256i a)
+        // __m256 _mm256_castsi256_ps (__m256i a)
+        public static Vector256<U> StaticCast<T, U>(Vector256<T> value) where T : struct where U : struct { throw new NotImplementedException(); }
 
         // void _mm256_store_si256 (__m256i * mem_addr, __m256i a)
         public static unsafe void StoreAligned(sbyte* mem, Vector256<sbyte> source) { throw new NotImplementedException(); }
@@ -622,9 +640,9 @@ namespace System.Runtime.CompilerServices.Intrinsics.Intel
         public static bool TestC<T>(Vector256<T> left, Vector256<T> right) where T : struct { throw new NotImplementedException(); }
 
         // int _mm_testnzc_ps (__m128 a, __m128 b)
-        public static bool TestNotZAndNotC(Vector256<float> left, Vector256<float> right) { throw new NotImplementedException(); }       
+        public static bool TestNotZAndNotC(Vector128<float> left, Vector128<float> right) { throw new NotImplementedException(); }       
         // int _mm_testnzc_pd (__m128d a, __m128d b)
-        public static bool TestNotZAndNotC(Vector256<double> left, Vector256<double> right) { throw new NotImplementedException(); }
+        public static bool TestNotZAndNotC(Vector128<double> left, Vector128<double> right) { throw new NotImplementedException(); }
 
         // int _mm256_testnzc_si256 (__m256i a, __m256i b)
         // int _mm256_testnzc_ps (__m256 a, __m256 b)
@@ -632,9 +650,9 @@ namespace System.Runtime.CompilerServices.Intrinsics.Intel
         public static bool TestNotZAndNotC<T>(Vector256<T> left, Vector256<T> right) where T : struct { throw new NotImplementedException(); }
 
         // int _mm_testz_ps (__m128 a, __m128 b)
-        public static bool TestZ(Vector256<float> left, Vector256<float> right) { throw new NotImplementedException(); }
+        public static bool TestZ(Vector128<float> left, Vector128<float> right) { throw new NotImplementedException(); }
         // int _mm_testz_ps (__m128 a, __m128 b)
-        public static bool TestZ(Vector256<double> left, Vector256<double> right) { throw new NotImplementedException(); }
+        public static bool TestZ(Vector128<double> left, Vector128<double> right) { throw new NotImplementedException(); }
 
         // int _mm256_testz_si256 (__m256i a, __m256i b)
         // int _mm256_testz_ps (__m256 a, __m256 b)
@@ -660,6 +678,12 @@ namespace System.Runtime.CompilerServices.Intrinsics.Intel
         public static void ZeroAll() { throw new NotImplementedException(); }
         // void _mm256_zeroupper (void)
         public static void ZeroUpper() { throw new NotImplementedException(); }
+
+        // __m256d _mm256_zextpd128_pd256 (__m128d a)
+        // __m256 _mm256_zextps128_ps256 (__m128 a)
+        // __m256i _mm256_zextsi128_si256 (__m128i a)
+        public static Vector256<T> ZeroExtendTo256<T>(Vector128<T> value) where T : struct { throw new NotImplementedException(); }
     }
 }
+
 

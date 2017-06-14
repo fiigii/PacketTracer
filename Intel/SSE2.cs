@@ -585,6 +585,14 @@ namespace System.Runtime.CompilerServices.Intrinsics.Intel
         // __m128d _mm_sqrt_pd (__m128d a)
         public static Vector128<double> Sqrt(Vector128<double> value) { throw new NotImplementedException(); }
 
+        // __m128 _mm_castpd_ps (__m128d a)
+        // __m128i _mm_castpd_si128 (__m128d a)
+        // __m128d _mm_castps_pd (__m128 a)
+        // __m128i _mm_castps_si128 (__m128 a)
+        // __m128d _mm_castsi128_pd (__m128i a)
+        // __m128 _mm_castsi128_ps (__m128i a)
+        public static Vector128<U> StaticCast<T, U>(Vector128<T> value) where T : struct where U : struct { throw new NotImplementedException(); }
+
         // void _mm_store_si128 (__m128i* mem_addr, __m128i a)
         public static unsafe void StoreAligned(sbyte* mem, Vector128<sbyte> source) { throw new NotImplementedException(); }
         // void _mm_store_si128 (__m128i* mem_addr, __m128i a)

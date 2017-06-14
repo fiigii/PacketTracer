@@ -36,9 +36,9 @@ internal struct VectorPacket
     {
         // This explicit cast from Vector128<float> to Vector256<float> is equivalent to 
         // __m256 _mm256_castps128_ps256 (__m128 a)
-        var m03 = (Vector256<float>)SSE2.Load(&vectors[0]); // load lower halves
-        var m14 = (Vector256<float>)SSE2.Load(&vectors[4]);
-        var m25 = (Vector256<float>)SSE2.Load(&vectors[8]);
+        var m03 = AVX.ExtendTo256<float>(SSE2.Load(&vectors[0])); // load lower halves
+        var m14 = AVX.ExtendTo256<float>(SSE2.Load(&vectors[4]));
+        var m25 = AVX.ExtendTo256<float>(SSE2.Load(&vectors[8]));
         m03 = AVX.Insert(m03, SSE2.Load(&vectors[12]), 1);  // load higher halves
         m14 = AVX.Insert(m14, SSE2.Load(&vectors[16]), 1);
         m25 = AVX.Insert(m25, SSE2.Load(&vectors[20]), 1);
@@ -70,9 +70,9 @@ internal struct VectorPacket
         var r14 = AVX.Shuffle(ryz, rxy, ShuffleControl(3, 1, 2, 0));
         var r25 = AVX.Shuffle(rzx, ryz, ShuffleControl(3, 1, 3, 1));
 
-        var m0 = (Vector128<float>)r03;
-        var m1 = (Vector128<float>)r14;
-        var m2 = (Vector128<float>)r25;
+        var m0 = AVX.GetLowerHalf<float>(r03);
+        var m1 = AVX.GetLowerHalf<float>(r14);
+        var m2 = AVX.GetLowerHalf<float>(r25);
         var m3 = AVX.ExtractVector128(r03, 1);
         var m4 = AVX.ExtractVector128(r14, 1);
         var m5 = AVX.ExtractVector128(r25, 1);
