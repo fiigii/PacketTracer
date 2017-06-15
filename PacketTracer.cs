@@ -7,7 +7,7 @@ internal class PacketTracer
 {
     public int Width {get; private set;}
     public int Hight {get; private set;}
-    private const int MaxDepth = 5;
+    private static readonly int MaxDepth = 5;
 
     public PacketTracer(int _width, int _hight)
     {

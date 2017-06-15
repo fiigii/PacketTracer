@@ -34,8 +34,6 @@ internal struct VectorPacket
     // Convert AoS vectors to SoA packet
     public unsafe VectorPacket(float* vectors)
     {
-        // This explicit cast from Vector128<float> to Vector256<float> is equivalent to 
-        // __m256 _mm256_castps128_ps256 (__m128 a)
         var m03 = AVX.ExtendTo256<float>(SSE2.Load(&vectors[0])); // load lower halves
         var m14 = AVX.ExtendTo256<float>(SSE2.Load(&vectors[4]));
         var m25 = AVX.ExtendTo256<float>(SSE2.Load(&vectors[8]));
