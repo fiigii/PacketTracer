@@ -22,7 +22,6 @@ internal class SpherePacket: ObjectPacket
         var allOneMask = AVX2.CompareEqual(zero, zero); 
         if(AVX.TestC(zeroVMask, AVX.StaticCast<int, float>(allOneMask)))
         {
-            intersections.ThingIndex = AVX.Set1<float>(index);
             return intersections; // Null Intersections
         }
 

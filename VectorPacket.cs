@@ -121,7 +121,7 @@ internal struct VectorPacket
         return result;
     }
 
-    public static VectorPacket operator *(VectorPacket left, VectorPacket right)
+    public static VectorPacket CrossProduct(VectorPacket left, VectorPacket right)
     {
         return new VectorPacket(AVX.Subtract(AVX.Multiply(left.ys, right.zs), AVX.Multiply(left.zs, right.ys)),
                                AVX.Subtract(AVX.Multiply(left.zs, right.xs), AVX.Multiply(left.xs, right.zs)),
@@ -133,7 +133,7 @@ internal struct VectorPacket
         return new VectorPacket(AVX.Multiply(left, right.xs), AVX.Multiply(left, right.ys), AVX.Multiply(left, right.zs));
     }
 
-    public Vector256<float> Lengthes()
+    public Vector256<float> Lengths()
     {
         var _x = AVX.Multiply(xs, xs);
         var _y = AVX.Multiply(ys, ys);
@@ -146,7 +146,7 @@ internal struct VectorPacket
 
     public VectorPacket Normalize()
     {
-        var length = this.Lengthes();
+        var length = this.Lengths();
         return new VectorPacket(AVX.Divide(xs, length), AVX.Divide(ys, length), AVX.Divide(zs, length));
     }
 }

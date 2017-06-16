@@ -111,8 +111,8 @@ internal class PacketTracer
         var recenteredY = AVX.Subtract(AVX.SetZero<float>(), AVX.Divide(AVX.Subtract(y, AVX.Set1(hightRate1)), AVX.Set1(hightRate2)));
 
         var result = camera.ForwardPacket + 
-                    (new VectorPacket(recenteredX) * camera.RightPacket) +
-                    (new VectorPacket(recenteredY) * camera.UpPacket);
+                    (recenteredX * camera.RightPacket) +
+                    (recenteredY * camera.UpPacket);
 
         return result.Normalize();
     }

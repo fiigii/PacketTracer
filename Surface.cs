@@ -1,20 +1,17 @@
-// Licensed to the .NET Foundation under one or more agreements.
-// The .NET Foundation licenses this file to you under the MIT license.
-// See the LICENSE file in the project root for more information.
-//
-
+using System.Runtime.CompilerServices.Intrinsics;
 using System;
+using ColorPacket = VectorPacket;
 
 internal class Surface
 {
-    public Func<Vector, Color> Diffuse;
-    public Func<Vector, Color> Specular;
-    public Func<Vector, float> Reflect;
+    public Func<VectorPacket, ColorPacket> Diffuse;
+    public Func<VectorPacket, ColorPacket> Specular;
+    public Func<VectorPacket, Vector256<float>> Reflect;
     public float Roughness;
 
-    public Surface(Func<Vector, Color> Diffuse,
-                    Func<Vector, Color> Specular,
-                    Func<Vector, float> Reflect,
+    public Surface(Func<VectorPacket, ColorPacket> Diffuse,
+                    Func<VectorPacket, ColorPacket> Specular,
+                    Func<VectorPacket, Vector256<float>> Reflect,
                     float Roughness)
     {
         this.Diffuse = Diffuse;

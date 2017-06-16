@@ -1,3 +1,6 @@
+using System.Runtime.CompilerServices.Intrinsics;
+using System.Runtime.CompilerServices.Intrinsics.Intel;
+
 internal struct Color
 {
     public float R {get; private set;}
@@ -11,5 +14,10 @@ internal struct Color
         R = _r;
         G = _g;
         B = _b;
+    }
+
+    public VectorPacket ToColorPacket()
+    {
+        return new VectorPacket(AVX.Set1(R), AVX.Set1(G), AVX.Set1(B));
     }
 }

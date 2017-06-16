@@ -1,7 +1,6 @@
-// Licensed to the .NET Foundation under one or more agreements.
-// The .NET Foundation licenses this file to you under the MIT license.
-// See the LICENSE file in the project root for more information.
-//
+using System.Runtime.CompilerServices.Intrinsics;
+using System.Runtime.CompilerServices.Intrinsics.Intel;
+using ColorPacket = VectorPacket;
 
 using System;
 
@@ -10,18 +9,31 @@ internal static class Surfaces
     // Only works with X-Z plane.
     public static readonly Surface CheckerBoard =
         new Surface(
-            delegate (Vector pos)
+            delegate (VectorPacket pos)
             {
-                return ((Math.Floor(pos.Z) + Math.Floor(pos.X)) % 2 != 0)
-             ? new Color(1f, 1f, 1f)
-             : new Color(0.02f, 0.0f, 0.14f);
-            },
-            delegate (Vector pos) { return new Color(1, 1, 1); },
-            delegate (Vector pos)
+                var floored = AVX.Add(AVX.Floor(pos.zs), AVX.Floor(pos.xs));
+                var modMask = AVX.Set1<uint>(1);
+                var evenMaskUint = AVX2.And(StaticCast<float, uint>(floored), modMask);
+                var evenMask = AVX2.CompareEqual(evenMask, modMask);
+                
+                var white = new ColorPacket(AVX.Set1(1.0f));
+                var black = new ColorPacket(new Vector(0.02f, 0.0f, 0.14f));
+
+                var resultX = AVX.BlendVariable(black.xs, white.xs, StaticCast<uint, float>(evenMask));
+                var resultY = AVX.BlendVariable(black.ys, white.ys, StaticCast<uint, float>(evenMask));
+                var resultZ = AVX.BlendVariable(black.zs, white.zs, StaticCast<uint, float>(evenMask));
+
+                return new ColorPacket(resultX, resultY, resultZ);
+            }
+            delegate (VectorPacket pos) { return (new Color(1, 1, 1)).ToColorPacket(); },
+            delegate (VectorPacket pos)
             {
-                return ((Math.Floor(pos.Z) + Math.Floor(pos.X)) % 2 != 0)
-             ? .1f
-             : .5f;
+                var floored = AVX.Add(AVX.Floor(pos.zs), AVX.Floor(pos.xs));
+                var modMask = AVX.Set1<uint>(1);
+                var evenMaskUint = AVX2.And(StaticCast<float, uint>(floored), modMask);
+                var evenMask = AVX2.CompareEqual(evenMask, modMask);
+
+                return AVX.BlendVariable(AVX.Set1(0.5f), AVX.Set1(0.1f), StaticCast<uint, float>(evenMask));
             },
             150f);
 
@@ -29,15 +41,15 @@ internal static class Surfaces
 
     public static readonly Surface Shiny =
         new Surface(
-            delegate (Vector pos) { return new Color(1f, 1f, 1f); },
-            delegate (Vector pos) { return new Color(.5f, .5f, .5f); },
-            delegate (Vector pos) { return .7f; },
+            delegate (VectorPacket pos) { return (new Color(1f, 1f, 1f)).ToColorPacket(); },
+            delegate (VectorPacket pos) { return (new Color(.5f, .5f, .5f)).ToColorPacket(); },
+            delegate (VectorPacket pos) { return new ColorPacket(AVX.Set1<float>(0.7f)); },
             250f);
 
     public static readonly Surface MatteShiny =
         new Surface(
-            delegate (Vector pos) { return new Color(1f, 1f, 1f); },
-            delegate (Vector pos) { return new Color(.25f, .25f, .25f); },
-            delegate (Vector pos) { return .7f; },
+            delegate (VectorPacket pos) { return (new Color(1f, 1f, 1f)).ToColorPacket(); },
+            delegate (VectorPacket pos) { return (new Color(.25f, .25f, .25f)).ToColorPacket(); },
+            delegate (VectorPacket pos) { return new ColorPacket(AVX.Set1<float>(0.7f)); },
             250f);
 }
