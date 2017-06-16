@@ -11,10 +11,11 @@ internal static class Surfaces
         new Surface(
             delegate (VectorPacket pos)
             {
-                var floored = AVX.Add(AVX.Floor(pos.zs), AVX.Floor(pos.xs));
+                // test this
+                var floored = ConvertToVector256Int(AVX.Add(AVX.Floor(pos.zs), AVX.Floor(pos.xs)));
                 var modMask = AVX.Set1<uint>(1);
-                var evenMaskUint = AVX2.And(StaticCast<float, uint>(floored), modMask);
-                var evenMask = AVX2.CompareEqual(evenMask, modMask);
+                var evenMaskUint = AVX2.And(StaticCast<int, uint>(floored), modMask);
+                var evenMask = AVX2.CompareEqual(evenMask, modMask); 
                 
                 var white = new ColorPacket(AVX.Set1(1.0f));
                 var black = new ColorPacket(new Vector(0.02f, 0.0f, 0.14f));
@@ -28,9 +29,10 @@ internal static class Surfaces
             delegate (VectorPacket pos) { return (new Color(1, 1, 1)).ToColorPacket(); },
             delegate (VectorPacket pos)
             {
-                var floored = AVX.Add(AVX.Floor(pos.zs), AVX.Floor(pos.xs));
+                // test this
+                var floored = ConvertToVector256Int(AVX.Add(AVX.Floor(pos.zs), AVX.Floor(pos.xs)));
                 var modMask = AVX.Set1<uint>(1);
-                var evenMaskUint = AVX2.And(StaticCast<float, uint>(floored), modMask);
+                var evenMaskUint = AVX2.And(StaticCast<int, uint>(floored), modMask);
                 var evenMask = AVX2.CompareEqual(evenMask, modMask);
 
                 return AVX.BlendVariable(AVX.Set1(0.5f), AVX.Set1(0.1f), StaticCast<uint, float>(evenMask));
