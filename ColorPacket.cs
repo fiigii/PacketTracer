@@ -27,6 +27,7 @@ internal static class ColorPacketHelper
     }
 
     public static ColorPacket BackgroundColor = new ColorPacket(AVX.SetZero<float>());
+    public static ColorPacket DefaultColor = new ColorPacket(AVX.SetZero<float>());
 }
 
 internal struct IntRGBPacket

@@ -5,19 +5,19 @@ using System;
 internal class Intersections
 {
     public Vector256<float> Distances {get; set;}
-    public Vector256<float> ThingIndex  {get; set;} 
+    public Vector256<int> ThingIndex  {get; set;} 
     // The RayPacket is too big to pass through the function, 
     // so we keep it outside the function and use it carefully
 
     public static readonly float NullValue = float.MaxValue;
 
-    public Intersections(Vector256<float> dis, Vector256<float> things)
+    public Intersections(Vector256<float> dis, Vector256<int> things)
     {
         Distances = dis;
         ThingIndex = things;
     }
 
-    public static Intersections Null = new Intersections(AVX.Set1<float>(Intersections.NullValue), AVX.Set1<float>(-1.0f));
+    public static Intersections Null = new Intersections(AVX.Set1<float>(Intersections.NullValue), AVX.Set1<int>(-1.0f));
 
     public bool AllNullIntersections()
     {
@@ -29,11 +29,10 @@ internal class Intersections
 
     public unsafe int[] WithThings()
     {
-        var indexes = AVX.ConvertToVector256Int(ThingIndex);
-        var temArray = new int[VectorPacket.PacketSize];
-        fixed (int* ptr = &temArray[0]){
-            Store(ptr, indexes);
+        var result = new int[VectorPacket.PacketSize];
+        fixed (int* ptr = &result[0]){
+            Store(ptr, ThingIndex);
         }
-        return temArray.Distinct().ToArray();
+        return result;
     }
 }

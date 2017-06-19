@@ -33,7 +33,7 @@ internal class SpherePacket: ObjectPacket
         var filter = AVX.BlendVariable(dists, nullInter, AVX.Or(zeroVMask, zeroDiscMask));
 
         intersections.Distances = filter;
-        intersections.ThingIndex = AVX.Set1<float>(index);
+        intersections.ThingIndex = AVX.Set1<int>(index);
         return intersections;
     }
 

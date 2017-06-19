@@ -1,5 +1,6 @@
 using System.Runtime.CompilerServices.Intrinsics.Intel;
 using System.Runtime.CompilerServices.Intrinsics;
+using System.Collections.Generic;
 
 using ColorPacket = VectorPacket;
 
@@ -93,7 +94,9 @@ internal class PacketTracer
                 var lessMinMask = AVX.CompareVector256Float(mins.Distances, orgIsect.Distances, FloatComparisonMode.CompareGreaterThanOrderedNonSignaling);
                 var minDis = AVX.BlendVariable(mins.Distances, orgIsect.Distances, AVX.Or(nullMinMask, lessMinMask));
                 mins.Distances = minDis;
-                var minIndex = AVX.BlendVariable(mins.ThingIndex, AVX.Set1((float)index), AVX.Or(nullMinMask, lessMinMask)); //CSE
+                var minIndex = AVX.BlendVariable(StaticCast<int, float>(mins.ThingIndex), 
+                                                 StaticCast<int, float>(AVX.Set1(index)), 
+                                                 AVX.Or(nullMinMask, lessMinMask)); //CSE
                 mins.ThingIndex = minIndex;
             }
             index++;
@@ -103,16 +106,43 @@ internal class PacketTracer
 
     private ColorPacket Shade(Intersections isect, RayPacket rayPacket, Scene scene, int depth)
     {
-        var colors = ColorPacketHelper.BackgroundColor;
+        var colors = ColorPacketHelper.DefaultColor;
         var ds = rayPacket.Dirs;
         var pos = isect.Distances * ds + rayPacket.Starts;
-        var normals = new List<VectorPacket>();
-        foreach (var obj in scene.Things)
+        var intersectedThings = isect.WithThings();
+        var normals = new Dictionary<int, VectorPacket>();
+        foreach (var objIndex in intersectedThings)
         {
-            normals.Add(obj.ToPacket().Normal(pos));
+            if (!normals.ContainKey(objIndex))
+            {
+                normals[objIndex] = scene.Things[objIndex].ToPacket().Normal(pos);
+            }
+        }
+
+        VectorPacket intersectedNormals = AVX.SetZero<float>();
+        foreach (var pair in normals)
+        {
+            var index = pair.Key;
+            var normal = pair.value;
+            var posMask = AVX2.CompareEqual(isect.ThingIndex, index);
+            intersectedNormals = AVX.BlendVariable(intersectedNormals, normal, posMask);
+        }
+
+        var reflectDirs = ds - AVX.Multiply(AVX.Set1(2f), VectorPacket.DotProduct(intersectedNormals, ds)) * intersectedNormals;
+
+        colors += GetNaturalColor();
+        
+        if (depth >= MaxDepth)
+        {
+            return colors + (new Color(.5, .5, .5)).ToColorPacket();
         }
 
         return colors; 
+    }
+
+    private ColorPacket GetNaturalColor()
+    {
+
     }
 
     private VectorPacket GetVectorPacket(Vector256<float> x, Vector256<float> y, Camera camera)
