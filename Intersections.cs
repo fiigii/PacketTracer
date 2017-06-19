@@ -26,4 +26,14 @@ internal class Intersections
         var mask = AVX2.CompareEqual(zero, zero); 
         return AVX.TestC(cmp, AVX.StaticCast<int, float>(mask));
     }
+
+    public unsafe int[] WithThings()
+    {
+        var indexes = AVX.ConvertToVector256Int(ThingIndex);
+        var temArray = new int[VectorPacket.PacketSize];
+        fixed (int* ptr = &temArray[0]){
+            Store(ptr, indexes);
+        }
+        return temArray.Distinct().ToArray();
+    }
 }

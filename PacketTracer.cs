@@ -45,14 +45,25 @@ internal class PacketTracer
                 
                 fixed (int* output = &rgb[x + stride])
                 {
-                    
-
+                    Store(output, m0);
+                    Store(output + 4, m1);
+                    Store(output + 8, m2);
+                    Store(output + 12, m3);
+                    Store(output + 16, m4);
+                    Store(output + 20, m5);
                 }
 
                 /* Writ into memory via ymm registers
                 var SoA = colors.Transpose();
                 var intSoA = SoA.ConvertToIntRGB();
+                fixed (int* output = &rgb[x + stride])
+                {
+                    Store(output, intSoA.xs);
+                    Store(output + 8, intSoA.ys);
+                    Store(output + 16, intSoA.zs);
+                }
                 */
+                
             }
         }
 
@@ -95,7 +106,12 @@ internal class PacketTracer
         var colors = ColorPacketHelper.BackgroundColor;
         var ds = rayPacket.Dirs;
         var pos = isect.Distances * ds + rayPacket.Starts;
-        //var normals =
+        var normals = new List<VectorPacket>();
+        foreach (var obj in scene.Things)
+        {
+            normals.Add(obj.ToPacket().Normal(pos));
+        }
+
         return colors; 
     }
 
