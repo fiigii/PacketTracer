@@ -46,12 +46,12 @@ internal class PacketTracer
                 
                 fixed (int* output = &rgb[x + stride])
                 {
-                    Store(output, m0);
-                    Store(output + 4, m1);
-                    Store(output + 8, m2);
-                    Store(output + 12, m3);
-                    Store(output + 16, m4);
-                    Store(output + 20, m5);
+                    SSE2.Store(output, m0);
+                    SSE2.Store(output + 4, m1);
+                    SSE2.Store(output + 8, m2);
+                    SSE2.Store(output + 12, m3);
+                    SSE2.Store(output + 16, m4);
+                    SSE2.Store(output + 20, m5);
                 }
 
                 /* Writ into memory via ymm registers
@@ -59,9 +59,9 @@ internal class PacketTracer
                 var intSoA = SoA.ConvertToIntRGB();
                 fixed (int* output = &rgb[x + stride])
                 {
-                    Store(output, intSoA.xs);
-                    Store(output + 8, intSoA.ys);
-                    Store(output + 16, intSoA.zs);
+                    AVX.Store(output, intSoA.xs);
+                    AVX.Store(output + 8, intSoA.ys);
+                    AVX.Store(output + 16, intSoA.zs);
                 }
                 */
                 
@@ -78,6 +78,16 @@ internal class PacketTracer
             return ColorPacketHelper.BackgroundColor;
         }
         return Shade(isect, rayPacket, scene,depth);
+    }
+
+    private Vector256<float> TestRay(RayPacket rayPacket, Scene scene, int depth)
+    {
+        var isect = MinIntersections(rayPacket, scene);
+        if(isect.AllNullIntersections())
+        {
+            return AVX.SetZero<float>();
+        }
+        return isect.Distances;
     }
 
     private Intersections MinIntersections(RayPacket rayPacket, Scene scene)
@@ -131,7 +141,7 @@ internal class PacketTracer
         var reflectDirs = ds - AVX.Multiply(AVX.Set1(2f), VectorPacket.DotProduct(intersectedNormals, ds)) * intersectedNormals;
 
         colors += GetNaturalColor();
-        
+
         if (depth >= MaxDepth)
         {
             return colors + (new Color(.5, .5, .5)).ToColorPacket();
@@ -140,9 +150,17 @@ internal class PacketTracer
         return colors; 
     }
 
-    private ColorPacket GetNaturalColor()
+    private ColorPacket GetNaturalColor(Scene scene, VectorPacket pos, Vector norms, Vector rds)
     {
-
+        var colors = ColorPacketHelper.DefaultColor;
+        foreach (Light light in scene.Lights)
+        {
+            var lights = light.ToPacket();
+            var ldis = lights.Positions - pos;
+            var livec = ldis.Normalize();
+            var neatIsect = TestRay(new RayPacket(pos, livec), scene);
+            
+        }
     }
 
     private VectorPacket GetVectorPacket(Vector256<float> x, Vector256<float> y, Camera camera)

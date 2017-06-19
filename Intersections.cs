@@ -31,7 +31,7 @@ internal class Intersections
     {
         var result = new int[VectorPacket.PacketSize];
         fixed (int* ptr = &result[0]){
-            Store(ptr, ThingIndex);
+            AVX.Store(ptr, ThingIndex);
         }
         return result;
     }
