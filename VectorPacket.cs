@@ -34,14 +34,14 @@ internal struct VectorPacket
     // Convert AoS vectors to SoA packet
     public unsafe VectorPacket(float* vectors)
     {
-        var m03 = AVX.ExtendTo256<float>(SSE2.Load(&vectors[0])); // load lower halves
-        var m14 = AVX.ExtendTo256<float>(SSE2.Load(&vectors[4]));
-        var m25 = AVX.ExtendTo256<float>(SSE2.Load(&vectors[8]));
+        var m03 = AVX.ExtendToVector256<float>(SSE2.Load(&vectors[0])); // load lower halves
+        var m14 = AVX.ExtendToVector256<float>(SSE2.Load(&vectors[4]));
+        var m25 = AVX.ExtendToVector256<float>(SSE2.Load(&vectors[8]));
         m03 = AVX.Insert(m03, SSE2.Load(&vectors[12]), 1);  // load higher halves
         m14 = AVX.Insert(m14, SSE2.Load(&vectors[16]), 1);
         m25 = AVX.Insert(m25, SSE2.Load(&vectors[20]), 1);
 
-        var xy = AVX.Shuffle(m14, m25, ShuffleControl(2, 1, 3, 2));
+        var xy = AVX.Shuffle(m14, m25, 2 << 6 | 1 << 4 | 3<< 2 | 2);
         var yz = AVX.Shuffle(m03, m14, ShuffleControl(1, 0, 2, 1));
         var _xs = AVX.Shuffle(m03, xy, ShuffleControl(2, 0, 3, 0));
         var _ys = AVX.Shuffle(yz, xy, ShuffleControl(3, 1, 2, 0));

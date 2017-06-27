@@ -1,5 +1,6 @@
 using ColorPacket = VectorPacket;
-public class LightPacket
+
+internal class LightPacket
 {
     public VectorPacket Positions {get; private set;}
     public ColorPacket Colors {get; private set;}

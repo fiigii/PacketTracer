@@ -682,7 +682,7 @@ namespace System.Runtime.CompilerServices.Intrinsics.Intel
         // __m256d _mm256_zextpd128_pd256 (__m128d a)
         // __m256 _mm256_zextps128_ps256 (__m128 a)
         // __m256i _mm256_zextsi128_si256 (__m128i a)
-        public static Vector256<T> ExtendToVector256<T>(Vector128<T> value) where T : struct { throw new NotImplementedException(); }
+        public static Vector256<T> ZeroExtendToVector256<T>(Vector128<T> value) where T : struct { throw new NotImplementedException(); }
     }
 }
 

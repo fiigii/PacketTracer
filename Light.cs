@@ -9,5 +9,5 @@ internal class Light
     public Color Color;
 
     public Light(Vector pos, Color color) { Pos = pos; Color = color; }
-    public ToPacket() { return new LightPacket(Pos, Color);}
+    public LightPacket ToPacket() { return new LightPacket(Pos, Color);}
 }

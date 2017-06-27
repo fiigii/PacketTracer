@@ -104,10 +104,10 @@ internal class PacketTracer
                 var lessMinMask = AVX.CompareVector256Float(mins.Distances, orgIsect.Distances, FloatComparisonMode.CompareGreaterThanOrderedNonSignaling);
                 var minDis = AVX.BlendVariable(mins.Distances, orgIsect.Distances, AVX.Or(nullMinMask, lessMinMask));
                 mins.Distances = minDis;
-                var minIndex = AVX.BlendVariable(StaticCast<int, float>(mins.ThingIndex), 
-                                                 StaticCast<int, float>(AVX.Set1(index)), 
+                var minIndex = AVX.BlendVariable(AVX.StaticCast<int, float>(mins.ThingIndex), 
+                                                 AVX.StaticCast<int, float>(AVX.Set1(index)), 
                                                  AVX.Or(nullMinMask, lessMinMask)); //CSE
-                mins.ThingIndex = minIndex;
+                mins.ThingIndex = AVX.StaticCast<float, int>(minIndex);
             }
             index++;
         }
@@ -123,34 +123,35 @@ internal class PacketTracer
         var normals = new Dictionary<int, VectorPacket>();
         foreach (var objIndex in intersectedThings)
         {
-            if (!normals.ContainKey(objIndex))
+            if (!normals.ContainsKey(objIndex))
             {
                 normals[objIndex] = scene.Things[objIndex].ToPacket().Normal(pos);
             }
         }
-
-        VectorPacket intersectedNormals = AVX.SetZero<float>();
+        /* 
+        var intersectedNormals = AVX.SetZero<float>();
         foreach (var pair in normals)
         {
             var index = pair.Key;
             var normal = pair.value;
-            var posMask = AVX2.CompareEqual(isect.ThingIndex, index);
+            var posMask = AVX2.CompareEqual(isect.ThingIndex, AVX.Set1(index));
             intersectedNormals = AVX.BlendVariable(intersectedNormals, normal, posMask);
         }
 
         var reflectDirs = ds - AVX.Multiply(AVX.Set1(2f), VectorPacket.DotProduct(intersectedNormals, ds)) * intersectedNormals;
-
-        colors += GetNaturalColor();
+        */
+        //colors += GetNaturalColor();
 
         if (depth >= MaxDepth)
         {
-            return colors + (new Color(.5, .5, .5)).ToColorPacket();
+            return colors + (new Color(.5f, .5f, .5f)).ToColorPacket();
         }
 
         return colors; 
     }
 
-    private ColorPacket GetNaturalColor(Scene scene, VectorPacket pos, Vector norms, Vector rds)
+    /* 
+    private ColorPacket GetNaturalColor(Scene scene, VectorPacket pos, Vector norms, Vector rds, int depth)
     {
         var colors = ColorPacketHelper.DefaultColor;
         foreach (Light light in scene.Lights)
@@ -162,6 +163,7 @@ internal class PacketTracer
             
         }
     }
+    */    
 
     private VectorPacket GetVectorPacket(Vector256<float> x, Vector256<float> y, Camera camera)
     {

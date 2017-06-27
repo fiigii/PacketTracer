@@ -18,7 +18,7 @@ internal class PlanePacket: ObjectPacket
         var dist = AVX.Divide(VectorPacket.DotProduct(Norms, rayPacket.Starts), AVX.Subtract(AVX.SetZero<float>(), denom));
         var gtMask = AVX.CompareVector256Float(denom, AVX.SetZero<float>(), FloatComparisonMode.CompareGreaterThanOrderedNonSignaling);
         var reslut = AVX.Or(AVX.And(gtMask, AVX.Set1(Intersections.NullValue)), AVX.AndNot(gtMask, dist));
-        return new Intersections(reslut, AVX.Set1<float>((float)index));
+        return new Intersections(reslut, AVX.Set1<int>(index));
     }
 
     public override VectorPacket Normal(VectorPacket pos)

@@ -17,7 +17,7 @@ internal class Intersections
         ThingIndex = things;
     }
 
-    public static Intersections Null = new Intersections(AVX.Set1<float>(Intersections.NullValue), AVX.Set1<int>(-1.0f));
+    public static Intersections Null = new Intersections(AVX.Set1<float>(Intersections.NullValue), AVX.Set1<int>(-1));
 
     public bool AllNullIntersections()
     {
