@@ -41,32 +41,27 @@ internal struct VectorPacket
         m14 = AVX.Insert(m14, SSE2.Load(&vectors[16]), 1);
         m25 = AVX.Insert(m25, SSE2.Load(&vectors[20]), 1);
 
-        var xy = AVX.Shuffle(m14, m25, 2 << 6 | 1 << 4 | 3<< 2 | 2);
-        var yz = AVX.Shuffle(m03, m14, ShuffleControl(1, 0, 2, 1));
-        var _xs = AVX.Shuffle(m03, xy, ShuffleControl(2, 0, 3, 0));
-        var _ys = AVX.Shuffle(yz, xy, ShuffleControl(3, 1, 2, 0));
-        var _zs = AVX.Shuffle(yz, m25, ShuffleControl(3, 0, 3, 1));
+        var xy = AVX.Shuffle(m14, m25, 2 << 6 | 1 << 4 | 3 << 2 | 2);
+        var yz = AVX.Shuffle(m03, m14, 1 << 6 | 0 << 4 | 2 << 2 | 1);
+        var _xs = AVX.Shuffle(m03, xy, 2 << 6 | 0 << 4 | 3 << 2 | 0);
+        var _ys = AVX.Shuffle(yz, xy,  3 << 6 | 1 << 4 | 2 << 2 | 0);
+        var _zs = AVX.Shuffle(yz, m25, 3 << 6 | 0 << 4 | 3 << 2 | 1);
 
         xs = _xs;
         ys = _ys;
         zs = _zs; 
     }
 
-    private static byte ShuffleControl(byte z, byte y, byte x, byte w)
-    {
-        return (byte)((z<<(byte)6) | (y<<(byte)4) | (x<<(byte)2) | w);
-    }
-
     // Convert SoA VectorPacket to AoS
     public VectorPacket Transpose()
     {
-        var rxy = AVX.Shuffle(xs, ys, ShuffleControl(2, 0, 2, 0));
-        var ryz = AVX.Shuffle(ys, zs, ShuffleControl(3, 1, 3, 1));
-        var rzx = AVX.Shuffle(zs, xs, ShuffleControl(3, 1, 2, 0));
+        var rxy = AVX.Shuffle(xs, ys, 2 << 6 | 0 << 4 | 2 << 2 | 0);
+        var ryz = AVX.Shuffle(ys, zs, 3 << 6 | 1 << 4 | 3 << 2 | 1);
+        var rzx = AVX.Shuffle(zs, xs, 3 << 6 | 1 << 4 | 2 << 2 | 0);
 
-        var r03 = AVX.Shuffle(rxy, rzx, ShuffleControl(2, 0, 2, 0));
-        var r14 = AVX.Shuffle(ryz, rxy, ShuffleControl(3, 1, 2, 0));
-        var r25 = AVX.Shuffle(rzx, ryz, ShuffleControl(3, 1, 3, 1));
+        var r03 = AVX.Shuffle(rxy, rzx, 2 << 6 | 0 << 4 | 2 << 2 | 0);
+        var r14 = AVX.Shuffle(ryz, rxy, 3 << 6 | 1 << 4 | 2 << 2 | 0);
+        var r25 = AVX.Shuffle(rzx, ryz, 3 << 6 | 1 << 4 | 3 << 2 | 1);
 
         var m0 = AVX.GetLowerHalf<float>(r03);
         var m1 = AVX.GetLowerHalf<float>(r14);
@@ -85,13 +80,13 @@ internal struct VectorPacket
     // Convert SoA VectorPacket to an incomplete AoS
     public VectorPacket FastTranspose()
     {
-        var rxy = AVX.Shuffle(xs, ys, ShuffleControl(2, 0, 2, 0));
-        var ryz = AVX.Shuffle(ys, zs, ShuffleControl(3, 1, 3, 1));
-        var rzx = AVX.Shuffle(zs, xs, ShuffleControl(3, 1, 2, 0));
+        var rxy = AVX.Shuffle(xs, ys, 2 << 6 | 0 << 4 | 2 << 2 | 0);
+        var ryz = AVX.Shuffle(ys, zs, 3 << 6 | 1 << 4 | 3 << 2 | 1);
+        var rzx = AVX.Shuffle(zs, xs, 3 << 6 | 1 << 4 | 2 << 2 | 0);
 
-        var r03 = AVX.Shuffle(rxy, rzx, ShuffleControl(2, 0, 2, 0));
-        var r14 = AVX.Shuffle(ryz, rxy, ShuffleControl(3, 1, 2, 0));
-        var r25 = AVX.Shuffle(rzx, ryz, ShuffleControl(3, 1, 3, 1));
+        var r03 = AVX.Shuffle(rxy, rzx, 2 << 6 | 0 << 4 | 2 << 2 | 0);
+        var r14 = AVX.Shuffle(ryz, rxy, 3 << 6 | 1 << 4 | 2 << 2 | 0);
+        var r25 = AVX.Shuffle(rzx, ryz, 3 << 6 | 1 << 4 | 3 << 2 | 1);
 
         return new VectorPacket(r03, r14, r25);
     }
