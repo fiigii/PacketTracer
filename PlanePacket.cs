@@ -1,4 +1,4 @@
-using System.Runtime.CompilerServices.Intrinsics.Intel;
+using System.Runtime.CompilerServices.Intrinsics.X86;
 using System.Runtime.CompilerServices.Intrinsics;
 
 internal class PlanePacket: ObjectPacket

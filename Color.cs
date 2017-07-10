@@ -1,5 +1,5 @@
 using System.Runtime.CompilerServices.Intrinsics;
-using System.Runtime.CompilerServices.Intrinsics.Intel;
+using System.Runtime.CompilerServices.Intrinsics.X86;
 
 internal struct Color
 {

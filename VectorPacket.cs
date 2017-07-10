@@ -1,4 +1,4 @@
-using System.Runtime.CompilerServices.Intrinsics.Intel;
+using System.Runtime.CompilerServices.Intrinsics.X86;
 using System.Runtime.CompilerServices.Intrinsics;
 using System;
 
@@ -37,9 +37,9 @@ internal struct VectorPacket
         var m03 = AVX.ExtendToVector256<float>(SSE2.Load(&vectors[0])); // load lower halves
         var m14 = AVX.ExtendToVector256<float>(SSE2.Load(&vectors[4]));
         var m25 = AVX.ExtendToVector256<float>(SSE2.Load(&vectors[8]));
-        m03 = AVX.Insert(m03, SSE2.Load(&vectors[12]), 1);  // load higher halves
-        m14 = AVX.Insert(m14, SSE2.Load(&vectors[16]), 1);
-        m25 = AVX.Insert(m25, SSE2.Load(&vectors[20]), 1);
+        m03 = AVX.Insert(m03, &vectors[12], 1);  // load higher halves
+        m14 = AVX.Insert(m14, &vectors[16], 1);
+        m25 = AVX.Insert(m25, &vectors[20], 1);
 
         var xy = AVX.Shuffle(m14, m25, 2 << 6 | 1 << 4 | 3 << 2 | 2);
         var yz = AVX.Shuffle(m03, m14, 1 << 6 | 0 << 4 | 2 << 2 | 1);

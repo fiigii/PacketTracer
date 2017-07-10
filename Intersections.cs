@@ -1,4 +1,4 @@
-using System.Runtime.CompilerServices.Intrinsics.Intel;
+using System.Runtime.CompilerServices.Intrinsics.X86;
 using System.Runtime.CompilerServices.Intrinsics;
 using System;
 
@@ -30,7 +30,7 @@ internal class Intersections
     public unsafe int[] WithThings()
     {
         var result = new int[VectorPacket.PacketSize];
-        fixed (int* ptr = &result[0]){
+        fixed (int* ptr = result){
             AVX.Store(ptr, ThingIndex);
         }
         return result;

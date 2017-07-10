@@ -1,4 +1,4 @@
-namespace System.Runtime.CompilerServices.Intrinsics.Intel
+namespace System.Runtime.CompilerServices.Intrinsics.X86
 {
     public enum StringComparisonMode : byte {
         CompareEqualAny = 0x00,
