@@ -100,8 +100,8 @@ internal class PacketTracer
             var orgIsect = objPacket.Intersect(rayPacket, index);
             if (!orgIsect.AllNullIntersections())
             {
-                var nullMinMask = AVX.CompareVector256Float(mins.Distances, Intersections.Null.Distances, FloatComparisonMode.CompareEqualOrderedNonSignaling);
-                var lessMinMask = AVX.CompareVector256Float(mins.Distances, orgIsect.Distances, FloatComparisonMode.CompareGreaterThanOrderedNonSignaling);
+                var nullMinMask = AVX.CompareVector256(mins.Distances, Intersections.Null.Distances, FloatComparisonMode.CompareEqualOrderedNonSignaling);
+                var lessMinMask = AVX.CompareVector256(mins.Distances, orgIsect.Distances, FloatComparisonMode.CompareGreaterThanOrderedNonSignaling);
                 var minDis = AVX.BlendVariable(mins.Distances, orgIsect.Distances, AVX.Or(nullMinMask, lessMinMask));
                 mins.Distances = minDis;
                 var minIndex = AVX.BlendVariable(AVX.StaticCast<int, float>(mins.ThingIndex), 

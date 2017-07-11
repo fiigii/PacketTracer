@@ -159,14 +159,14 @@ namespace System.Runtime.CompilerServices.Intrinsics.X86
         public static Vector128<double> Divide(Vector128<double> left,  Vector128<double> right) { throw new NotImplementedException(); }
 
         // int _mm_extract_epi16 (__m128i a,  int immediate)
-        public static short ExtractShort<T>(Vector128<T> value,  byte index) where T : struct { throw new NotImplementedException(); }
-                // int _mm_extract_epi16 (__m128i a,  int immediate)
-        public static ushort ExtractUshort<T>(Vector128<T> value,  byte index) where T : struct { throw new NotImplementedException(); }
+        public static short ExtractShort<T>(Vector128<T> value,  const byte index) where T : struct { throw new NotImplementedException(); }
+        // int _mm_extract_epi16 (__m128i a,  int immediate)
+        public static ushort ExtractUshort<T>(Vector128<T> value,  const byte index) where T : struct { throw new NotImplementedException(); }
         
         // __m128i _mm_insert_epi16 (__m128i a,  int i, int immediate)
-        public static Vector128<T> InsertShort<T>(Vector128<T> value,  short data, byte index) where T : struct { throw new NotImplementedException(); }
-                // __m128i _mm_insert_epi16 (__m128i a,  int i, int immediate)
-        public static Vector128<T> InsertUshort<T>(Vector128<T> value,  ushort data, byte index) where T : struct { throw new NotImplementedException(); }
+        public static Vector128<T> InsertShort<T>(Vector128<T> value,  short data, const byte index) where T : struct { throw new NotImplementedException(); }
+        // __m128i _mm_insert_epi16 (__m128i a,  int i, int immediate)
+        public static Vector128<T> InsertUshort<T>(Vector128<T> value,  ushort data, const byte index) where T : struct { throw new NotImplementedException(); }
         
         // __m128i _mm_loadu_si128 (__m128i const* mem_address)
         public static unsafe Vector128<sbyte> Load(sbyte* mem) { throw new NotImplementedException(); }
@@ -211,7 +211,7 @@ namespace System.Runtime.CompilerServices.Intrinsics.X86
         public static unsafe Vector128<double> LoadAligned(double* mem) { throw new NotImplementedException(); }
 
         // void _mm_maskmoveu_si128 (__m128i a,  __m128i mask, char* mem_address)
-        public static unsafe void MaskMoveAlignedOrUnaligned(Vector128<sbyte> source,  Vector128<byte> mask, sbyte* mem) { throw new NotImplementedException(); }
+        public static unsafe void MaskMoveAlignedOrUnaligned(Vector128<sbyte> source,  Vector128<sbyte> mask, sbyte* mem) { throw new NotImplementedException(); }
         public static unsafe void MaskMoveAlignedOrUnaligned(Vector128<byte> source,  Vector128<byte> mask, byte* mem) { throw new NotImplementedException(); }
 
         // __m128i _mm_max_epu8 (__m128i a,  __m128i b)
@@ -331,88 +331,88 @@ namespace System.Runtime.CompilerServices.Intrinsics.X86
         public static Vector128<long> SumAbsoluteDifference(Vector128<byte> left,  Vector128<byte> right) { throw new NotImplementedException(); }
 
         // __m128i _mm_shuffle_epi32 (__m128i a,  int immediate)
-        public static Vector128<int> Shuffle(Vector128<int> value, byte control) { throw new NotImplementedException(); }
-                // __m128i _mm_shuffle_epi32 (__m128i a,  int immediate)
-        public static Vector128<uint> Shuffle(Vector128<uint> value,  byte control) { throw new NotImplementedException(); }
-                // __m128 _mm_shuffle_ps (__m128 a,  __m128 b, unsigned int control)
-        public static Vector128<float> Shuffle(Vector128<float> left, Vector128<float> right, byte control) { throw new NotImplementedException(); }
-                // __m128d _mm_shuffle_pd (__m128d a,  __m128d b, int immediate)
-        public static Vector128<double> Shuffle(Vector128<double> left, Vector128<double> right, byte control) { throw new NotImplementedException(); }
+        public static Vector128<int> Shuffle(Vector128<int> value, const byte control) { throw new NotImplementedException(); }
+        // __m128i _mm_shuffle_epi32 (__m128i a,  int immediate)
+        public static Vector128<uint> Shuffle(Vector128<uint> value,  const byte control) { throw new NotImplementedException(); }
+        // __m128 _mm_shuffle_ps (__m128 a,  __m128 b, unsigned int control)
+        public static Vector128<float> Shuffle(Vector128<float> left, Vector128<float> right, const byte control) { throw new NotImplementedException(); }
+        // __m128d _mm_shuffle_pd (__m128d a,  __m128d b, int immediate)
+        public static Vector128<double> Shuffle(Vector128<double> left, Vector128<double> right, const byte control) { throw new NotImplementedException(); }
         
         // __m128i _mm_shufflehi_epi16 (__m128i a,  int immediate)
-        public static Vector128<short> ShuffleHigh(Vector128<short> value, byte control) { throw new NotImplementedException(); }
-                // __m128i _mm_shufflehi_epi16 (__m128i a,  int control)
-        public static Vector128<ushort> ShuffleHigh(Vector128<ushort> value, byte control) { throw new NotImplementedException(); }
+        public static Vector128<short> ShuffleHigh(Vector128<short> value, const byte control) { throw new NotImplementedException(); }
+        // __m128i _mm_shufflehi_epi16 (__m128i a,  int control)
+        public static Vector128<ushort> ShuffleHigh(Vector128<ushort> value, const byte control) { throw new NotImplementedException(); }
         
         // __m128i _mm_shufflelo_epi16 (__m128i a,  int control)
-        public static Vector128<short> ShuffleLow(Vector128<short> value, byte control) { throw new NotImplementedException(); }
-                // __m128i _mm_shufflelo_epi16 (__m128i a,  int control)
-        public static Vector128<ushort> ShuffleLow(Vector128<ushort> value, byte control) { throw new NotImplementedException(); }
+        public static Vector128<short> ShuffleLow(Vector128<short> value, const byte control) { throw new NotImplementedException(); }
+        // __m128i _mm_shufflelo_epi16 (__m128i a,  int control)
+        public static Vector128<ushort> ShuffleLow(Vector128<ushort> value, const byte control) { throw new NotImplementedException(); }
         
         // __m128i _mm_slli_epi16 (__m128i a,  int immediate)
-        public static Vector128<short> ShiftLeftLogical(Vector128<short> value, byte count) { throw new NotImplementedException(); }
-                // __m128i _mm_slli_epi16 (__m128i a,  int immediate)
-        public static Vector128<ushort> ShiftLeftLogical(Vector128<ushort> value, byte count) { throw new NotImplementedException(); }
-                // __m128i _mm_slli_epi32 (__m128i a,  int immediate)
-        public static Vector128<int> ShiftLeftLogical(Vector128<int> value, byte count) { throw new NotImplementedException(); }
-                // __m128i _mm_slli_epi32 (__m128i a,  int immediate)
-        public static Vector128<uint> ShiftLeftLogical(Vector128<uint> value, byte count) { throw new NotImplementedException(); }
-                // __m128i _mm_slli_epi64 (__m128i a,  int immediate)
-        public static Vector128<long> ShiftLeftLogical(Vector128<long> value, byte count) { throw new NotImplementedException(); }
-                // __m128i _mm_slli_epi64 (__m128i a,  int immediate)
-        public static Vector128<ulong> ShiftLeftLogical(Vector128<ulong> value, byte count) { throw new NotImplementedException(); }
+        public static Vector128<short> ShiftLeftLogical(Vector128<short> value, const byte count) { throw new NotImplementedException(); }
+        // __m128i _mm_slli_epi16 (__m128i a,  int immediate)
+        public static Vector128<ushort> ShiftLeftLogical(Vector128<ushort> value, const byte count) { throw new NotImplementedException(); }
+        // __m128i _mm_slli_epi32 (__m128i a,  int immediate)
+        public static Vector128<int> ShiftLeftLogical(Vector128<int> value, const byte count) { throw new NotImplementedException(); }
+        // __m128i _mm_slli_epi32 (__m128i a,  int immediate)
+        public static Vector128<uint> ShiftLeftLogical(Vector128<uint> value, const byte count) { throw new NotImplementedException(); }
+        // __m128i _mm_slli_epi64 (__m128i a,  int immediate)
+        public static Vector128<long> ShiftLeftLogical(Vector128<long> value, const byte count) { throw new NotImplementedException(); }
+        // __m128i _mm_slli_epi64 (__m128i a,  int immediate)
+        public static Vector128<ulong> ShiftLeftLogical(Vector128<ulong> value, const byte count) { throw new NotImplementedException(); }
         
         // __m128i _mm_bslli_si128 (__m128i a, int imm8)
-        public static Vector128<sbyte> ShiftLeftLogical128BitLane(Vector128<sbyte> value, byte numBytes) { throw new NotImplementedException(); }
-                // __m128i _mm_bslli_si128 (__m128i a, int imm8)
-        public static Vector128<byte> ShiftLeftLogical128BitLane(Vector128<byte> value, byte numBytes) { throw new NotImplementedException(); }
-                // __m128i _mm_bslli_si128 (__m128i a, int imm8)
-        public static Vector128<short> ShiftLeftLogical128BitLane(Vector128<short> value, byte numBytes) { throw new NotImplementedException(); }
-                // __m128i _mm_bslli_si128 (__m128i a, int imm8)
-        public static Vector128<ushort> ShiftLeftLogical128BitLane(Vector128<ushort> value, byte numBytes) { throw new NotImplementedException(); }
-                // __m128i _mm_bslli_si128 (__m128i a, int imm8)
-        public static Vector128<int> ShiftLeftLogical128BitLane(Vector128<int> value, byte numBytes) { throw new NotImplementedException(); }
-                // __m128i _mm_bslli_si128 (__m128i a, int imm8)
-        public static Vector128<uint> ShiftLeftLogical128BitLane(Vector128<uint> value, byte numBytes) { throw new NotImplementedException(); }
-                // __m128i _mm_bslli_si128 (__m128i a, int imm8)
-        public static Vector128<long> ShiftLeftLogical128BitLane(Vector128<long> value, byte numBytes) { throw new NotImplementedException(); }
-                // __m128i _mm_bslli_si128 (__m128i a, int imm8)
-        public static Vector128<ulong> ShiftLeftLogical128BitLane(Vector128<ulong> value, byte numBytes) { throw new NotImplementedException(); }
+        public static Vector128<sbyte> ShiftLeftLogical128BitLane(Vector128<sbyte> value, const byte numBytes) { throw new NotImplementedException(); }
+        // __m128i _mm_bslli_si128 (__m128i a, int imm8)
+        public static Vector128<byte> ShiftLeftLogical128BitLane(Vector128<byte> value, const byte numBytes) { throw new NotImplementedException(); }
+        // __m128i _mm_bslli_si128 (__m128i a, int imm8)
+        public static Vector128<short> ShiftLeftLogical128BitLane(Vector128<short> value, const byte numBytes) { throw new NotImplementedException(); }
+        // __m128i _mm_bslli_si128 (__m128i a, int imm8)
+        public static Vector128<ushort> ShiftLeftLogical128BitLane(Vector128<ushort> value, const byte numBytes) { throw new NotImplementedException(); }
+        // __m128i _mm_bslli_si128 (__m128i a, int imm8)
+        public static Vector128<int> ShiftLeftLogical128BitLane(Vector128<int> value, const byte numBytes) { throw new NotImplementedException(); }
+        // __m128i _mm_bslli_si128 (__m128i a, int imm8)
+        public static Vector128<uint> ShiftLeftLogical128BitLane(Vector128<uint> value, const byte numBytes) { throw new NotImplementedException(); }
+        // __m128i _mm_bslli_si128 (__m128i a, int imm8)
+        public static Vector128<long> ShiftLeftLogical128BitLane(Vector128<long> value, const byte numBytes) { throw new NotImplementedException(); }
+        // __m128i _mm_bslli_si128 (__m128i a, int imm8)
+        public static Vector128<ulong> ShiftLeftLogical128BitLane(Vector128<ulong> value, const byte numBytes) { throw new NotImplementedException(); }
         
         // __m128i _mm_srai_epi16 (__m128i a,  int immediate)
-        public static Vector128<short> ShiftRightArithmetic(Vector128<short> value, byte count) { throw new NotImplementedException(); }
-                // __m128i _mm_srai_epi32 (__m128i a,  int immediate)
-        public static Vector128<int> ShiftRightArithmetic(Vector128<int> value, byte count) { throw new NotImplementedException(); }
+        public static Vector128<short> ShiftRightArithmetic(Vector128<short> value, const byte count) { throw new NotImplementedException(); }
+        // __m128i _mm_srai_epi32 (__m128i a,  int immediate)
+        public static Vector128<int> ShiftRightArithmetic(Vector128<int> value, const byte count) { throw new NotImplementedException(); }
         
         // __m128i _mm_srli_epi16 (__m128i a,  int immediate)
-        public static Vector128<short> ShiftRightLogical(Vector128<short> value, byte count) { throw new NotImplementedException(); }
-                // __m128i _mm_srli_epi16 (__m128i a,  int immediate)
-        public static Vector128<ushort> ShiftRightLogical(Vector128<ushort> value, byte count) { throw new NotImplementedException(); }
-                // __m128i _mm_srli_epi32 (__m128i a,  int immediate)
-        public static Vector128<int> ShiftRightLogical(Vector128<int> value, byte count) { throw new NotImplementedException(); }
-                // __m128i _mm_srli_epi32 (__m128i a,  int immediate)
-        public static Vector128<uint> ShiftRightLogical(Vector128<uint> value, byte count) { throw new NotImplementedException(); }
-                // __m128i _mm_srli_epi64 (__m128i a,  int immediate)
-        public static Vector128<long> ShiftRightLogical(Vector128<long> value, byte count) { throw new NotImplementedException(); }
-                // __m128i _mm_srli_epi64 (__m128i a,  int immediate)
-        public static Vector128<ulong> ShiftRightLogical(Vector128<ulong> value, byte count) { throw new NotImplementedException(); }
+        public static Vector128<short> ShiftRightLogical(Vector128<short> value, const byte count) { throw new NotImplementedException(); }
+        // __m128i _mm_srli_epi16 (__m128i a,  int immediate)
+        public static Vector128<ushort> ShiftRightLogical(Vector128<ushort> value, const byte count) { throw new NotImplementedException(); }
+        // __m128i _mm_srli_epi32 (__m128i a,  int immediate)
+        public static Vector128<int> ShiftRightLogical(Vector128<int> value, const byte count) { throw new NotImplementedException(); }
+        // __m128i _mm_srli_epi32 (__m128i a,  int immediate)
+        public static Vector128<uint> ShiftRightLogical(Vector128<uint> value, const byte count) { throw new NotImplementedException(); }
+        // __m128i _mm_srli_epi64 (__m128i a,  int immediate)
+        public static Vector128<long> ShiftRightLogical(Vector128<long> value, const byte count) { throw new NotImplementedException(); }
+        // __m128i _mm_srli_epi64 (__m128i a,  int immediate)
+        public static Vector128<ulong> ShiftRightLogical(Vector128<ulong> value, const byte count) { throw new NotImplementedException(); }
         
         // __m128i _mm_bsrli_si128 (__m128i a, int imm8)
-        public static Vector128<sbyte> ShiftRightLogical128BitLane(Vector128<sbyte> value, byte numBytes) { throw new NotImplementedException(); }
-                // __m128i _mm_bsrli_si128 (__m128i a, int imm8)
-        public static Vector128<byte> ShiftRightLogical128BitLane(Vector128<byte> value, byte numBytes) { throw new NotImplementedException(); }
-                // __m128i _mm_bsrli_si128 (__m128i a, int imm8)
-        public static Vector128<short> ShiftRightLogical128BitLane(Vector128<short> value, byte numBytes) { throw new NotImplementedException(); }
-                // __m128i _mm_bsrli_si128 (__m128i a, int imm8)
-        public static Vector128<ushort> ShiftRightLogical128BitLane(Vector128<ushort> value, byte numBytes) { throw new NotImplementedException(); }
-                // __m128i _mm_bsrli_si128 (__m128i a, int imm8)
-        public static Vector128<int> ShiftRightLogical128BitLane(Vector128<int> value, byte numBytes) { throw new NotImplementedException(); }
-                // __m128i _mm_bsrli_si128 (__m128i a, int imm8)
-        public static Vector128<uint> ShiftRightLogical128BitLane(Vector128<uint> value, byte numBytes) { throw new NotImplementedException(); }
-                // __m128i _mm_bsrli_si128 (__m128i a, int imm8)
-        public static Vector128<long> ShiftRightLogical128BitLane(Vector128<long> value, byte numBytes) { throw new NotImplementedException(); }
-                // __m128i _mm_bsrli_si128 (__m128i a, int imm8)
-        public static Vector128<ulong> ShiftRightLogical128BitLane(Vector128<ulong> value, byte numBytes) { throw new NotImplementedException(); }
+        public static Vector128<sbyte> ShiftRightLogical128BitLane(Vector128<sbyte> value, const byte numBytes) { throw new NotImplementedException(); }
+        // __m128i _mm_bsrli_si128 (__m128i a, int imm8)
+        public static Vector128<byte> ShiftRightLogical128BitLane(Vector128<byte> value, const byte numBytes) { throw new NotImplementedException(); }
+        // __m128i _mm_bsrli_si128 (__m128i a, int imm8)
+        public static Vector128<short> ShiftRightLogical128BitLane(Vector128<short> value, const byte numBytes) { throw new NotImplementedException(); }
+        // __m128i _mm_bsrli_si128 (__m128i a, int imm8)
+        public static Vector128<ushort> ShiftRightLogical128BitLane(Vector128<ushort> value, const byte numBytes) { throw new NotImplementedException(); }
+        // __m128i _mm_bsrli_si128 (__m128i a, int imm8)
+        public static Vector128<int> ShiftRightLogical128BitLane(Vector128<int> value, const byte numBytes) { throw new NotImplementedException(); }
+        // __m128i _mm_bsrli_si128 (__m128i a, int imm8)
+        public static Vector128<uint> ShiftRightLogical128BitLane(Vector128<uint> value, const byte numBytes) { throw new NotImplementedException(); }
+        // __m128i _mm_bsrli_si128 (__m128i a, int imm8)
+        public static Vector128<long> ShiftRightLogical128BitLane(Vector128<long> value, const byte numBytes) { throw new NotImplementedException(); }
+        // __m128i _mm_bsrli_si128 (__m128i a, int imm8)
+        public static Vector128<ulong> ShiftRightLogical128BitLane(Vector128<ulong> value, const byte numBytes) { throw new NotImplementedException(); }
         
         // __m128 _mm_sqrt_ps (__m128 a)
         public static Vector128<float> Sqrt(Vector128<float> value) { throw new NotImplementedException(); }

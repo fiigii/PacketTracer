@@ -10,9 +10,9 @@ internal static class ColorPacketHelper
         var one = AVX.Set1<float>(1.0f);
         var max = AVX.Set1<float>(255.0f);
 
-        var rsMask = AVX.CompareVector256Float(colors.xs, one, FloatComparisonMode.CompareGreaterThanOrderedNonSignaling);
-        var gsMask = AVX.CompareVector256Float(colors.ys, one, FloatComparisonMode.CompareGreaterThanOrderedNonSignaling);;
-        var bsMask = AVX.CompareVector256Float(colors.zs, one, FloatComparisonMode.CompareGreaterThanOrderedNonSignaling);
+        var rsMask = AVX.CompareVector256(colors.xs, one, FloatComparisonMode.CompareGreaterThanOrderedNonSignaling);
+        var gsMask = AVX.CompareVector256(colors.ys, one, FloatComparisonMode.CompareGreaterThanOrderedNonSignaling);;
+        var bsMask = AVX.CompareVector256(colors.zs, one, FloatComparisonMode.CompareGreaterThanOrderedNonSignaling);
 
         var rs = AVX.BlendVariable(colors.xs, one, rsMask);
         var gs = AVX.BlendVariable(colors.ys, one, gsMask);

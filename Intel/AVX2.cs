@@ -55,8 +55,8 @@ namespace System.Runtime.CompilerServices.Intrinsics.X86
         // __m256i _mm256_adds_epu16 (__m256i a, __m256i b)
         public static Vector256<ushort> AddSaturation(Vector256<ushort> left, Vector256<ushort> right) { throw new NotImplementedException(); }
 
-        // __m256i _mm256_alignr_epi8 (__m256i a, __m256i b, int count)
-        public static Vector256<sbyte> AlignRight(Vector256<sbyte> left, Vector256<sbyte> right, byte mask) { throw new NotImplementedException(); }
+        // __m256i _mm256_alignr_epi8 (__m256i a, __m256i b, const int count)
+        public static Vector256<sbyte> AlignRight(Vector256<sbyte> left, Vector256<sbyte> right, const byte mask) { throw new NotImplementedException(); }
         
         // __m256i _mm256_and_si256 (__m256i a, __m256i b)
         public static Vector256<sbyte> And(Vector256<sbyte> left, Vector256<sbyte> right) { throw new NotImplementedException(); }
@@ -97,21 +97,21 @@ namespace System.Runtime.CompilerServices.Intrinsics.X86
         // __m256i _mm256_avg_epu16 (__m256i a, __m256i b)
         public static Vector256<ushort> Average(Vector256<ushort> left, Vector256<ushort> right) { throw new NotImplementedException(); }
 
-        // __m128i _mm_blend_epi32 (__m128i a, __m128i b, int imm8)
-        public static Vector128<int> Blend(Vector128<int> left, Vector128<int> right, byte control) { throw new NotImplementedException(); }
-        // __m128i _mm_blend_epi32 (__m128i a, __m128i b, int imm8)
-        public static Vector128<uint> Blend(Vector128<uint> left, Vector128<uint> right, byte control) { throw new NotImplementedException(); }
-        // __m256i _mm256_blend_epi16 (__m256i a, __m256i b, int imm8)
-        public static Vector256<short> Blend(Vector256<short> left, Vector256<short> right, byte control) { throw new NotImplementedException(); }
-        // __m256i _mm256_blend_epi16 (__m256i a, __m256i b, int imm8)
-        public static Vector256<ushort> Blend(Vector256<ushort> left, Vector256<ushort> right, byte control) { throw new NotImplementedException(); }
-        // __m256i _mm256_blend_epi32 (__m256i a, __m256i b, int imm8)
-        public static Vector256<int> Blend(Vector256<int> left, Vector256<int> right, byte control) { throw new NotImplementedException(); }
-        // __m256i _mm256_blend_epi32 (__m256i a, __m256i b, int imm8)
-        public static Vector256<uint> Blend(Vector256<uint> left, Vector256<uint> right, byte control) { throw new NotImplementedException(); }
+        // __m128i _mm_blend_epi32 (__m128i a, __m128i b, const int imm8)
+        public static Vector128<int> Blend(Vector128<int> left, Vector128<int> right, const byte control) { throw new NotImplementedException(); }
+        // __m128i _mm_blend_epi32 (__m128i a, __m128i b, const int imm8)
+        public static Vector128<uint> Blend(Vector128<uint> left, Vector128<uint> right, const byte control) { throw new NotImplementedException(); }
+        // __m256i _mm256_blend_epi16 (__m256i a, __m256i b, const int imm8)
+        public static Vector256<short> Blend(Vector256<short> left, Vector256<short> right, const byte control) { throw new NotImplementedException(); }
+        // __m256i _mm256_blend_epi16 (__m256i a, __m256i b, const int imm8)
+        public static Vector256<ushort> Blend(Vector256<ushort> left, Vector256<ushort> right, const byte control) { throw new NotImplementedException(); }
+        // __m256i _mm256_blend_epi32 (__m256i a, __m256i b, const int imm8)
+        public static Vector256<int> Blend(Vector256<int> left, Vector256<int> right, const byte control) { throw new NotImplementedException(); }
+        // __m256i _mm256_blend_epi32 (__m256i a, __m256i b, const int imm8)
+        public static Vector256<uint> Blend(Vector256<uint> left, Vector256<uint> right, const byte control) { throw new NotImplementedException(); }
         
         // __m256i _mm256_blendv_epi8 (__m256i a, __m256i b, __m256i mask)
-        public static Vector256<sbyte> BlendVariable(Vector256<sbyte> left, Vector256<sbyte> right, Vector256<byte> mask) { throw new NotImplementedException(); }
+        public static Vector256<sbyte> BlendVariable(Vector256<sbyte> left, Vector256<sbyte> right, Vector256<sbyte> mask) { throw new NotImplementedException(); }
         // __m256i _mm256_blendv_epi8 (__m256i a, __m256i b, __m256i mask)
         public static Vector256<byte> BlendVariable(Vector256<byte> left, Vector256<byte> right, Vector256<byte> mask) { throw new NotImplementedException(); }
 
@@ -193,120 +193,135 @@ namespace System.Runtime.CompilerServices.Intrinsics.X86
         // __m256i _mm256_cvtepu32_epi64 (__m128i a)
         public static Vector256<ulong> ConvertToVector256ULong(Vector128<uint> value) { throw new NotImplementedException(); }
 
-        // __m128i _mm256_extracti128_si256 (__m256i a, int imm8)
-        public static Vector128<sbyte> ExtractVector128(Vector256<sbyte> value, byte index) { throw new NotImplementedException(); }
-        // __m128i _mm256_extracti128_si256 (__m256i a, int imm8)
-        public static Vector128<byte> ExtractVector128(Vector256<byte> value, byte index) { throw new NotImplementedException(); }
-        // __m128i _mm256_extracti128_si256 (__m256i a, int imm8)
-        public static Vector128<short> ExtractVector128(Vector256<short> value, byte index) { throw new NotImplementedException(); }
-        // __m128i _mm256_extracti128_si256 (__m256i a, int imm8)
-        public static Vector128<ushort> ExtractVector128(Vector256<ushort> value, byte index) { throw new NotImplementedException(); }
-        // __m128i _mm256_extracti128_si256 (__m256i a, int imm8)
-        public static Vector128<int> ExtractVector128(Vector256<int> value, byte index) { throw new NotImplementedException(); }
-        // __m128i _mm256_extracti128_si256 (__m256i a, int imm8)
-        public static Vector128<uint> ExtractVector128(Vector256<uint> value, byte index) { throw new NotImplementedException(); }
-        // __m128i _mm256_extracti128_si256 (__m256i a, int imm8)
-        public static Vector128<long> ExtractVector128(Vector256<long> value, byte index) { throw new NotImplementedException(); }
-        // __m128i _mm256_extracti128_si256 (__m256i a, int imm8)
-        public static Vector128<ulong> ExtractVector128(Vector256<ulong> value, byte index) { throw new NotImplementedException(); }
+        // __m128i _mm256_extracti128_si256 (__m256i a, const int imm8)
+        public static Vector128<sbyte> ExtractVector128(Vector256<sbyte> value, const byte index) { throw new NotImplementedException(); }
+        public static unsafe void ExtractVector128(sbyte* data, Vector256<sbyte> value, const byte index) { throw new NotImplementedException(); }
+
+        // __m128i _mm256_extracti128_si256 (__m256i a, const int imm8)
+        public static Vector128<byte> ExtractVector128(Vector256<byte> value, const byte index) { throw new NotImplementedException(); }
+        public static unsafe void ExtractVector128(byte* data, Vector256<byte> value, const byte index) { throw new NotImplementedException(); }
+
+        // __m128i _mm256_extracti128_si256 (__m256i a, const int imm8)
+        public static Vector128<short> ExtractVector128(Vector256<short> value, const byte index) { throw new NotImplementedException(); }
+        public static unsafe void ExtractVector128(short* data, Vector256<short> value, const byte index) { throw new NotImplementedException(); }
+
+        // __m128i _mm256_extracti128_si256 (__m256i a, const int imm8)
+        public static Vector128<ushort> ExtractVector128(Vector256<ushort> value, const byte index) { throw new NotImplementedException(); }
+        public static unsafe void ExtractVector128(ushort* data, Vector256<ushort> value, const byte index) { throw new NotImplementedException(); }
+
+        // __m128i _mm256_extracti128_si256 (__m256i a, const int imm8)
+        public static Vector128<int> ExtractVector128(Vector256<int> value, const byte index) { throw new NotImplementedException(); }
+        public static unsafe void ExtractVector128(int* data, Vector256<int> value, const byte index) { throw new NotImplementedException(); }
+
+        // __m128i _mm256_extracti128_si256 (__m256i a, const int imm8)
+        public static Vector128<uint> ExtractVector128(Vector256<uint> value, const byte index) { throw new NotImplementedException(); }
+        public static unsafe void ExtractVector128(uint* data, Vector256<uint> value, const byte index) { throw new NotImplementedException(); }
+
+        // __m128i _mm256_extracti128_si256 (__m256i a, const int imm8)
+        public static Vector128<long> ExtractVector128(Vector256<long> value, const byte index) { throw new NotImplementedException(); }
+        public static unsafe void ExtractVector128(long* data, Vector256<long> value, const byte index) { throw new NotImplementedException(); }
+
+        // __m128i _mm256_extracti128_si256 (__m256i a, const int imm8)
+        public static Vector128<ulong> ExtractVector128(Vector256<ulong> value, const byte index) { throw new NotImplementedException(); }
+        public static unsafe void ExtractVector128(ulong* data, Vector256<ulong> value, const byte index) { throw new NotImplementedException(); }
         
-        // __m128i _mm_i32gather_epi32 (int const* base_addr, __m128i vindex, int scale)
-        public static unsafe Vector128<int> GatherVector128(int* start, Vector128<int> index, byte scale) { throw new NotImplementedException(); }
-        // __m128i _mm_i32gather_epi32 (int const* base_addr, __m128i vindex, int scale)
-        public static unsafe Vector128<uint> GatherVector128(uint* start, Vector128<int> index, byte scale) { throw new NotImplementedException(); }
-        // __m128i _mm_i32gather_epi64 (__int64 const* base_addr, __m128i vindex, int scale)
-        public static unsafe Vector128<long> GatherVector128(long* start, Vector128<int> index, byte scale) { throw new NotImplementedException(); }
-        // __m128i _mm_i32gather_epi64 (__int64 const* base_addr, __m128i vindex, int scale)
-        public static unsafe Vector128<ulong> GatherVector128(ulong* start, Vector128<int> index, byte scale) { throw new NotImplementedException(); }
-        // __m128 _mm_i32gather_ps (float const* base_addr, __m128i vindex, int scale)
-        public static unsafe Vector128<float> GatherVector128(float* start, Vector128<int> index, byte scale) { throw new NotImplementedException(); }
-        // __m128d _mm_i32gather_pd (double const* base_addr, __m128i vindex, int scale)
-        public static unsafe Vector128<double> GatherVector128(double* start, Vector128<int> index, byte scale) { throw new NotImplementedException(); }
-        // __m128i _mm_i64gather_epi32 (int const* base_addr, __m128i vindex, int scale)
-        public static unsafe Vector128<int> GatherVector128(int* start, Vector128<long> index, byte scale) { throw new NotImplementedException(); }
-        // __m128i _mm_i64gather_epi32 (int const* base_addr, __m128i vindex, int scale)
-        public static unsafe Vector128<uint> GatherVector128(uint* start, Vector128<long> index, byte scale) { throw new NotImplementedException(); }
-        // __m128i _mm_i64gather_epi64 (__int64 const* base_addr, __m128i vindex, int scale)
-        public static unsafe Vector128<long> GatherVector128(long* start, Vector128<long> index, byte scale) { throw new NotImplementedException(); }
-        // __m128i _mm_i64gather_epi64 (__int64 const* base_addr, __m128i vindex, int scale)
-        public static unsafe Vector128<ulong> GatherVector128(ulong* start, Vector128<long> index, byte scale) { throw new NotImplementedException(); }
-        // __m128 _mm_i64gather_ps (float const* base_addr, __m128i vindex, int scale)
-        public static unsafe Vector128<float> GatherVector128(float* start, Vector128<long> index, byte scale) { throw new NotImplementedException(); }
-        // __m128d _mm_i64gather_pd (double const* base_addr, __m128i vindex, int scale)
-        public static unsafe Vector128<double> GatherVector128(double* start, Vector128<long> index, byte scale) { throw new NotImplementedException(); }
-        // __m256i _mm256_i32gather_epi32 (int const* base_addr, __m256i vindex, int scale)
-        public static unsafe Vector256<int> GatherVector256(int* start, Vector256<int> index, byte scale) { throw new NotImplementedException(); }
-        // __m256i _mm256_i32gather_epi32 (int const* base_addr, __m256i vindex, int scale)
-        public static unsafe Vector256<uint> GatherVector256(uint* start, Vector256<int> index, byte scale) { throw new NotImplementedException(); }
-        // __m256i _mm256_i32gather_epi64 (__int64 const* base_addr, __m128i vindex, int scale)
-        public static unsafe Vector256<long> GatherVector256(long* start, Vector128<int> index, byte scale) { throw new NotImplementedException(); }
-        // __m256i _mm256_i32gather_epi64 (__int64 const* base_addr, __m128i vindex, int scale)
-        public static unsafe Vector256<ulong> GatherVector256(ulong* start, Vector128<int> index, byte scale) { throw new NotImplementedException(); }
-        // __m256 _mm256_i32gather_ps (float const* base_addr, __m256i vindex, int scale)
-        public static unsafe Vector256<float> GatherVector256(float* start, Vector256<int> index, byte scale) { throw new NotImplementedException(); }
-        // __m256d _mm256_i32gather_pd (double const* base_addr, __m128i vindex, int scale)
-        public static unsafe Vector256<double> GatherVector256(double* start, Vector128<int> index, byte scale) { throw new NotImplementedException(); }
-        // __m128i _mm256_i64gather_epi32 (int const* base_addr, __m256i vindex, int scale)
-        public static unsafe Vector128<int> GatherVector128(int* start, Vector256<long> index, byte scale) { throw new NotImplementedException(); }
-        // __m128i _mm256_i64gather_epi32 (int const* base_addr, __m256i vindex, int scale)
-        public static unsafe Vector128<uint> GatherVector128(uint* start, Vector256<long> index, byte scale) { throw new NotImplementedException(); }
-        // __m256i _mm256_i64gather_epi64 (__int64 const* base_addr, __m256i vindex, int scale)
-        public static unsafe Vector256<long> GatherVector256(long* start, Vector256<long> index, byte scale) { throw new NotImplementedException(); }
-        // __m256i _mm256_i64gather_epi64 (__int64 const* base_addr, __m256i vindex, int scale)
-        public static unsafe Vector256<ulong> GatherVector256(ulong* start, Vector256<long> index, byte scale) { throw new NotImplementedException(); }
-        // __m128 _mm256_i64gather_ps (float const* base_addr, __m256i vindex, int scale)
-        public static unsafe Vector128<float> GatherVector128(float* start, Vector256<long> index, byte scale) { throw new NotImplementedException(); }
-        // __m256d _mm256_i64gather_pd (double const* base_addr, __m256i vindex, int scale)
-        public static unsafe Vector256<double> GatherVector256(double* start, Vector256<long> index, byte scale) { throw new NotImplementedException(); }
+        // __m128i _mm_i32gather_epi32 (int const* base_addr, __m128i vindex, const int scale)
+        public static unsafe Vector128<int> GatherVector128(int* start, Vector128<int> index, const byte scale) { throw new NotImplementedException(); }
+        // __m128i _mm_i32gather_epi32 (int const* base_addr, __m128i vindex, const int scale)
+        public static unsafe Vector128<uint> GatherVector128(uint* start, Vector128<int> index, const byte scale) { throw new NotImplementedException(); }
+        // __m128i _mm_i32gather_epi64 (__int64 const* base_addr, __m128i vindex, const int scale)
+        public static unsafe Vector128<long> GatherVector128(long* start, Vector128<int> index, const byte scale) { throw new NotImplementedException(); }
+        // __m128i _mm_i32gather_epi64 (__int64 const* base_addr, __m128i vindex, const int scale)
+        public static unsafe Vector128<ulong> GatherVector128(ulong* start, Vector128<int> index, const byte scale) { throw new NotImplementedException(); }
+        // __m128 _mm_i32gather_ps (float const* base_addr, __m128i vindex, const int scale)
+        public static unsafe Vector128<float> GatherVector128(float* start, Vector128<int> index, const byte scale) { throw new NotImplementedException(); }
+        // __m128d _mm_i32gather_pd (double const* base_addr, __m128i vindex, const int scale)
+        public static unsafe Vector128<double> GatherVector128(double* start, Vector128<int> index, const byte scale) { throw new NotImplementedException(); }
+        // __m128i _mm_i64gather_epi32 (int const* base_addr, __m128i vindex, const int scale)
+        public static unsafe Vector128<int> GatherVector128(int* start, Vector128<long> index, const byte scale) { throw new NotImplementedException(); }
+        // __m128i _mm_i64gather_epi32 (int const* base_addr, __m128i vindex, const int scale)
+        public static unsafe Vector128<uint> GatherVector128(uint* start, Vector128<long> index, const byte scale) { throw new NotImplementedException(); }
+        // __m128i _mm_i64gather_epi64 (__int64 const* base_addr, __m128i vindex, const int scale)
+        public static unsafe Vector128<long> GatherVector128(long* start, Vector128<long> index, const byte scale) { throw new NotImplementedException(); }
+        // __m128i _mm_i64gather_epi64 (__int64 const* base_addr, __m128i vindex, const int scale)
+        public static unsafe Vector128<ulong> GatherVector128(ulong* start, Vector128<long> index, const byte scale) { throw new NotImplementedException(); }
+        // __m128 _mm_i64gather_ps (float const* base_addr, __m128i vindex, const int scale)
+        public static unsafe Vector128<float> GatherVector128(float* start, Vector128<long> index, const byte scale) { throw new NotImplementedException(); }
+        // __m128d _mm_i64gather_pd (double const* base_addr, __m128i vindex, const int scale)
+        public static unsafe Vector128<double> GatherVector128(double* start, Vector128<long> index, const byte scale) { throw new NotImplementedException(); }
+        // __m256i _mm256_i32gather_epi32 (int const* base_addr, __m256i vindex, const int scale)
+        public static unsafe Vector256<int> GatherVector256(int* start, Vector256<int> index, const byte scale) { throw new NotImplementedException(); }
+        // __m256i _mm256_i32gather_epi32 (int const* base_addr, __m256i vindex, const int scale)
+        public static unsafe Vector256<uint> GatherVector256(uint* start, Vector256<int> index, const byte scale) { throw new NotImplementedException(); }
+        // __m256i _mm256_i32gather_epi64 (__int64 const* base_addr, __m128i vindex, const int scale)
+        public static unsafe Vector256<long> GatherVector256(long* start, Vector128<int> index, const byte scale) { throw new NotImplementedException(); }
+        // __m256i _mm256_i32gather_epi64 (__int64 const* base_addr, __m128i vindex, const int scale)
+        public static unsafe Vector256<ulong> GatherVector256(ulong* start, Vector128<int> index, const byte scale) { throw new NotImplementedException(); }
+        // __m256 _mm256_i32gather_ps (float const* base_addr, __m256i vindex, const int scale)
+        public static unsafe Vector256<float> GatherVector256(float* start, Vector256<int> index, const byte scale) { throw new NotImplementedException(); }
+        // __m256d _mm256_i32gather_pd (double const* base_addr, __m128i vindex, const int scale)
+        public static unsafe Vector256<double> GatherVector256(double* start, Vector128<int> index, const byte scale) { throw new NotImplementedException(); }
+        // __m128i _mm256_i64gather_epi32 (int const* base_addr, __m256i vindex, const int scale)
+        public static unsafe Vector128<int> GatherVector128(int* start, Vector256<long> index, const byte scale) { throw new NotImplementedException(); }
+        // __m128i _mm256_i64gather_epi32 (int const* base_addr, __m256i vindex, const int scale)
+        public static unsafe Vector128<uint> GatherVector128(uint* start, Vector256<long> index, const byte scale) { throw new NotImplementedException(); }
+        // __m256i _mm256_i64gather_epi64 (__int64 const* base_addr, __m256i vindex, const int scale)
+        public static unsafe Vector256<long> GatherVector256(long* start, Vector256<long> index, const byte scale) { throw new NotImplementedException(); }
+        // __m256i _mm256_i64gather_epi64 (__int64 const* base_addr, __m256i vindex, const int scale)
+        public static unsafe Vector256<ulong> GatherVector256(ulong* start, Vector256<long> index, const byte scale) { throw new NotImplementedException(); }
+        // __m128 _mm256_i64gather_ps (float const* base_addr, __m256i vindex, const int scale)
+        public static unsafe Vector128<float> GatherVector128(float* start, Vector256<long> index, const byte scale) { throw new NotImplementedException(); }
+        // __m256d _mm256_i64gather_pd (double const* base_addr, __m256i vindex, const int scale)
+        public static unsafe Vector256<double> GatherVector256(double* start, Vector256<long> index, const byte scale) { throw new NotImplementedException(); }
         
-        // __m128i _mm_mask_i32gather_epi32 (__m128i src, int const* base_addr, __m128i vindex, __m128i mask, int scale)
-        public static unsafe Vector128<int> GatherMaskVector128(Vector128<int> source, int* start, Vector128<int> index, Vector128<byte> mask, byte scale) { throw new NotImplementedException(); }
-        // __m128i _mm_mask_i32gather_epi32 (__m128i src, int const* base_addr, __m128i vindex, __m128i mask, int scale)
-        public static unsafe Vector128<uint> GatherMaskVector128(Vector128<uint> source, uint* start, Vector128<int> index, Vector128<byte> mask, byte scale) { throw new NotImplementedException(); }
-        // __m128i _mm_mask_i32gather_epi64 (__m128i src, __int64 const* base_addr, __m128i vindex, __m128i mask, int scale)
-        public static unsafe Vector128<long> GatherMaskVector128(Vector128<long> source, long* start, Vector128<int> index, Vector128<byte> mask, byte scale) { throw new NotImplementedException(); }
-        // __m128i _mm_mask_i32gather_epi64 (__m128i src, __int64 const* base_addr, __m128i vindex, __m128i mask, int scale)
-        public static unsafe Vector128<ulong> GatherMaskVector128(Vector128<ulong> source, ulong* start, Vector128<int> index, Vector128<byte> mask, byte scale) { throw new NotImplementedException(); }
-        // __m128 _mm_mask_i32gather_ps (__m128 src, float const* base_addr, __m128i vindex, __m128 mask, int scale)
-        public static unsafe Vector128<float> GatherMaskVector128(Vector128<float> source, float* start, Vector128<int> index, Vector128<byte> mask, byte scale) { throw new NotImplementedException(); }
-        // __m128d _mm_mask_i32gather_pd (__m128d src, double const* base_addr, __m128i vindex, __m128d mask, int scale)
-        public static unsafe Vector128<double> GatherMaskVector128(Vector128<double> source, double* start, Vector128<int> index, Vector128<byte> mask, byte scale) { throw new NotImplementedException(); }
-        // __m128i _mm_mask_i64gather_epi32 (__m128i src, int const* base_addr, __m128i vindex, __m128i mask, int scale)
-        public static unsafe Vector128<int> GatherMaskVector128(Vector128<int> source, int* start, Vector128<long> index, Vector128<byte> mask, byte scale) { throw new NotImplementedException(); }
-        // __m128i _mm_mask_i64gather_epi32 (__m128i src, int const* base_addr, __m128i vindex, __m128i mask, int scale)
-        public static unsafe Vector128<uint> GatherMaskVector128(Vector128<uint> source, uint* start, Vector128<long> index, Vector128<byte> mask, byte scale) { throw new NotImplementedException(); }
-        // __m128i _mm_mask_i64gather_epi64 (__m128i src, __int64 const* base_addr, __m128i vindex, __m128i mask, int scale)
-        public static unsafe Vector128<long> GatherMaskVector128(Vector128<long> source, long* start, Vector128<long> index, Vector128<byte> mask, byte scale) { throw new NotImplementedException(); }
-        // __m128i _mm_mask_i64gather_epi64 (__m128i src, __int64 const* base_addr, __m128i vindex, __m128i mask, int scale)
-        public static unsafe Vector128<ulong> GatherMaskVector128(Vector128<ulong> source, ulong* start, Vector128<long> index, Vector128<byte> mask, byte scale) { throw new NotImplementedException(); }
-        // __m128 _mm_mask_i64gather_ps (__m128 src, float const* base_addr, __m128i vindex, __m128 mask, int scale)
-        public static unsafe Vector128<float> GatherMaskVector128(Vector128<float> source, float* start, Vector128<long> index, Vector128<byte> mask, byte scale) { throw new NotImplementedException(); }
-        // __m128d _mm_mask_i64gather_pd (__m128d src, double const* base_addr, __m128i vindex, __m128d mask, int scale)
-        public static unsafe Vector128<double> GatherMaskVector128(Vector128<double> source, double* start, Vector128<long> index, Vector128<byte> mask, byte scale) { throw new NotImplementedException(); }
-        // __m256i _mm256_mask_i32gather_epi32 (__m256i src, int const* base_addr, __m256i vindex, __m256i mask, int scale)
-        public static unsafe Vector256<int> GatherMaskVector256(Vector256<int> source, int* start, Vector256<int> index, Vector256<byte> mask, byte scale) { throw new NotImplementedException(); }
-        // __m256i _mm256_mask_i32gather_epi32 (__m256i src, int const* base_addr, __m256i vindex, __m256i mask, int scale)
-        public static unsafe Vector256<uint> GatherMaskVector256(Vector256<uint> source, uint* start, Vector256<int> index, Vector256<byte> mask, byte scale) { throw new NotImplementedException(); }
-        // __m256i _mm256_mask_i32gather_epi64 (__m256i src, __int64 const* base_addr, __m128i vindex, __m256i mask, int scale)
-        public static unsafe Vector256<long> GatherMaskVector256(Vector256<long> source, long* start, Vector128<int> index, Vector256<byte> mask, byte scale) { throw new NotImplementedException(); }
-        // __m256i _mm256_mask_i32gather_epi64 (__m256i src, __int64 const* base_addr, __m128i vindex, __m256i mask, int scale)
-        public static unsafe Vector256<ulong> GatherMaskVector256(Vector256<ulong> source, ulong* start, Vector128<int> index, Vector256<byte> mask, byte scale) { throw new NotImplementedException(); }
-        // __m256 _mm256_mask_i32gather_ps (__m256 src, float const* base_addr, __m256i vindex, __m256 mask, int scale)
-        public static unsafe Vector256<float> GatherMaskVector256(Vector256<float> source, float* start, Vector256<int> index, Vector256<byte> mask, byte scale) { throw new NotImplementedException(); }
-        // __m256d _mm256_mask_i32gather_pd (__m256d src, double const* base_addr, __m128i vindex, __m256d mask, int scale)
-        public static unsafe Vector256<double> GatherMaskVector256(Vector256<double> source, double* start, Vector128<int> index, Vector256<byte> mask, byte scale) { throw new NotImplementedException(); }
-        // __m128i _mm256_mask_i64gather_epi32 (__m128i src, int const* base_addr, __m256i vindex, __m128i mask, int scale)
-        public static unsafe Vector128<int> GatherMaskVector128(Vector128<int> source, int* start, Vector256<long> index, Vector128<byte> mask, byte scale) { throw new NotImplementedException(); }
-        // __m128i _mm256_mask_i64gather_epi32 (__m128i src, int const* base_addr, __m256i vindex, __m128i mask, int scale)
-        public static unsafe Vector128<uint> GatherMaskVector128(Vector128<uint> source, uint* start, Vector256<long> index, Vector128<byte> mask, byte scale) { throw new NotImplementedException(); }
-        // __m256i _mm256_mask_i64gather_epi64 (__m256i src, __int64 const* base_addr, __m256i vindex, __m256i mask, int scale)
-        public static unsafe Vector256<long> GatherMask(Vector256<long> source, long* start, Vector256<long> index, Vector256<byte> mask, byte scale) { throw new NotImplementedException(); }
-        // __m256i _mm256_mask_i64gather_epi64 (__m256i src, __int64 const* base_addr, __m256i vindex, __m256i mask, int scale)
-        public static unsafe Vector256<ulong> GatherMaskVector256(Vector256<ulong> source, ulong* start, Vector256<long> index, Vector256<byte> mask, byte scale) { throw new NotImplementedException(); }
-        // __m128 _mm256_mask_i64gather_ps (__m128 src, float const* base_addr, __m256i vindex, __m128 mask, int scale)
-        public static unsafe Vector128<float> GatherMaskVector128(Vector128<float> source, float* start, Vector256<long> index, Vector128<byte> mask, byte scale) { throw new NotImplementedException(); }
-        // __m256d _mm256_mask_i64gather_pd (__m256d src, double const* base_addr, __m256i vindex, __m256d mask, int scale)
-        public static unsafe Vector256<double> GatherMaskVector256(Vector256<double> source, double* start, Vector256<long> index, Vector256<byte> mask, byte scale) { throw new NotImplementedException(); }
+        // __m128i _mm_mask_i32gather_epi32 (__m128i src, int const* base_addr, __m128i vindex, __m128i mask, const int scale)
+        public static unsafe Vector128<int> GatherMaskVector128(Vector128<int> source, int* start, Vector128<int> index, Vector128<int> mask, const byte scale) { throw new NotImplementedException(); }
+        // __m128i _mm_mask_i32gather_epi32 (__m128i src, int const* base_addr, __m128i vindex, __m128i mask, const int scale)
+        public static unsafe Vector128<uint> GatherMaskVector128(Vector128<uint> source, uint* start, Vector128<int> index, Vector128<uint> mask, const byte scale) { throw new NotImplementedException(); }
+        // __m128i _mm_mask_i32gather_epi64 (__m128i src, __int64 const* base_addr, __m128i vindex, __m128i mask, const int scale)
+        public static unsafe Vector128<long> GatherMaskVector128(Vector128<long> source, long* start, Vector128<int> index, Vector128<long> mask, const byte scale) { throw new NotImplementedException(); }
+        // __m128i _mm_mask_i32gather_epi64 (__m128i src, __int64 const* base_addr, __m128i vindex, __m128i mask, const int scale)
+        public static unsafe Vector128<ulong> GatherMaskVector128(Vector128<ulong> source, ulong* start, Vector128<int> index, Vector128<ulong> mask, const byte scale) { throw new NotImplementedException(); }
+        // __m128 _mm_mask_i32gather_ps (__m128 src, float const* base_addr, __m128i vindex, __m128 mask, const int scale)
+        public static unsafe Vector128<float> GatherMaskVector128(Vector128<float> source, float* start, Vector128<int> index, Vector128<float> mask, const byte scale) { throw new NotImplementedException(); }
+        // __m128d _mm_mask_i32gather_pd (__m128d src, double const* base_addr, __m128i vindex, __m128d mask, const int scale)
+        public static unsafe Vector128<double> GatherMaskVector128(Vector128<double> source, double* start, Vector128<int> index, Vector128<double> mask, const byte scale) { throw new NotImplementedException(); }
+        // __m128i _mm_mask_i64gather_epi32 (__m128i src, int const* base_addr, __m128i vindex, __m128i mask, const int scale)
+        public static unsafe Vector128<int> GatherMaskVector128(Vector128<int> source, int* start, Vector128<long> index, Vector128<int> mask, const byte scale) { throw new NotImplementedException(); }
+        // __m128i _mm_mask_i64gather_epi32 (__m128i src, int const* base_addr, __m128i vindex, __m128i mask, const int scale)
+        public static unsafe Vector128<uint> GatherMaskVector128(Vector128<uint> source, uint* start, Vector128<long> index, Vector128<uint> mask, const byte scale) { throw new NotImplementedException(); }
+        // __m128i _mm_mask_i64gather_epi64 (__m128i src, __int64 const* base_addr, __m128i vindex, __m128i mask, const int scale)
+        public static unsafe Vector128<long> GatherMaskVector128(Vector128<long> source, long* start, Vector128<long> index, Vector128<long> mask, const byte scale) { throw new NotImplementedException(); }
+        // __m128i _mm_mask_i64gather_epi64 (__m128i src, __int64 const* base_addr, __m128i vindex, __m128i mask, const int scale)
+        public static unsafe Vector128<ulong> GatherMaskVector128(Vector128<ulong> source, ulong* start, Vector128<long> index, Vector128<ulong> mask, const byte scale) { throw new NotImplementedException(); }
+        // __m128 _mm_mask_i64gather_ps (__m128 src, float const* base_addr, __m128i vindex, __m128 mask, const int scale)
+        public static unsafe Vector128<float> GatherMaskVector128(Vector128<float> source, float* start, Vector128<long> index, Vector128<float> mask, const byte scale) { throw new NotImplementedException(); }
+        // __m128d _mm_mask_i64gather_pd (__m128d src, double const* base_addr, __m128i vindex, __m128d mask, const int scale)
+        public static unsafe Vector128<double> GatherMaskVector128(Vector128<double> source, double* start, Vector128<long> index, Vector128<double> mask, const byte scale) { throw new NotImplementedException(); }
+        // __m256i _mm256_mask_i32gather_epi32 (__m256i src, int const* base_addr, __m256i vindex, __m256i mask, const int scale)
+        public static unsafe Vector256<int> GatherMaskVector256(Vector256<int> source, int* start, Vector256<int> index, Vector256<int> mask, const byte scale) { throw new NotImplementedException(); }
+        // __m256i _mm256_mask_i32gather_epi32 (__m256i src, int const* base_addr, __m256i vindex, __m256i mask, const int scale)
+        public static unsafe Vector256<uint> GatherMaskVector256(Vector256<uint> source, uint* start, Vector256<int> index, Vector256<uint> mask, const byte scale) { throw new NotImplementedException(); }
+        // __m256i _mm256_mask_i32gather_epi64 (__m256i src, __int64 const* base_addr, __m128i vindex, __m256i mask, const int scale)
+        public static unsafe Vector256<long> GatherMaskVector256(Vector256<long> source, long* start, Vector128<int> index, Vector256<long> mask, const byte scale) { throw new NotImplementedException(); }
+        // __m256i _mm256_mask_i32gather_epi64 (__m256i src, __int64 const* base_addr, __m128i vindex, __m256i mask, const int scale)
+        public static unsafe Vector256<ulong> GatherMaskVector256(Vector256<ulong> source, ulong* start, Vector128<int> index, Vector256<ulong> mask, const byte scale) { throw new NotImplementedException(); }
+        // __m256 _mm256_mask_i32gather_ps (__m256 src, float const* base_addr, __m256i vindex, __m256 mask, const int scale)
+        public static unsafe Vector256<float> GatherMaskVector256(Vector256<float> source, float* start, Vector256<int> index, Vector256<float> mask, const byte scale) { throw new NotImplementedException(); }
+        // __m256d _mm256_mask_i32gather_pd (__m256d src, double const* base_addr, __m128i vindex, __m256d mask, const int scale)
+        public static unsafe Vector256<double> GatherMaskVector256(Vector256<double> source, double* start, Vector128<int> index, Vector256<double> mask, const byte scale) { throw new NotImplementedException(); }
+        // __m128i _mm256_mask_i64gather_epi32 (__m128i src, int const* base_addr, __m256i vindex, __m128i mask, const int scale)
+        public static unsafe Vector128<int> GatherMaskVector128(Vector128<int> source, int* start, Vector256<long> index, Vector128<int> mask, const byte scale) { throw new NotImplementedException(); }
+        // __m128i _mm256_mask_i64gather_epi32 (__m128i src, int const* base_addr, __m256i vindex, __m128i mask, const int scale)
+        public static unsafe Vector128<uint> GatherMaskVector128(Vector128<uint> source, uint* start, Vector256<long> index, Vector128<uint> mask, const byte scale) { throw new NotImplementedException(); }
+        // __m256i _mm256_mask_i64gather_epi64 (__m256i src, __int64 const* base_addr, __m256i vindex, __m256i mask, const int scale)
+        public static unsafe Vector256<long> GatherMaskVector256(Vector256<long> source, long* start, Vector256<long> index, Vector256<long> mask, const byte scale) { throw new NotImplementedException(); }
+        // __m256i _mm256_mask_i64gather_epi64 (__m256i src, __int64 const* base_addr, __m256i vindex, __m256i mask, const int scale)
+        public static unsafe Vector256<ulong> GatherMaskVector256(Vector256<ulong> source, ulong* start, Vector256<long> index, Vector256<ulong> mask, const byte scale) { throw new NotImplementedException(); }
+        // __m128 _mm256_mask_i64gather_ps (__m128 src, float const* base_addr, __m256i vindex, __m128 mask, const int scale)
+        public static unsafe Vector128<float> GatherMaskVector128(Vector128<float> source, float* start, Vector256<long> index, Vector128<float> mask, const byte scale) { throw new NotImplementedException(); }
+        // __m256d _mm256_mask_i64gather_pd (__m256d src, double const* base_addr, __m256i vindex, __m256d mask, const int scale)
+        public static unsafe Vector256<double> GatherMaskVector256(Vector256<double> source, double* start, Vector256<long> index, Vector256<double> mask, const byte scale) { throw new NotImplementedException(); }
         
         // __m256i _mm256_hadd_epi16 (__m256i a, __m256i b)
         public static Vector256<short> HorizontalAdd(Vector256<short> left, Vector256<short> right) { throw new NotImplementedException(); }
@@ -324,56 +339,71 @@ namespace System.Runtime.CompilerServices.Intrinsics.X86
         // __m256i _mm256_hsubs_epi16 (__m256i a, __m256i b)
         public static Vector256<short> HorizontalSubtractSaturation(Vector256<short> left, Vector256<short> right) { throw new NotImplementedException(); }
 
-        // __m256i _mm256_inserti128_si256 (__m256i a, __m128i b, int imm8)
-        public static Vector256<sbyte> Insert(Vector256<sbyte> value, Vector128<sbyte> data, byte index) { throw new NotImplementedException(); }
-        // __m256i _mm256_inserti128_si256 (__m256i a, __m128i b, int imm8)
-        public static Vector256<byte> Insert(Vector256<byte> value, Vector128<byte> data, byte index) { throw new NotImplementedException(); }
-        // __m256i _mm256_inserti128_si256 (__m256i a, __m128i b, int imm8)
-        public static Vector256<short> Insert(Vector256<short> value, Vector128<short> data, byte index) { throw new NotImplementedException(); }
-        // __m256i _mm256_inserti128_si256 (__m256i a, __m128i b, int imm8)
-        public static Vector256<ushort> Insert(Vector256<ushort> value, Vector128<ushort> data, byte index) { throw new NotImplementedException(); }
-        // __m256i _mm256_inserti128_si256 (__m256i a, __m128i b, int imm8)
-        public static Vector256<int> Insert(Vector256<int> value, Vector128<int> data, byte index) { throw new NotImplementedException(); }
-        // __m256i _mm256_inserti128_si256 (__m256i a, __m128i b, int imm8)
-        public static Vector256<uint> Insert(Vector256<uint> value, Vector128<uint> data, byte index) { throw new NotImplementedException(); }
-        // __m256i _mm256_inserti128_si256 (__m256i a, __m128i b, int imm8)
-        public static Vector256<long> Insert(Vector256<long> value, Vector128<long> data, byte index) { throw new NotImplementedException(); }
-        // __m256i _mm256_inserti128_si256 (__m256i a, __m128i b, int imm8)
-        public static Vector256<ulong> Insert(Vector256<ulong> value, Vector128<ulong> data, byte index) { throw new NotImplementedException(); }
+        // __m256i _mm256_inserti128_si256 (__m256i a, __m128i b, const int imm8)
+        public static Vector256<sbyte> Insert(Vector256<sbyte> value, Vector128<sbyte> data, const byte index) { throw new NotImplementedException(); }
+        public static unsafe Vector256<sbyte> Insert(Vector256<sbyte> value, sbyte* data, const byte index) { throw new NotImplementedException(); }
+
+        // __m256i _mm256_inserti128_si256 (__m256i a, __m128i b, const int imm8)
+        public static Vector256<byte> Insert(Vector256<byte> value, Vector128<byte> data, const byte index) { throw new NotImplementedException(); }
+        public static unsafe Vector256<byte> Insert(Vector256<byte> value, byte* data, const byte index) { throw new NotImplementedException(); }
+
+        // __m256i _mm256_inserti128_si256 (__m256i a, __m128i b, const int imm8)
+        public static Vector256<short> Insert(Vector256<short> value, Vector128<short> data, const byte index) { throw new NotImplementedException(); }
+        public static unsafe Vector256<short> Insert(Vector256<short> value, short* data, const byte index) { throw new NotImplementedException(); }
+
+        // __m256i _mm256_inserti128_si256 (__m256i a, __m128i b, const int imm8)
+        public static Vector256<ushort> Insert(Vector256<ushort> value, Vector128<ushort> data, const byte index) { throw new NotImplementedException(); }
+        public static unsafe Vector256<ushort> Insert(Vector256<ushort> value, ushort* data, const byte index) { throw new NotImplementedException(); }
+
+        // __m256i _mm256_inserti128_si256 (__m256i a, __m128i b, const int imm8)
+        public static Vector256<int> Insert(Vector256<int> value, Vector128<int> data, const byte index) { throw new NotImplementedException(); }
+        public static unsafe Vector256<int> Insert(Vector256<int> value, int* data, const byte index) { throw new NotImplementedException(); }
+
+        // __m256i _mm256_inserti128_si256 (__m256i a, __m128i b, const int imm8)
+        public static Vector256<uint> Insert(Vector256<uint> value, Vector128<uint> data, const byte index) { throw new NotImplementedException(); }
+        public static unsafe Vector256<uint> Insert(Vector256<uint> value, uint* data, const byte index) { throw new NotImplementedException(); }
+
+        // __m256i _mm256_inserti128_si256 (__m256i a, __m128i b, const int imm8)
+        public static Vector256<long> Insert(Vector256<long> value, Vector128<long> data, const byte index) { throw new NotImplementedException(); }
+        public static unsafe Vector256<long> Insert(Vector256<long> value, long* data, const byte index) { throw new NotImplementedException(); }
+
+        // __m256i _mm256_inserti128_si256 (__m256i a, __m128i b, const int imm8)
+        public static Vector256<ulong> Insert(Vector256<ulong> value, Vector128<ulong> data, const byte index) { throw new NotImplementedException(); }
+        public static unsafe Vector256<ulong> Insert(Vector256<ulong> value, ulong* data, const byte index) { throw new NotImplementedException(); }
         
         // __m128i _mm_maskload_epi32 (int const* mem_addr, __m128i mask)
-        public static unsafe Vector128<int> MaskLoad(int* mem, Vector128<uint> mask) { throw new NotImplementedException(); }
+        public static unsafe Vector128<int> MaskLoad(int* mem, Vector128<int> mask) { throw new NotImplementedException(); }
         // __m128i _mm_maskload_epi32 (int const* mem_addr, __m128i mask)
         public static unsafe Vector128<uint> MaskLoad(uint* mem, Vector128<uint> mask) { throw new NotImplementedException(); }
         // __m128i _mm_maskload_epi64 (__int64 const* mem_addr, __m128i mask)
-        public static unsafe Vector128<long> MaskLoad(long* mem, Vector128<ulong> mask) { throw new NotImplementedException(); }
+        public static unsafe Vector128<long> MaskLoad(long* mem, Vector128<long> mask) { throw new NotImplementedException(); }
         // __m128i _mm_maskload_epi64 (__int64 const* mem_addr, __m128i mask)
         public static unsafe Vector128<ulong> MaskLoad(ulong* mem, Vector128<ulong> mask) { throw new NotImplementedException(); }
 
         // __m256i _mm256_maskload_epi32 (int const* mem_addr, __m256i mask)
-        public static unsafe Vector256<int> MaskLoad(int* mem, Vector256<uint> mask) { throw new NotImplementedException(); }
+        public static unsafe Vector256<int> MaskLoad(int* mem, Vector256<int> mask) { throw new NotImplementedException(); }
         // __m256i _mm256_maskload_epi32 (int const* mem_addr, __m256i mask)
-        public static unsafe Vector256<int> MaskLoad(uint* mem, Vector256<uint> mask) { throw new NotImplementedException(); }
+        public static unsafe Vector256<uint> MaskLoad(uint* mem, Vector256<uint> mask) { throw new NotImplementedException(); }
         // __m256i _mm256_maskload_epi64 (__int64 const* mem_addr, __m256i mask)
-        public static unsafe Vector256<long> MaskLoad(long* mem, Vector256<ulong> mask) { throw new NotImplementedException(); }
+        public static unsafe Vector256<long> MaskLoad(long* mem, Vector256<long> mask) { throw new NotImplementedException(); }
         // __m256i _mm256_maskload_epi64 (__int64 const* mem_addr, __m256i mask)
-        public static unsafe Vector256<long> MaskLoad(ulong* mem, Vector256<ulong> mask) { throw new NotImplementedException(); }
+        public static unsafe Vector256<ulong> MaskLoad(ulong* mem, Vector256<ulong> mask) { throw new NotImplementedException(); }
 
         // void _mm_maskstore_epi32 (int* mem_addr, __m128i mask, __m128i a)
-        public static unsafe void MaskStore(int* mem, Vector128<uint> mask, Vector128<int> source) { throw new NotImplementedException(); }
+        public static unsafe void MaskStore(int* mem, Vector128<int> mask, Vector128<int> source) { throw new NotImplementedException(); }
         // void _mm_maskstore_epi32 (int* mem_addr, __m128i mask, __m128i a)
         public static unsafe void MaskStore(uint* mem, Vector128<uint> mask, Vector128<uint> source) { throw new NotImplementedException(); }
         // void _mm_maskstore_epi64 (__int64* mem_addr, __m128i mask, __m128i a)
-        public static unsafe void MaskStore(long* mem, Vector128<ulong> mask, Vector128<long> source) { throw new NotImplementedException(); }
+        public static unsafe void MaskStore(long* mem, Vector128<long> mask, Vector128<long> source) { throw new NotImplementedException(); }
         // void _mm_maskstore_epi64 (__int64* mem_addr, __m128i mask, __m128i a)
         public static unsafe void MaskStore(ulong* mem, Vector128<ulong> mask, Vector128<ulong> source) { throw new NotImplementedException(); }
 
         // void _mm256_maskstore_epi32 (int* mem_addr, __m256i mask, __m256i a)
-        public static unsafe void MaskStore(int* mem, Vector256<uint> mask, Vector256<int> source) { throw new NotImplementedException(); }
+        public static unsafe void MaskStore(int* mem, Vector256<int> mask, Vector256<int> source) { throw new NotImplementedException(); }
         // void _mm256_maskstore_epi32 (int* mem_addr, __m256i mask, __m256i a)
         public static unsafe void MaskStore(uint* mem, Vector256<uint> mask, Vector256<uint> source) { throw new NotImplementedException(); }
         // void _mm256_maskstore_epi64 (__int64* mem_addr, __m256i mask, __m256i a)
-        public static unsafe void MaskStore(long* mem, Vector256<ulong> mask, Vector256<long> source) { throw new NotImplementedException(); }
+        public static unsafe void MaskStore(long* mem, Vector256<long> mask, Vector256<long> source) { throw new NotImplementedException(); }
         // void _mm256_maskstore_epi64 (__int64* mem_addr, __m256i mask, __m256i a)
         public static unsafe void MaskStore(ulong* mem, Vector256<ulong> mask, Vector256<ulong> source) { throw new NotImplementedException(); }
 
@@ -414,8 +444,8 @@ namespace System.Runtime.CompilerServices.Intrinsics.X86
         // int _mm256_movemask_epi8 (__m256i a)
         public static int MoveMask(Vector256<byte> value) { throw new NotImplementedException(); }
 
-        // __m256i _mm256_mpsadbw_epu8 (__m256i a, __m256i b, int imm8)
-        public static Vector256<ushort> MultipleSumAbsoluteDifference(Vector256<byte> left, Vector256<byte> right, byte mask) { throw new NotImplementedException(); }
+        // __m256i _mm256_mpsadbw_epu8 (__m256i a, __m256i b, const int imm8)
+        public static Vector256<ushort> MultipleSumAbsoluteDifference(Vector256<byte> left, Vector256<byte> right, const byte mask) { throw new NotImplementedException(); }
                 
         // __m256i _mm256_mul_epi32 (__m256i a, __m256i b)
         public static Vector256<long> Multiply(Vector256<int> left, Vector256<int> right) { throw new NotImplementedException(); }
@@ -461,66 +491,66 @@ namespace System.Runtime.CompilerServices.Intrinsics.X86
         // __m256i _mm256_packus_epi32 (__m256i a, __m256i b)
         public static Vector256<ushort> PackUnsignedSaturation(Vector256<int> left, Vector256<int> right) { throw new NotImplementedException(); }
 
-        // __m256i _mm256_permute2x128_si256 (__m256i a, __m256i b, int imm8)
-        public static Vector256<sbyte> Permute2x128(Vector256<sbyte> left, Vector256<sbyte> right, byte control) { throw new NotImplementedException(); }
-        // __m256i _mm256_permute2x128_si256 (__m256i a, __m256i b, int imm8)
-        public static Vector256<byte> Permute2x128(Vector256<byte> left, Vector256<byte> right, byte control) { throw new NotImplementedException(); }
-        // __m256i _mm256_permute2x128_si256 (__m256i a, __m256i b, int imm8)
-        public static Vector256<short> Permute2x128(Vector256<short> left, Vector256<short> right, byte control) { throw new NotImplementedException(); }
-        // __m256i _mm256_permute2x128_si256 (__m256i a, __m256i b, int imm8)
-        public static Vector256<ushort> Permute2x128(Vector256<ushort> left, Vector256<ushort> right, byte control) { throw new NotImplementedException(); }
-        // __m256i _mm256_permute2x128_si256 (__m256i a, __m256i b, int imm8)
-        public static Vector256<int> Permute2x128(Vector256<int> left, Vector256<int> right, byte control) { throw new NotImplementedException(); }
-        // __m256i _mm256_permute2x128_si256 (__m256i a, __m256i b, int imm8)
-        public static Vector256<uint> Permute2x128(Vector256<uint> left, Vector256<uint> right, byte control) { throw new NotImplementedException(); }
-        // __m256i _mm256_permute2x128_si256 (__m256i a, __m256i b, int imm8)
-        public static Vector256<long> Permute2x128(Vector256<long> left, Vector256<long> right, byte control) { throw new NotImplementedException(); }
-        // __m256i _mm256_permute2x128_si256 (__m256i a, __m256i b, int imm8)
-        public static Vector256<ulong> Permute2x128(Vector256<ulong> left, Vector256<ulong> right, byte control) { throw new NotImplementedException(); }
+        // __m256i _mm256_permute2x128_si256 (__m256i a, __m256i b, const int imm8)
+        public static Vector256<sbyte> Permute2x128(Vector256<sbyte> left, Vector256<sbyte> right, const byte control) { throw new NotImplementedException(); }
+        // __m256i _mm256_permute2x128_si256 (__m256i a, __m256i b, const int imm8)
+        public static Vector256<byte> Permute2x128(Vector256<byte> left, Vector256<byte> right, const byte control) { throw new NotImplementedException(); }
+        // __m256i _mm256_permute2x128_si256 (__m256i a, __m256i b, const int imm8)
+        public static Vector256<short> Permute2x128(Vector256<short> left, Vector256<short> right, const byte control) { throw new NotImplementedException(); }
+        // __m256i _mm256_permute2x128_si256 (__m256i a, __m256i b, const int imm8)
+        public static Vector256<ushort> Permute2x128(Vector256<ushort> left, Vector256<ushort> right, const byte control) { throw new NotImplementedException(); }
+        // __m256i _mm256_permute2x128_si256 (__m256i a, __m256i b, const int imm8)
+        public static Vector256<int> Permute2x128(Vector256<int> left, Vector256<int> right, const byte control) { throw new NotImplementedException(); }
+        // __m256i _mm256_permute2x128_si256 (__m256i a, __m256i b, const int imm8)
+        public static Vector256<uint> Permute2x128(Vector256<uint> left, Vector256<uint> right, const byte control) { throw new NotImplementedException(); }
+        // __m256i _mm256_permute2x128_si256 (__m256i a, __m256i b, const int imm8)
+        public static Vector256<long> Permute2x128(Vector256<long> left, Vector256<long> right, const byte control) { throw new NotImplementedException(); }
+        // __m256i _mm256_permute2x128_si256 (__m256i a, __m256i b, const int imm8)
+        public static Vector256<ulong> Permute2x128(Vector256<ulong> left, Vector256<ulong> right, const byte control) { throw new NotImplementedException(); }
                 
-        // __m256i _mm256_permute4x64_epi64 (__m256i a, int imm8)
-        public static Vector256<long> Permute4x64(Vector256<long> value, byte control) { throw new NotImplementedException(); }
-        // __m256i _mm256_permute4x64_epi64 (__m256i a, int imm8)
-        public static Vector256<ulong> Permute4x64(Vector256<ulong> value, byte control) { throw new NotImplementedException(); }
-        // __m256d _mm256_permute4x64_pd (__m256d a, int imm8)
-        public static Vector256<double> Permute4x64(Vector256<double> value, byte control) { throw new NotImplementedException(); }
+        // __m256i _mm256_permute4x64_epi64 (__m256i a, const int imm8)
+        public static Vector256<long> Permute4x64(Vector256<long> value, const byte control) { throw new NotImplementedException(); }
+        // __m256i _mm256_permute4x64_epi64 (__m256i a, const int imm8)
+        public static Vector256<ulong> Permute4x64(Vector256<ulong> value, const byte control) { throw new NotImplementedException(); }
+        // __m256d _mm256_permute4x64_pd (__m256d a, const int imm8)
+        public static Vector256<double> Permute4x64(Vector256<double> value, const byte control) { throw new NotImplementedException(); }
                 
         // __m256i _mm256_permutevar8x32_epi32 (__m256i a, __m256i idx)
-        public static Vector256<int> PermuteVar8x32(Vector256<int> left, Vector256<uint> mask) { throw new NotImplementedException(); }
+        public static Vector256<int> PermuteVar8x32(Vector256<int> left, Vector256<int> mask) { throw new NotImplementedException(); }
         // __m256i _mm256_permutevar8x32_epi32 (__m256i a, __m256i idx)
         public static Vector256<uint> PermuteVar8x32(Vector256<uint> left, Vector256<uint> mask) { throw new NotImplementedException(); }
         // __m256 _mm256_permutevar8x32_ps (__m256 a, __m256i idx)
-        public static Vector256<float> PermuteVar8x32(Vector256<float> left, Vector256<uint> mask) { throw new NotImplementedException(); }
+        public static Vector256<float> PermuteVar8x32(Vector256<float> left, Vector256<float> mask) { throw new NotImplementedException(); }
 
         // __m256i _mm256_slli_epi16 (__m256i a, int imm8)
-        public static Vector256<short> ShiftLeftLogical(Vector256<short> value, byte count) { throw new NotImplementedException(); }
+        public static Vector256<short> ShiftLeftLogical(Vector256<short> value, const byte count) { throw new NotImplementedException(); }
         // __m256i _mm256_slli_epi16 (__m256i a, int imm8)
-        public static Vector256<ushort> ShiftLeftLogical(Vector256<ushort> value, byte count) { throw new NotImplementedException(); }
+        public static Vector256<ushort> ShiftLeftLogical(Vector256<ushort> value, const byte count) { throw new NotImplementedException(); }
         // __m256i _mm256_slli_epi32 (__m256i a, int imm8)
-        public static Vector256<int> ShiftLeftLogical(Vector256<int> value, byte count) { throw new NotImplementedException(); }
+        public static Vector256<int> ShiftLeftLogical(Vector256<int> value, const byte count) { throw new NotImplementedException(); }
         // __m256i _mm256_slli_epi32 (__m256i a, int imm8)
-        public static Vector256<uint> ShiftLeftLogical(Vector256<uint> value, byte count) { throw new NotImplementedException(); }
+        public static Vector256<uint> ShiftLeftLogical(Vector256<uint> value, const byte count) { throw new NotImplementedException(); }
         // __m256i _mm256_slli_epi64 (__m256i a, int imm8)
-        public static Vector256<long> ShiftLeftLogical(Vector256<long> value, byte count) { throw new NotImplementedException(); }
+        public static Vector256<long> ShiftLeftLogical(Vector256<long> value, const byte count) { throw new NotImplementedException(); }
         // __m256i _mm256_slli_epi64 (__m256i a, int imm8)
-        public static Vector256<ulong> ShiftLeftLogical(Vector256<ulong> value, byte count) { throw new NotImplementedException(); }
+        public static Vector256<ulong> ShiftLeftLogical(Vector256<ulong> value, const byte count) { throw new NotImplementedException(); }
         
-        // __m256i _mm256_bslli_epi128 (__m256i a, int imm8)
-        public static Vector256<sbyte> ShiftLeftLogical128BitLane(Vector256<sbyte> value, byte numBytes) { throw new NotImplementedException(); }
-        // __m256i _mm256_bslli_epi128 (__m256i a, int imm8)
-        public static Vector256<byte> ShiftLeftLogical128BitLane(Vector256<byte> value, byte numBytes) { throw new NotImplementedException(); }
-        // __m256i _mm256_bslli_epi128 (__m256i a, int imm8)
-        public static Vector256<short> ShiftLeftLogical128BitLane(Vector256<short> value, byte numBytes) { throw new NotImplementedException(); }
-        // __m256i _mm256_bslli_epi128 (__m256i a, int imm8)
-        public static Vector256<ushort> ShiftLeftLogical128BitLane(Vector256<ushort> value, byte numBytes) { throw new NotImplementedException(); }
-        // __m256i _mm256_bslli_epi128 (__m256i a, int imm8)
-        public static Vector256<int> ShiftLeftLogical128BitLane(Vector256<int> value, byte numBytes) { throw new NotImplementedException(); }
-        // __m256i _mm256_bslli_epi128 (__m256i a, int imm8)
-        public static Vector256<uint> ShiftLeftLogical128BitLane(Vector256<uint> value, byte numBytes) { throw new NotImplementedException(); }
-        // __m256i _mm256_bslli_epi128 (__m256i a, int imm8)
-        public static Vector256<long> ShiftLeftLogical128BitLane(Vector256<long> value, byte numBytes) { throw new NotImplementedException(); }
-        // __m256i _mm256_bslli_epi128 (__m256i a, int imm8)
-        public static Vector256<ulong> ShiftLeftLogical128BitLane(Vector256<ulong> value, byte numBytes) { throw new NotImplementedException(); }
+        // __m256i _mm256_bslli_epi128 (__m256i a, const int imm8)
+        public static Vector256<sbyte> ShiftLeftLogical128BitLane(Vector256<sbyte> value, const byte numBytes) { throw new NotImplementedException(); }
+        // __m256i _mm256_bslli_epi128 (__m256i a, const int imm8)
+        public static Vector256<byte> ShiftLeftLogical128BitLane(Vector256<byte> value, const byte numBytes) { throw new NotImplementedException(); }
+        // __m256i _mm256_bslli_epi128 (__m256i a, const int imm8)
+        public static Vector256<short> ShiftLeftLogical128BitLane(Vector256<short> value, const byte numBytes) { throw new NotImplementedException(); }
+        // __m256i _mm256_bslli_epi128 (__m256i a, const int imm8)
+        public static Vector256<ushort> ShiftLeftLogical128BitLane(Vector256<ushort> value, const byte numBytes) { throw new NotImplementedException(); }
+        // __m256i _mm256_bslli_epi128 (__m256i a, const int imm8)
+        public static Vector256<int> ShiftLeftLogical128BitLane(Vector256<int> value, const byte numBytes) { throw new NotImplementedException(); }
+        // __m256i _mm256_bslli_epi128 (__m256i a, const int imm8)
+        public static Vector256<uint> ShiftLeftLogical128BitLane(Vector256<uint> value, const byte numBytes) { throw new NotImplementedException(); }
+        // __m256i _mm256_bslli_epi128 (__m256i a, const int imm8)
+        public static Vector256<long> ShiftLeftLogical128BitLane(Vector256<long> value, const byte numBytes) { throw new NotImplementedException(); }
+        // __m256i _mm256_bslli_epi128 (__m256i a, const int imm8)
+        public static Vector256<ulong> ShiftLeftLogical128BitLane(Vector256<ulong> value, const byte numBytes) { throw new NotImplementedException(); }
         
         // __m256i _mm256_sllv_epi32 (__m256i a, __m256i count)
         public static Vector256<int> ShiftLeftLogicalVariable(Vector256<int> value, Vector256<uint> count) { throw new NotImplementedException(); }
@@ -532,42 +562,42 @@ namespace System.Runtime.CompilerServices.Intrinsics.X86
         public static Vector256<ulong> ShiftLeftLogicalVariable(Vector256<ulong> value, Vector256<ulong> count) { throw new NotImplementedException(); }
         
         // __m256i _mm256_srai_epi16 (__m256i a, int imm8)
-        public static Vector256<short> ShiftRightArithmetic(Vector256<short> value, byte count) { throw new NotImplementedException(); }
+        public static Vector256<short> ShiftRightArithmetic(Vector256<short> value, const byte count) { throw new NotImplementedException(); }
         // __m256i _mm256_srai_epi32 (__m256i a, int imm8)
-        public static Vector256<int> ShiftRightArithmetic(Vector256<int> value, byte count) { throw new NotImplementedException(); }
+        public static Vector256<int> ShiftRightArithmetic(Vector256<int> value, const byte count) { throw new NotImplementedException(); }
                 
         // __m256i _mm256_srav_epi32 (__m256i a, __m256i count)
         public static Vector256<int> ShiftRightArithmeticVariable(Vector256<int> value, Vector256<uint> count) { throw new NotImplementedException(); }
 
         // __m256i _mm256_srli_epi16 (__m256i a, int imm8)
-        public static Vector256<short> ShiftRightLogical(Vector256<short> value, byte count) { throw new NotImplementedException(); }
+        public static Vector256<short> ShiftRightLogical(Vector256<short> value, const byte count) { throw new NotImplementedException(); }
         // __m256i _mm256_srli_epi16 (__m256i a, int imm8)
-        public static Vector256<ushort> ShiftRightLogical(Vector256<ushort> value, byte count) { throw new NotImplementedException(); }
+        public static Vector256<ushort> ShiftRightLogical(Vector256<ushort> value, const byte count) { throw new NotImplementedException(); }
         // __m256i _mm256_srli_epi32 (__m256i a, int imm8)
-        public static Vector256<int> ShiftRightLogical(Vector256<int> value, byte count) { throw new NotImplementedException(); }
+        public static Vector256<int> ShiftRightLogical(Vector256<int> value, const byte count) { throw new NotImplementedException(); }
         // __m256i _mm256_srli_epi32 (__m256i a, int imm8)
-        public static Vector256<uint> ShiftRightLogical(Vector256<uint> value, byte count) { throw new NotImplementedException(); }
+        public static Vector256<uint> ShiftRightLogical(Vector256<uint> value, const byte count) { throw new NotImplementedException(); }
         // __m256i _mm256_srli_epi64 (__m256i a, int imm8)
-        public static Vector256<long> ShiftRightLogical(Vector256<long> value, byte count) { throw new NotImplementedException(); }
+        public static Vector256<long> ShiftRightLogical(Vector256<long> value, const byte count) { throw new NotImplementedException(); }
         // __m256i _mm256_srli_epi64 (__m256i a, int imm8)
-        public static Vector256<ulong> ShiftRightLogical(Vector256<ulong> value, byte count) { throw new NotImplementedException(); }
+        public static Vector256<ulong> ShiftRightLogical(Vector256<ulong> value, const byte count) { throw new NotImplementedException(); }
         
-        // __m256i _mm256_bsrli_epi128 (__m256i a, int imm8)
-        public static Vector256<sbyte> ShiftRightLogical128BitLane(Vector256<sbyte> value, byte numBytes) { throw new NotImplementedException(); }
-        // __m256i _mm256_bsrli_epi128 (__m256i a, int imm8)
-        public static Vector256<byte> ShiftRightLogical128BitLane(Vector256<byte> value, byte numBytes) { throw new NotImplementedException(); }
-        // __m256i _mm256_bsrli_epi128 (__m256i a, int imm8)
-        public static Vector256<short> ShiftRightLogical128BitLane(Vector256<short> value, byte numBytes) { throw new NotImplementedException(); }
-        // __m256i _mm256_bsrli_epi128 (__m256i a, int imm8)
-        public static Vector256<ushort> ShiftRightLogical128BitLane(Vector256<ushort> value, byte numBytes) { throw new NotImplementedException(); }
-        // __m256i _mm256_bsrli_epi128 (__m256i a, int imm8)
-        public static Vector256<int> ShiftRightLogical128BitLane(Vector256<int> value, byte numBytes) { throw new NotImplementedException(); }
-        // __m256i _mm256_bsrli_epi128 (__m256i a, int imm8)
-        public static Vector256<uint> ShiftRightLogical128BitLane(Vector256<uint> value, byte numBytes) { throw new NotImplementedException(); }
-        // __m256i _mm256_bsrli_epi128 (__m256i a, int imm8)
-        public static Vector256<long> ShiftRightLogical128BitLane(Vector256<long> value, byte numBytes) { throw new NotImplementedException(); }
-        // __m256i _mm256_bsrli_epi128 (__m256i a, int imm8)
-        public static Vector256<ulong> ShiftRightLogical128BitLane(Vector256<ulong> value, byte numBytes) { throw new NotImplementedException(); }
+        // __m256i _mm256_bsrli_epi128 (__m256i a, const int imm8)
+        public static Vector256<sbyte> ShiftRightLogical128BitLane(Vector256<sbyte> value, const byte numBytes) { throw new NotImplementedException(); }
+        // __m256i _mm256_bsrli_epi128 (__m256i a, const int imm8)
+        public static Vector256<byte> ShiftRightLogical128BitLane(Vector256<byte> value, const byte numBytes) { throw new NotImplementedException(); }
+        // __m256i _mm256_bsrli_epi128 (__m256i a, const int imm8)
+        public static Vector256<short> ShiftRightLogical128BitLane(Vector256<short> value, const byte numBytes) { throw new NotImplementedException(); }
+        // __m256i _mm256_bsrli_epi128 (__m256i a, const int imm8)
+        public static Vector256<ushort> ShiftRightLogical128BitLane(Vector256<ushort> value, const byte numBytes) { throw new NotImplementedException(); }
+        // __m256i _mm256_bsrli_epi128 (__m256i a, const int imm8)
+        public static Vector256<int> ShiftRightLogical128BitLane(Vector256<int> value, const byte numBytes) { throw new NotImplementedException(); }
+        // __m256i _mm256_bsrli_epi128 (__m256i a, const int imm8)
+        public static Vector256<uint> ShiftRightLogical128BitLane(Vector256<uint> value, const byte numBytes) { throw new NotImplementedException(); }
+        // __m256i _mm256_bsrli_epi128 (__m256i a, const int imm8)
+        public static Vector256<long> ShiftRightLogical128BitLane(Vector256<long> value, const byte numBytes) { throw new NotImplementedException(); }
+        // __m256i _mm256_bsrli_epi128 (__m256i a, const int imm8)
+        public static Vector256<ulong> ShiftRightLogical128BitLane(Vector256<ulong> value, const byte numBytes) { throw new NotImplementedException(); }
                 
         // __m256i _mm256_srlv_epi32 (__m256i a, __m256i count)
         public static Vector256<int> ShiftRightLogicalVariable(Vector256<int> value, Vector256<uint> count) { throw new NotImplementedException(); }
@@ -579,23 +609,23 @@ namespace System.Runtime.CompilerServices.Intrinsics.X86
         public static Vector256<ulong> ShiftRightLogicalVariable(Vector256<ulong> value, Vector256<ulong> count) { throw new NotImplementedException(); }
         
         // __m256i _mm256_shuffle_epi8 (__m256i a, __m256i b)
-        public static Vector256<sbyte> Shuffle(Vector256<sbyte> value, Vector256<byte> mask) { throw new NotImplementedException(); }
+        public static Vector256<sbyte> Shuffle(Vector256<sbyte> value, Vector256<sbyte> mask) { throw new NotImplementedException(); }
         // __m256i _mm256_shuffle_epi8 (__m256i a, __m256i b)
         public static Vector256<byte> Shuffle(Vector256<byte> value, Vector256<byte> mask) { throw new NotImplementedException(); }
-        // __m256i _mm256_shuffle_epi32 (__m256i a, int imm8)
-        public static Vector256<int> Shuffle(Vector256<int> value, byte control) { throw new NotImplementedException(); }
-        // __m256i _mm256_shuffle_epi32 (__m256i a, int imm8)
-        public static Vector256<uint> Shuffle(Vector256<uint> value, byte control) { throw new NotImplementedException(); }
+        // __m256i _mm256_shuffle_epi32 (__m256i a, const int imm8)
+        public static Vector256<int> Shuffle(Vector256<int> value, const byte control) { throw new NotImplementedException(); }
+        // __m256i _mm256_shuffle_epi32 (__m256i a, const int imm8)
+        public static Vector256<uint> Shuffle(Vector256<uint> value, const byte control) { throw new NotImplementedException(); }
          
-        // __m256i _mm256_shufflehi_epi16 (__m256i a, int imm8)
-        public static Vector256<short> ShuffleHigh(Vector256<short> value, byte control) { throw new NotImplementedException(); }
-        // __m256i _mm256_shufflehi_epi16 (__m256i a, int imm8)
-        public static Vector256<ushort> ShuffleHigh(Vector256<ushort> value, byte control) { throw new NotImplementedException(); }
+        // __m256i _mm256_shufflehi_epi16 (__m256i a, const int imm8)
+        public static Vector256<short> ShuffleHigh(Vector256<short> value, const byte control) { throw new NotImplementedException(); }
+        // __m256i _mm256_shufflehi_epi16 (__m256i a, const int imm8)
+        public static Vector256<ushort> ShuffleHigh(Vector256<ushort> value, const byte control) { throw new NotImplementedException(); }
         
-        // __m256i _mm256_shufflelo_epi16 (__m256i a, int imm8)
-        public static Vector256<short> ShuffleLow(Vector256<short> value, byte control) { throw new NotImplementedException(); }
-        // __m256i _mm256_shufflelo_epi16 (__m256i a, int imm8)
-        public static Vector256<ushort> ShuffleLow(Vector256<ushort> value, byte control) { throw new NotImplementedException(); }
+        // __m256i _mm256_shufflelo_epi16 (__m256i a, const int imm8)
+        public static Vector256<short> ShuffleLow(Vector256<short> value, const byte control) { throw new NotImplementedException(); }
+        // __m256i _mm256_shufflelo_epi16 (__m256i a, const int imm8)
+        public static Vector256<ushort> ShuffleLow(Vector256<ushort> value, const byte control) { throw new NotImplementedException(); }
         
         // __m256i _mm256_sign_epi8 (__m256i a, __m256i b)
         public static Vector256<sbyte> Sign(Vector256<sbyte> left, Vector256<sbyte> right) { throw new NotImplementedException(); }
