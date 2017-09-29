@@ -1,5 +1,5 @@
-using System.Runtime.CompilerServices.Intrinsics.X86;
-using System.Runtime.CompilerServices.Intrinsics;
+using System.Runtime.Intrinsics.X86;
+using System.Runtime.Intrinsics;
 
 // Size is too large to treat as HVA, so define RayPacket as class
 internal class RayPacket

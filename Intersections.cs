@@ -1,5 +1,5 @@
-using System.Runtime.CompilerServices.Intrinsics.X86;
-using System.Runtime.CompilerServices.Intrinsics;
+using System.Runtime.Intrinsics.X86;
+using System.Runtime.Intrinsics;
 using System;
 
 internal class Intersections
@@ -17,21 +17,21 @@ internal class Intersections
         ThingIndex = things;
     }
 
-    public static Intersections Null = new Intersections(AVX.Set1<float>(Intersections.NullValue), AVX.Set1<int>(-1));
+    public static Intersections Null = new Intersections(Avx.Set1<float>(Intersections.NullValue), Avx.Set1<int>(-1));
 
     public bool AllNullIntersections()
     {
-        var cmp = AVX.CompareVector256(Distances, AVX.Set1<float>(Intersections.NullValue), FloatComparisonMode.CompareEqualOrderedNonSignaling);
-        var zero = AVX.SetZero<int>();
-        var mask = AVX2.CompareEqual(zero, zero); 
-        return AVX.TestC(cmp, AVX.StaticCast<int, float>(mask));
+        var cmp = Avx.Compare(Distances, Avx.Set1<float>(Intersections.NullValue), FloatComparisonMode.EqualOrderedNonSignaling);
+        var zero = Avx.SetZero<int>();
+        var mask = Avx2.CompareEqual(zero, zero); 
+        return Avx.TestC(cmp, Avx.StaticCast<int, float>(mask));
     }
 
     public unsafe int[] WithThings()
     {
         var result = new int[VectorPacket.PacketSize];
         fixed (int* ptr = result){
-            AVX.Store(ptr, ThingIndex);
+            Avx.Store(ptr, ThingIndex);
         }
         return result;
     }

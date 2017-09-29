@@ -1,5 +1,5 @@
-using System.Runtime.CompilerServices.Intrinsics.X86;
-using System.Runtime.CompilerServices.Intrinsics;
+using System.Runtime.Intrinsics.X86;
+using System.Runtime.Intrinsics;
 
 using ColorPacket = VectorPacket;
 
@@ -7,26 +7,26 @@ internal static class ColorPacketHelper
 {
     public static IntRGBPacket ConvertToIntRGB(this VectorPacket colors)
     {
-        var one = AVX.Set1<float>(1.0f);
-        var max = AVX.Set1<float>(255.0f);
+        var one = Avx.Set1<float>(1.0f);
+        var max = Avx.Set1<float>(255.0f);
 
-        var rsMask = AVX.CompareVector256(colors.xs, one, FloatComparisonMode.CompareGreaterThanOrderedNonSignaling);
-        var gsMask = AVX.CompareVector256(colors.ys, one, FloatComparisonMode.CompareGreaterThanOrderedNonSignaling);;
-        var bsMask = AVX.CompareVector256(colors.zs, one, FloatComparisonMode.CompareGreaterThanOrderedNonSignaling);
+        var rsMask = Avx.Compare(colors.xs, one, FloatComparisonMode.GreaterThanOrderedNonSignaling);
+        var gsMask = Avx.Compare(colors.ys, one, FloatComparisonMode.GreaterThanOrderedNonSignaling);;
+        var bsMask = Avx.Compare(colors.zs, one, FloatComparisonMode.GreaterThanOrderedNonSignaling);
 
-        var rs = AVX.BlendVariable(colors.xs, one, rsMask);
-        var gs = AVX.BlendVariable(colors.ys, one, gsMask);
-        var bs = AVX.BlendVariable(colors.zs, one, bsMask);
+        var rs = Avx.BlendVariable(colors.xs, one, rsMask);
+        var gs = Avx.BlendVariable(colors.ys, one, gsMask);
+        var bs = Avx.BlendVariable(colors.zs, one, bsMask);
 
-        var rsInt = AVX.ConvertToVector256Int(AVX.Multiply(rs, max));
-        var gsInt = AVX.ConvertToVector256Int(AVX.Multiply(gs, max));
-        var bsInt = AVX.ConvertToVector256Int(AVX.Multiply(bs, max));
+        var rsInt = Avx.ConvertToVector256Int(Avx.Multiply(rs, max));
+        var gsInt = Avx.ConvertToVector256Int(Avx.Multiply(gs, max));
+        var bsInt = Avx.ConvertToVector256Int(Avx.Multiply(bs, max));
 
         return new IntRGBPacket(rsInt, gsInt, bsInt);
     }
 
-    public static ColorPacket BackgroundColor = new ColorPacket(AVX.SetZero<float>());
-    public static ColorPacket DefaultColor = new ColorPacket(AVX.SetZero<float>());
+    public static ColorPacket BackgroundColor = new ColorPacket(Avx.SetZero<float>());
+    public static ColorPacket DefaultColor = new ColorPacket(Avx.SetZero<float>());
 }
 
 internal struct IntRGBPacket

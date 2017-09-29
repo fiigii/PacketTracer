@@ -1,4 +1,4 @@
-using System.Runtime.CompilerServices.Intrinsics;
+using System.Runtime.Intrinsics;
 using System;
 using ColorPacket = VectorPacket;
 

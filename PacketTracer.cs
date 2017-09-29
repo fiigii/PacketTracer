@@ -1,5 +1,5 @@
-using System.Runtime.CompilerServices.Intrinsics.X86;
-using System.Runtime.CompilerServices.Intrinsics;
+using System.Runtime.Intrinsics.X86;
+using System.Runtime.Intrinsics;
 using System.Collections.Generic;
 
 using ColorPacket = VectorPacket;
@@ -29,29 +29,29 @@ internal class PacketTracer
             for (int x = 0; x  < Width; x += VectorPacket.PacketSize)
             {
                 float fx = (float)x;
-                Vector256<float> xs = AVX.Set(fx, fx+1, fx+2, fx+3, fx+4, fx+5, fx+6, fx+7);
-                var dirs = GetVectorPacket(xs, AVX.Set1((float)y), camera);
+                Vector256<float> xs = Avx.Set(fx, fx+1, fx+2, fx+3, fx+4, fx+5, fx+6, fx+7);
+                var dirs = GetVectorPacket(xs, Avx.Set1((float)y), camera);
                 var rayPacket = new RayPacket(camera.PosPacket, dirs);
                 var colors = TraceRay(rayPacket, scene, 0);
 
                 // Writ into memory via xmm registers
                 var SoA = colors.FastTranspose();
                 var intSoA = SoA.ConvertToIntRGB();
-                var m0 = AVX.GetLowerHalf<int>(intSoA.Rs);
-                var m1 = AVX.GetLowerHalf<int>(intSoA.Gs);
-                var m2 = AVX.GetLowerHalf<int>(intSoA.Bs);
-                var m3 = AVX2.ExtractVector128(intSoA.Rs, 1);
-                var m4 = AVX2.ExtractVector128(intSoA.Gs, 1);
-                var m5 = AVX2.ExtractVector128(intSoA.Bs, 1);
+                var m0 = Avx.GetLowerHalf<int>(intSoA.Rs);
+                var m1 = Avx.GetLowerHalf<int>(intSoA.Gs);
+                var m2 = Avx.GetLowerHalf<int>(intSoA.Bs);
+                var m3 = Avx2.ExtractVector128(intSoA.Rs, 1);
+                var m4 = Avx2.ExtractVector128(intSoA.Gs, 1);
+                var m5 = Avx2.ExtractVector128(intSoA.Bs, 1);
                 
                 fixed (int* output = &rgb[x + stride])
                 {
-                    SSE2.Store(output, m0);
-                    SSE2.Store(output + 4, m1);
-                    SSE2.Store(output + 8, m2);
-                    SSE2.Store(output + 12, m3);
-                    SSE2.Store(output + 16, m4);
-                    SSE2.Store(output + 20, m5);
+                    Sse2.Store(output, m0);
+                    Sse2.Store(output + 4, m1);
+                    Sse2.Store(output + 8, m2);
+                    Sse2.Store(output + 12, m3);
+                    Sse2.Store(output + 16, m4);
+                    Sse2.Store(output + 20, m5);
                 }
 
                 /* Writ into memory via ymm registers
@@ -59,9 +59,9 @@ internal class PacketTracer
                 var intSoA = SoA.ConvertToIntRGB();
                 fixed (int* output = &rgb[x + stride])
                 {
-                    AVX.Store(output, intSoA.xs);
-                    AVX.Store(output + 8, intSoA.ys);
-                    AVX.Store(output + 16, intSoA.zs);
+                    Avx.Store(output, intSoA.xs);
+                    Avx.Store(output + 8, intSoA.ys);
+                    Avx.Store(output + 16, intSoA.zs);
                 }
                 */
                 
@@ -85,7 +85,7 @@ internal class PacketTracer
         var isect = MinIntersections(rayPacket, scene);
         if(isect.AllNullIntersections())
         {
-            return AVX.SetZero<float>();
+            return Avx.SetZero<float>();
         }
         return isect.Distances;
     }
@@ -100,14 +100,14 @@ internal class PacketTracer
             var orgIsect = objPacket.Intersect(rayPacket, index);
             if (!orgIsect.AllNullIntersections())
             {
-                var nullMinMask = AVX.CompareVector256(mins.Distances, Intersections.Null.Distances, FloatComparisonMode.CompareEqualOrderedNonSignaling);
-                var lessMinMask = AVX.CompareVector256(mins.Distances, orgIsect.Distances, FloatComparisonMode.CompareGreaterThanOrderedNonSignaling);
-                var minDis = AVX.BlendVariable(mins.Distances, orgIsect.Distances, AVX.Or(nullMinMask, lessMinMask));
+                var nullMinMask = Avx.Compare(mins.Distances, Intersections.Null.Distances, FloatComparisonMode.EqualOrderedNonSignaling);
+                var lessMinMask = Avx.Compare(mins.Distances, orgIsect.Distances, FloatComparisonMode.GreaterThanOrderedNonSignaling);
+                var minDis = Avx.BlendVariable(mins.Distances, orgIsect.Distances, Avx.Or(nullMinMask, lessMinMask));
                 mins.Distances = minDis;
-                var minIndex = AVX.BlendVariable(AVX.StaticCast<int, float>(mins.ThingIndex), 
-                                                 AVX.StaticCast<int, float>(AVX.Set1(index)), 
-                                                 AVX.Or(nullMinMask, lessMinMask)); //CSE
-                mins.ThingIndex = AVX.StaticCast<float, int>(minIndex);
+                var minIndex = Avx.BlendVariable(Avx.StaticCast<int, float>(mins.ThingIndex), 
+                                                 Avx.StaticCast<int, float>(Avx.Set1(index)), 
+                                                 Avx.Or(nullMinMask, lessMinMask)); //CSE
+                mins.ThingIndex = Avx.StaticCast<float, int>(minIndex);
             }
             index++;
         }
@@ -129,16 +129,16 @@ internal class PacketTracer
             }
         }
         /* 
-        var intersectedNormals = AVX.SetZero<float>();
+        var intersectedNormals = Avx.SetZero<float>();
         foreach (var pair in normals)
         {
             var index = pair.Key;
             var normal = pair.value;
-            var posMask = AVX2.CompareEqual(isect.ThingIndex, AVX.Set1(index));
-            intersectedNormals = AVX.BlendVariable(intersectedNormals, normal, posMask);
+            var posMask = Avx2.CompareEqual(isect.ThingIndex, Avx.Set1(index));
+            intersectedNormals = Avx.BlendVariable(intersectedNormals, normal, posMask);
         }
 
-        var reflectDirs = ds - AVX.Multiply(AVX.Set1(2f), VectorPacket.DotProduct(intersectedNormals, ds)) * intersectedNormals;
+        var reflectDirs = ds - Avx.Multiply(Avx.Set1(2f), VectorPacket.DotProduct(intersectedNormals, ds)) * intersectedNormals;
         */
         //colors += GetNaturalColor();
 
@@ -173,8 +173,8 @@ internal class PacketTracer
         float hightRate1 = Hight / 2.0f;
         float hightRate2 = Hight * 2.0f;
 
-        var recenteredX = AVX.Divide(AVX.Subtract(x, AVX.Set1(widthRate1)), AVX.Set1(widthRate2));
-        var recenteredY = AVX.Subtract(AVX.SetZero<float>(), AVX.Divide(AVX.Subtract(y, AVX.Set1(hightRate1)), AVX.Set1(hightRate2)));
+        var recenteredX = Avx.Divide(Avx.Subtract(x, Avx.Set1(widthRate1)), Avx.Set1(widthRate2));
+        var recenteredY = Avx.Subtract(Avx.SetZero<float>(), Avx.Divide(Avx.Subtract(y, Avx.Set1(hightRate1)), Avx.Set1(hightRate2)));
 
         var result = camera.ForwardPacket + 
                     (recenteredX * camera.RightPacket) +

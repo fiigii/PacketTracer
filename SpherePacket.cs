@@ -1,5 +1,5 @@
-using System.Runtime.CompilerServices.Intrinsics.X86;
-using System.Runtime.CompilerServices.Intrinsics;
+using System.Runtime.Intrinsics.X86;
+using System.Runtime.Intrinsics;
 
 internal class SpherePacket: ObjectPacket
 {
@@ -8,8 +8,8 @@ internal class SpherePacket: ObjectPacket
 
     public SpherePacket(Sphere sphere): base(sphere.Surface)
     {
-        Centers = new VectorPacket(AVX.Set1(sphere.Center.X), AVX.Set1(sphere.Center.Y), AVX.Set1(sphere.Center.Z));
-        Radiuses = AVX.Set1(sphere.Radius);
+        Centers = new VectorPacket(Avx.Set1(sphere.Center.X), Avx.Set1(sphere.Center.Y), Avx.Set1(sphere.Center.Z));
+        Radiuses = Avx.Set1(sphere.Radius);
     }
 
     public override Intersections Intersect(RayPacket rayPacket, int index)
@@ -17,23 +17,23 @@ internal class SpherePacket: ObjectPacket
         var intersections = Intersections.Null;
         var eo = Centers - rayPacket.Starts;
         var v = VectorPacket.DotProduct(eo, rayPacket.Dirs);
-        var zeroVMask = AVX.CompareVector256(v, AVX.SetZero<float>(), FloatComparisonMode.CompareLessThanOrderedNonSignaling);
-        var zero = AVX.SetZero<int>();
-        var allOneMask = AVX2.CompareEqual(zero, zero); 
-        if(AVX.TestC(zeroVMask, AVX.StaticCast<int, float>(allOneMask)))
+        var zeroVMask = Avx.Compare(v, Avx.SetZero<float>(), FloatComparisonMode.LessThanOrderedNonSignaling);
+        var zero = Avx.SetZero<int>();
+        var allOneMask = Avx2.CompareEqual(zero, zero); 
+        if(Avx.TestC(zeroVMask, Avx.StaticCast<int, float>(allOneMask)))
         {
             return intersections; // Null Intersections
         }
 
-        var discs = AVX.Subtract(AVX.Multiply(Radiuses, Radiuses), AVX.Subtract(VectorPacket.DotProduct(eo, eo), AVX.Multiply(v, v)));
-        var dists = AVX.Sqrt(discs);
-        var zeroDiscMask = AVX.CompareVector256(discs, AVX.SetZero<float>(), FloatComparisonMode.CompareLessThanOrderedNonSignaling);
+        var discs = Avx.Subtract(Avx.Multiply(Radiuses, Radiuses), Avx.Subtract(VectorPacket.DotProduct(eo, eo), Avx.Multiply(v, v)));
+        var dists = Avx.Sqrt(discs);
+        var zeroDiscMask = Avx.Compare(discs, Avx.SetZero<float>(), FloatComparisonMode.LessThanOrderedNonSignaling);
 
-        var nullInter = AVX.Set1(Intersections.NullValue);
-        var filter = AVX.BlendVariable(dists, nullInter, AVX.Or(zeroVMask, zeroDiscMask));
+        var nullInter = Avx.Set1(Intersections.NullValue);
+        var filter = Avx.BlendVariable(dists, nullInter, Avx.Or(zeroVMask, zeroDiscMask));
 
         intersections.Distances = filter;
-        intersections.ThingIndex = AVX.Set1<int>(index);
+        intersections.ThingIndex = Avx.Set1<int>(index);
         return intersections;
     }
 

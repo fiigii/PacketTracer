@@ -1,5 +1,5 @@
-using System.Runtime.CompilerServices.Intrinsics;
-using System.Runtime.CompilerServices.Intrinsics.X86;
+using System.Runtime.Intrinsics;
+using System.Runtime.Intrinsics.X86;
 
 internal struct Color
 {
@@ -18,6 +18,6 @@ internal struct Color
 
     public VectorPacket ToColorPacket()
     {
-        return new VectorPacket(AVX.Set1(R), AVX.Set1(G), AVX.Set1(B));
+        return new VectorPacket(Avx.Set1(R), Avx.Set1(G), Avx.Set1(B));
     }
 }
