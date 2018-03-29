@@ -7,6 +7,6 @@
     <RuntimeIdentifier>win7-x64</RuntimeIdentifier>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="System.Runtime.Intrinsics.X86" Version="4.5.0-preview1-25718-03" />
+    <PackageReference Include="System.Runtime.Intrinsics.Experimental" Version="4.5.0-preview3-26328-06" />
   </ItemGroup>
 </Project>

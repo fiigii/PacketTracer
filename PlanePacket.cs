@@ -1,27 +1,27 @@
 using System.Runtime.Intrinsics.X86;
 using System.Runtime.Intrinsics;
 
-internal class PlanePacket: ObjectPacket
+internal class PlanePacket256: ObjectPacket256
 {
-    public VectorPacket Norms {get; private set;}
+    public VectorPacket256 Norms {get; private set;}
     public Vector256<float> Offsets {get; private set;}
 
-    public PlanePacket(Plane plane): base(plane.Surface)
+    public PlanePacket256(Plane plane): base(plane.Surface)
     {
-        Norms = new VectorPacket(Avx.Set1(plane.Norm.X), Avx.Set1(plane.Norm.Y), Avx.Set1(plane.Norm.Z));
-        Offsets = Avx.Set1(plane.Offset);
+        Norms = new VectorPacket256(Avx.SetAllVector256(plane.Norm.X), Avx.SetAllVector256(plane.Norm.Y), Avx.SetAllVector256(plane.Norm.Z));
+        Offsets = Avx.SetAllVector256(plane.Offset);
     }
 
-    public override Intersections Intersect(RayPacket rayPacket, int index)
+    public override Intersections Intersect(RayPacket256 rayPacket256, int index)
     {
-        var denom = VectorPacket.DotProduct(Norms, rayPacket.Dirs);
-        var dist = Avx.Divide(VectorPacket.DotProduct(Norms, rayPacket.Starts), Avx.Subtract(Avx.SetZero<float>(), denom));
-        var gtMask = Avx.Compare(denom, Avx.SetZero<float>(), FloatComparisonMode.GreaterThanOrderedNonSignaling);
-        var reslut = Avx.Or(Avx.And(gtMask, Avx.Set1(Intersections.NullValue)), Avx.AndNot(gtMask, dist));
-        return new Intersections(reslut, Avx.Set1<int>(index));
+        var denom = VectorPacket256.DotProduct(Norms, rayPacket256.Dirs);
+        var dist = Avx.Divide(VectorPacket256.DotProduct(Norms, rayPacket256.Starts), Avx.Subtract(Avx.SetZeroVector256<float>(), denom));
+        var gtMask = Avx.Compare(denom, Avx.SetZeroVector256<float>(), FloatComparisonMode.GreaterThanOrderedNonSignaling);
+        var reslut = Avx.Or(Avx.And(gtMask, Avx.SetAllVector256(Intersections.NullValue)), Avx.AndNot(gtMask, dist));
+        return new Intersections(reslut, Avx.SetAllVector256<int>(index));
     }
 
-    public override VectorPacket Normal(VectorPacket pos)
+    public override VectorPacket256 Normal(VectorPacket256 pos)
     {
         return Norms;
     }

@@ -5,9 +5,9 @@ internal class Sphere : SceneObject
 
     public Sphere(Vector center, double radius, Surface surface) : base(surface) { Center = center; Radius = (float)radius; }
 
-    public override ObjectPacket ToPacket()
+    public override ObjectPacket256 ToPacket256()
     {
-        return new SpherePacket(this);
+        return new SpherePacket256(this);
     }
 
 }

@@ -1,13 +1,13 @@
-using ColorPacket = VectorPacket;
+using ColorPacket256 = VectorPacket256;
 
-internal class LightPacket
+internal class LightPacket256
 {
-    public VectorPacket Positions {get; private set;}
-    public ColorPacket Colors {get; private set;}
+    public VectorPacket256 Positions {get; private set;}
+    public ColorPacket256 Colors {get; private set;}
 
-    public LightPacket(Vector pos, Color col)
+    public LightPacket256(Vector pos, Color col)
     {
-        Positions = new VectorPacket(pos);
-        Colors = col.ToColorPacket();
+        Positions = new VectorPacket256(pos);
+        Colors = col.ToColorPacket256();
     }
 }

@@ -1,17 +1,17 @@
 using System.Runtime.Intrinsics;
 using System;
-using ColorPacket = VectorPacket;
+using ColorPacket256 = VectorPacket256;
 
 internal class Surface
 {
-    public Func<VectorPacket, ColorPacket> Diffuse;
-    public Func<VectorPacket, ColorPacket> Specular;
-    public Func<VectorPacket, Vector256<float>> Reflect;
+    public Func<VectorPacket256, ColorPacket256> Diffuse;
+    public Func<VectorPacket256, ColorPacket256> Specular;
+    public Func<VectorPacket256, Vector256<float>> Reflect;
     public float Roughness;
 
-    public Surface(Func<VectorPacket, ColorPacket> Diffuse,
-                    Func<VectorPacket, ColorPacket> Specular,
-                    Func<VectorPacket, Vector256<float>> Reflect,
+    public Surface(Func<VectorPacket256, ColorPacket256> Diffuse,
+                    Func<VectorPacket256, ColorPacket256> Specular,
+                    Func<VectorPacket256, Vector256<float>> Reflect,
                     float Roughness)
     {
         this.Diffuse = Diffuse;

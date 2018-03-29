@@ -16,8 +16,8 @@ internal struct Color
         B = _b;
     }
 
-    public VectorPacket ToColorPacket()
+    public VectorPacket256 ToColorPacket256()
     {
-        return new VectorPacket(Avx.Set1(R), Avx.Set1(G), Avx.Set1(B));
+        return new VectorPacket256(Avx.SetAllVector256(R), Avx.SetAllVector256(G), Avx.SetAllVector256(B));
     }
 }
