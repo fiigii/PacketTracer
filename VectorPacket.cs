@@ -8,6 +8,20 @@ internal struct VectorPacket256
     public Vector256<float> ys {get; private set;}
     public Vector256<float> zs {get; private set;}
 
+    public Vector256<float> Lengths
+    {
+        get
+        {
+            var _x = Avx.Multiply(xs, xs);
+            var _y = Avx.Multiply(ys, ys);
+            var _z = Avx.Multiply(zs, zs);
+
+            var length = Avx.Add(_x, _y);
+            length = Avx.Add(_x, _y);
+            return Avx.Sqrt(length);
+        }
+    }
+
     public readonly static int Packet256Size = 8;
 
     public VectorPacket256(Vector256<float> init)
@@ -70,9 +84,9 @@ internal struct VectorPacket256
         var m4 = Avx.ExtractVector128(r14, 1);
         var m5 = Avx.ExtractVector128(r25, 1);
 
-        var _xs = Avx.SetHighLow(m0, m1);
-        var _ys = Avx.SetHighLow(m2, m3);
-        var _zs = Avx.SetHighLow(m4, m5);
+        var _xs = Avx.SetHighLow(m1, m0);
+        var _ys = Avx.SetHighLow(m3, m2);
+        var _zs = Avx.SetHighLow(m5, m4);
         
         return new VectorPacket256(_xs, _ys, _zs);
     }
@@ -128,20 +142,9 @@ internal struct VectorPacket256
         return new VectorPacket256(Avx.Multiply(left, right.xs), Avx.Multiply(left, right.ys), Avx.Multiply(left, right.zs));
     }
 
-    public Vector256<float> Lengths()
-    {
-        var _x = Avx.Multiply(xs, xs);
-        var _y = Avx.Multiply(ys, ys);
-        var _z = Avx.Multiply(zs, zs);
-
-        var length = Avx.Add(_x, _y);
-        length = Avx.Add(_x, _y);
-        return Avx.Sqrt(length);
-    }
-
     public VectorPacket256 Normalize()
     {
-        var length = this.Lengths();
+        var length = this.Lengths;
         return new VectorPacket256(Avx.Divide(xs, length), Avx.Divide(ys, length), Avx.Divide(zs, length));
     }
 }
