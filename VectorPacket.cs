@@ -12,13 +12,13 @@ internal struct VectorPacket256
     {
         get
         {
-            var _x = Avx.Multiply(xs, xs);
-            var _y = Avx.Multiply(ys, ys);
-            var _z = Avx.Multiply(zs, zs);
+            var x2 = Avx.Multiply(xs, xs);
+            var y2 = Avx.Multiply(ys, ys);
+            var z2 = Avx.Multiply(zs, zs);
 
-            var length = Avx.Add(_x, _y);
-            length = Avx.Add(_x, _y);
-            return Avx.Sqrt(length);
+            var l2 = Avx.Add(x2, y2);
+            l2 = Avx.Add(l2, z2);
+            return Avx.Sqrt(l2);
         }
     }
 
@@ -122,19 +122,17 @@ internal struct VectorPacket256
 
     public static Vector256<float> DotProduct (VectorPacket256 left, VectorPacket256 right)
     {
-        var _xs = Avx.Multiply(left.xs, right.xs);
-        var _ys = Avx.Multiply(left.ys, right.ys);
-        var _zs = Avx.Multiply(left.zs, right.zs);
-        var result = Avx.Add(_xs, _ys);
-        result = Avx.Add(result, _zs);
-        return result;
+        var x2 = Avx.Multiply(left.xs, right.xs);
+        var y2 = Avx.Multiply(left.ys, right.ys);
+        var z2 = Avx.Multiply(left.zs, right.zs);
+        return Avx.Add(Avx.Add(x2, y2), z2);
     }
 
     public static VectorPacket256 CrossProduct(VectorPacket256 left, VectorPacket256 right)
     {
         return new VectorPacket256(Avx.Subtract(Avx.Multiply(left.ys, right.zs), Avx.Multiply(left.zs, right.ys)),
-                               Avx.Subtract(Avx.Multiply(left.zs, right.xs), Avx.Multiply(left.xs, right.zs)),
-                               Avx.Subtract(Avx.Multiply(left.xs, right.ys), Avx.Multiply(left.ys, right.xs)));
+                                   Avx.Subtract(Avx.Multiply(left.zs, right.xs), Avx.Multiply(left.xs, right.zs)),
+                                   Avx.Subtract(Avx.Multiply(left.xs, right.ys), Avx.Multiply(left.ys, right.xs)));
     }
 
     public static VectorPacket256 operator *(Vector256<float> left, VectorPacket256 right)

@@ -46,6 +46,40 @@ class Program
             Console.Write(outptr3[i] + ",");
         }
         Console.WriteLine();
+
+        var s = new SpherePacket256(new Sphere(new Vector(1, 2, 3), 2.0, Surfaces.Shiny));
+        float* outptr4 = stackalloc float[24];
+        Avx.Store(outptr4, s.Centers.xs);
+        Avx.Store(outptr4+8, s.Centers.ys);
+        Avx.Store(outptr4+16, s.Centers.zs);
+        for (int i = 0; i < 24; i++)
+        {
+            Console.Write(outptr4[i] + ",");
+        }
+        Console.WriteLine();
+
+        Avx.Store(outptr4, s.Radiuses);
+        for (int i = 0; i < 8; i++)
+        {
+            Console.Write(outptr4[i] + ",");
+        }
+        Console.WriteLine();
+
+        var rays = new RayPacket256(vp, new VectorPacket256(new Vector(2, 10, 1)));
+        var inter = s.Intersect(rays, 0);
+        Avx.Store(outptr4, inter.Distances);
+        for (int i = 0; i < 8; i++)
+        {
+            Console.Write(outptr4[i] + ",");
+        }
+        Console.WriteLine();
+        int* intout = stackalloc int[8];
+        Avx.Store(intout, inter.ThingIndex);
+        for (int i = 0; i < 8; i++)
+        {
+            Console.Write(intout[i] + ",");
+        }
+        Console.WriteLine();
     }
 }
 
