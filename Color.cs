@@ -1,5 +1,5 @@
 using System.Runtime.Intrinsics;
-using System.Runtime.Intrinsics.X86;
+using static System.Runtime.Intrinsics.X86.Avx;
 
 internal struct Color
 {
@@ -18,6 +18,6 @@ internal struct Color
 
     public VectorPacket256 ToColorPacket256()
     {
-        return new VectorPacket256(Avx.SetAllVector256(R), Avx.SetAllVector256(G), Avx.SetAllVector256(B));
+        return new VectorPacket256(SetAllVector256(R), SetAllVector256(G), SetAllVector256(B));
     }
 }
