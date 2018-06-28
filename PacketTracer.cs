@@ -35,11 +35,11 @@ internal class Packet256Tracer
                 Vector256<float> xs = SetVector256(fx, fx+1, fx+2, fx+3, fx+4, fx+5, fx+6, fx+7);
                 var dirs = GetVectorPacket256(xs, SetAllVector256((float)y), camera);
                 var rayPacket256 = new RayPacket256(camera.PosPacket256, dirs);
-                var colors = TraceRay(rayPacket256, scene, 0);
+                var SoAcolors = TraceRay(rayPacket256, scene, 0);
 
                 // Writ into memory via xmm registers
-                var SoA = colors.FastTranspose();
-                var intSoA = SoA.ConvertToIntRGB();
+                var AoS = SoAcolors.FastTranspose();
+                var intSoA = AoS.ConvertToIntRGB();
                 var m0 = GetLowerHalf<int>(intSoA.Rs);
                 var m1 = GetLowerHalf<int>(intSoA.Gs);
                 var m2 = GetLowerHalf<int>(intSoA.Bs);
@@ -83,7 +83,7 @@ internal class Packet256Tracer
         return Shade(isect, rayPacket256, scene,depth);
     }
 
-    private Vector256<float> TestRay(RayPacket256 rayPacket256, Scene scene, int depth)
+    private Vector256<float> TestRay(RayPacket256 rayPacket256, Scene scene)
     {
         var isect = MinIntersections(rayPacket256, scene);
         if(isect.AllNullIntersections())
@@ -96,65 +96,40 @@ internal class Packet256Tracer
     private Intersections MinIntersections(RayPacket256 rayPacket256, Scene scene)
     {
         Intersections mins = Intersections.Null;
-        int index = 0;
         foreach (SceneObject obj in scene.Things)
         {
             var objPacket256 = obj.ToPacket256();
-            var orgIsect = objPacket256.Intersect(rayPacket256, index);
+            var orgIsect = objPacket256.Intersect(rayPacket256);
             if (!orgIsect.AllNullIntersections())
             {
                 var nullMinMask = Compare(mins.Distances, Intersections.Null.Distances, FloatComparisonMode.EqualOrderedNonSignaling);
                 var lessMinMask = Compare(mins.Distances, orgIsect.Distances, FloatComparisonMode.GreaterThanOrderedNonSignaling);
                 var minDis = BlendVariable(mins.Distances, orgIsect.Distances, Or(nullMinMask, lessMinMask));
                 mins.Distances = minDis;
-                var minIndex = BlendVariable(StaticCast<int, float>(mins.ThingIndex), 
-                                                 StaticCast<int, float>(SetAllVector256(index)), 
-                                                 Or(nullMinMask, lessMinMask)); //CSE
-                mins.ThingIndex = StaticCast<float, int>(minIndex);
+                mins.Thing = obj;
             }
-            index++;
         }
         return mins;
     }
 
     private ColorPacket256 Shade(Intersections isect, RayPacket256 rayPacket256, Scene scene, int depth)
     {
-        var colors = ColorPacket256Helper.DefaultColor;
+        
         var ds = rayPacket256.Dirs;
         var pos = isect.Distances * ds + rayPacket256.Starts;
-        var intersectedThings = isect.WithThings();
-        var normals = new Dictionary<int, VectorPacket256>();
-        foreach (var objIndex in intersectedThings)
-        {
-            if (!normals.ContainsKey(objIndex))
-            {
-                normals[objIndex] = scene.Things[objIndex].ToPacket256().Normal(pos);
-            }
-        }
-        /* 
-        var intersectedNormals = SetZeroVector256<float>();
-        foreach (var pair in normals)
-        {
-            var index = pair.Key;
-            var normal = pair.value;
-            var posMask = Avx2.CompareEqual(isect.ThingIndex, SetAllVector256(index));
-            intersectedNormals = BlendVariable(intersectedNormals, normal, posMask);
-        }
-
-        var reflectDirs = ds - Multiply(SetAllVector256(2f), VectorPacket256.DotProduct(intersectedNormals, ds)) * intersectedNormals;
-        */
-        //colors += GetNaturalColor();
+        var normals = isect.Thing.ToPacket256().Normal(pos);
+        var reflectDirs = ds - VectorPacket256.DotProduct(normals, ds) * normals;
+        var colors = ColorPacket256Helper.DefaultColor + GetNaturalColor(isect.Thing, pos, normals, reflectDirs, scene);
 
         if (depth >= MaxDepth)
         {
             return colors + (new Color(.5f, .5f, .5f)).ToColorPacket256();
         }
 
-        return colors; 
+        return colors + GetReflectionColor(isect.Thing, pos + (SetAllVector256<float>(0.001f) * reflectDirs), normals, reflectDirs, scene, depth); 
     }
 
-    /* 
-    private ColorPacket256 GetNaturalColor(Scene scene, VectorPacket256 pos, Vector norms, Vector rds, int depth)
+    private ColorPacket256 GetNaturalColor(SceneObject thing,VectorPacket256 pos, VectorPacket256 norms, VectorPacket256 rds, Scene scene)
     {
         var colors = ColorPacket256Helper.DefaultColor;
         foreach (Light light in scene.Lights)
@@ -162,11 +137,41 @@ internal class Packet256Tracer
             var lights = light.ToPacket256();
             var ldis = lights.Positions - pos;
             var livec = ldis.Normalize();
-            var neatIsect = TestRay(new RayPacket256(pos, livec), scene);
+            var neatIsectDis = TestRay(new RayPacket256(pos, livec), scene);
+            
+            // is in shadow?
+            var mask1 = Compare(neatIsectDis, ldis.Lengths, FloatComparisonMode.LessThanOrEqualOrderedNonSignaling);
+            var mask2 = Compare(neatIsectDis, SetZeroVector256<float>(), FloatComparisonMode.NotEqualOrderedNonSignaling);
+            var isInShadow = And(mask1, mask2);
+
+            Vector256<float> illum = VectorPacket256.DotProduct(livec, norms);
+            Vector256<float> illumGraterThanZero = Compare(illum, SetZeroVector256<float>(), FloatComparisonMode.GreaterThanOrderedNonSignaling);
+            var tmpColor1 = illum * light.Color.ToColorPacket256();
+            var defaultRGB = SetZeroVector256<float>();
+            Vector256<float> lcolorR = BlendVariable(tmpColor1.xs, defaultRGB, illumGraterThanZero);
+            Vector256<float> lcolorG = BlendVariable(tmpColor1.ys, defaultRGB, illumGraterThanZero);
+            Vector256<float> lcolorB = BlendVariable(tmpColor1.zs, defaultRGB, illumGraterThanZero);
+            ColorPacket256 lcolor = new ColorPacket256(lcolorR, lcolorG, lcolorB);
+            Vector256<float> specular = VectorPacket256.DotProduct(livec, rds.Normalize());
+            Vector256<float> specularGraterThanZero = Compare(specular, SetZeroVector256<float>(), FloatComparisonMode.GreaterThanOrderedNonSignaling);
+            var tmpColor2 = VectorUtilities.Pow(specular, SetAllVector256<float>(thing.Surface.Roughness)) * light.Color.ToColorPacket256();
+            Vector256<float> scolorR = BlendVariable(tmpColor2.xs, defaultRGB, specularGraterThanZero);
+            Vector256<float> scolorG = BlendVariable(tmpColor2.ys, defaultRGB, specularGraterThanZero);
+            Vector256<float> scolorB = BlendVariable(tmpColor2.zs, defaultRGB, specularGraterThanZero);
+            ColorPacket256 scolor = new ColorPacket256(scolorR, scolorG, scolorB);
+
+            colors = colors + ColorPacket256Helper.Times(thing.Surface.Diffuse(pos), lcolor) + ColorPacket256Helper.Times(thing.Surface.Specular(pos), scolor);
+
+            colors = new ColorPacket256(BlendVariable(colors.xs, defaultRGB, isInShadow), BlendVariable(colors.ys, defaultRGB, isInShadow), BlendVariable(colors.zs, defaultRGB, isInShadow));
             
         }
+        return colors;
     }
-    */    
+
+    private ColorPacket256 GetReflectionColor(SceneObject thing,VectorPacket256 pos, VectorPacket256 norms, VectorPacket256 rds, Scene scene, int depth)
+    {
+        return thing.Surface.Reflect(pos) * TraceRay(new RayPacket256(pos, rds), scene, depth + 1);
+    }
 
     private VectorPacket256 GetVectorPacket256(Vector256<float> x, Vector256<float> y, Camera camera)
     {

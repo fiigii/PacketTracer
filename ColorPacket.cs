@@ -26,6 +26,11 @@ internal static class ColorPacket256Helper
         return new Int32RGBPacket256(rsInt, gsInt, bsInt);
     }
 
+    public static ColorPacket256 Times(ColorPacket256 left, ColorPacket256 right)
+    {
+        return new VectorPacket256(Multiply(left.xs, right.xs), Multiply(left.ys, right.ys), Multiply(left.zs, right.zs));
+    }
+
     public static ColorPacket256 BackgroundColor = new ColorPacket256(SetZeroVector256<float>());
     public static ColorPacket256 DefaultColor = new ColorPacket256(SetZeroVector256<float>());
 }

@@ -146,4 +146,5 @@ internal struct VectorPacket256
         var length = this.Lengths;
         return new VectorPacket256(Divide(xs, length), Divide(ys, length), Divide(zs, length));
     }
+
 }

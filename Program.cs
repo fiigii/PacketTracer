@@ -66,19 +66,13 @@ class Program
         Console.WriteLine();
 
         var rays = new RayPacket256(vp, new VectorPacket256(new Vector(2, 10, 1)));
-        var inter = s.Intersect(rays, 0);
+        var inter = s.Intersect(rays);
         Avx.Store(outptr4, inter.Distances);
         for (int i = 0; i < 8; i++)
         {
             Console.Write(outptr4[i] + ",");
         }
         Console.WriteLine();
-        int* intout = stackalloc int[8];
-        Avx.Store(intout, inter.ThingIndex);
-        for (int i = 0; i < 8; i++)
-        {
-            Console.Write(intout[i] + ",");
-        }
         Console.WriteLine();
     }
 }
