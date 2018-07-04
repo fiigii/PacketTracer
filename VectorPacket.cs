@@ -36,11 +36,11 @@ internal struct VectorPacket256
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public VectorPacket256(Vector v)
+    public VectorPacket256(float xs, float ys, float zs)
     {
-        Xs = SetAllVector256(v.X);
-        Ys = SetAllVector256(v.Y);
-        Zs = SetAllVector256(v.Z);
+        Xs = SetAllVector256(xs);
+        Ys = SetAllVector256(ys);
+        Zs = SetAllVector256(zs);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

@@ -16,36 +16,17 @@ internal class Scene
 
     public VectorPacket256 Normals(Vector256<int> things, VectorPacket256 pos)
     {
-        var norms = new VectorPacket256[Things.Length];
-        for (int i = 0; i < Things.Length; i++)
-        {
-            if (Things[i] is Sphere)
-            {
-                var sphere = (Sphere)Things[i];
-                var centers = new VectorPacket256(SetAllVector256(sphere.Center.X), SetAllVector256(sphere.Center.Y), SetAllVector256(sphere.Center.Z));
-                norms[i] = (pos - centers).Normalize();
-            }
-            else if (Things[i] is Plane)
-            {
-                var plane = new PlanePacket256((Plane)Things[i]);
-                norms[i] = plane.Norms;
-            }
-            else
-            {
-                throw new ArgumentException("Unknown type of SceneObject");
-            }
-        }
-
         Vector256<float> normXs = SetZeroVector256<float>();
         Vector256<float> normYs = SetZeroVector256<float>();
         Vector256<float> normZs = SetZeroVector256<float>();
 
-        for (int i = 0; i < norms.Length; i++)
+        for (int i = 0; i < Things.Length; i++)
         {
             Vector256<float> mask = StaticCast<int, float>(CompareEqual(things, SetAllVector256<int>(i)));
-            normXs = BlendVariable(normXs, norms[i].Xs, mask);
-            normYs = BlendVariable(normYs, norms[i].Ys, mask);
-            normZs = BlendVariable(normZs, norms[i].Zs, mask);
+            var norms = Things[i].ToPacket256().Normals(pos);
+            normXs = BlendVariable(normXs, norms.Xs, mask);
+            normYs = BlendVariable(normYs, norms.Ys, mask);
+            normZs = BlendVariable(normZs, norms.Zs, mask);
         }
 
         return new VectorPacket256(normXs, normYs, normZs);

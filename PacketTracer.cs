@@ -11,7 +11,7 @@ internal class Packet256Tracer
 {
     public int Width { get; private set; }
     public int Hight { get; private set; }
-    private static readonly int MaxDepth = 1;
+    private static readonly int MaxDepth = 5;
 
     public Packet256Tracer(int _width, int _hight)
     {
@@ -97,55 +97,16 @@ internal class Packet256Tracer
 
     private Intersections MinIntersections(RayPacket256 rayPacket256, Scene scene)
     {
-        Intersections mins = Intersections.Null;
+        Intersections mins = new Intersections(Intersections.Null.Distances, Intersections.Null.ThingIndeces);
         for (int i = 0; i < scene.Things.Length; i++)
         {
-            var obj = scene.Things[i];
-            var thisIndex = StaticCast<int, float>(SetAllVector256<int>(i));
-            var nullIndex = StaticCast<int, float>(Intersections.Null.ThingIndeces);
-
-            Vector256<float> distance = Intersections.Null.Distances;
-
-            if (obj is Plane)
-            {
-                var planPacket = new PlanePacket256((Plane)obj);
-
-                var denom = VectorPacket256.DotProduct(planPacket.Norms, rayPacket256.Dirs);
-                var dist = Divide(Add(VectorPacket256.DotProduct(planPacket.Norms, rayPacket256.Starts), planPacket.Offsets), Subtract(SetZeroVector256<float>(), denom));
-
-                var gtMask = Compare(denom, SetZeroVector256<float>(), FloatComparisonMode.GreaterThanOrderedSignaling);
-                distance = BlendVariable(Intersections.Null.Distances, dist, gtMask);
-            }
-            else if (obj is Sphere)
-            {
-                var spherePacket = new SpherePacket256((Sphere)obj);
-                var eo = spherePacket.Centers - rayPacket256.Starts;
-                var v = VectorPacket256.DotProduct(eo, rayPacket256.Dirs);
-
-                var zeroVMask = Compare(v, SetZeroVector256<float>(), FloatComparisonMode.LessThanOrderedSignaling);
-                var zero = SetZeroVector256<int>();
-                var allOneMask = Avx2.CompareEqual(zero, zero);
-                if (TestC(zeroVMask, StaticCast<int, float>(allOneMask)))
-                {
-                    continue; // Null Intersections
-                }
-
-                var discs = Subtract(Multiply(spherePacket.Radiuses, spherePacket.Radiuses), Subtract(VectorPacket256.DotProduct(eo, eo), Multiply(v, v)));
-                var zeroDiscMask = Compare(discs, SetZeroVector256<float>(), FloatComparisonMode.LessThanOrderedSignaling);
-                var dists = BlendVariable(SetZeroVector256<float>(), Subtract(v,  Sqrt(discs)), Or(zeroVMask, zeroDiscMask));
-
-                distance = BlendVariable(SetZeroVector256<float>(), dists, zeroVMask);
-
-            }
-            else
-            {
-                throw new ArgumentException("Unknown type of SceneObject");
-            }
+            Vector256<float> distance = scene.Things[i].ToPacket256().Intersect(rayPacket256);
 
             if (!Intersections.AllNullIntersections(distance))
             {
                 var notNullMask = Compare(distance, Intersections.Null.Distances, FloatComparisonMode.NotEqualOrderedSignaling);
                 var nullMinMask = Compare(mins.Distances, Intersections.Null.Distances, FloatComparisonMode.EqualOrderedSignaling);
+
                 var lessMinMask = Compare(mins.Distances, distance, FloatComparisonMode.GreaterThanOrderedSignaling);
                 var minMask = And(notNullMask, (Or(nullMinMask, lessMinMask)));
                 var minDis = BlendVariable(mins.Distances, distance, minMask);
@@ -195,16 +156,16 @@ internal class Packet256Tracer
             Vector256<float> illumGraterThanZero = Compare(illum, SetZeroVector256<float>(), FloatComparisonMode.GreaterThanOrderedSignaling);
             var tmpColor1 = illum * light.Color.ToColorPacket256();
             var defaultRGB = SetZeroVector256<float>();
-            Vector256<float> lcolorR = BlendVariable(tmpColor1.Xs, defaultRGB, illumGraterThanZero);
-            Vector256<float> lcolorG = BlendVariable(tmpColor1.Ys, defaultRGB, illumGraterThanZero);
-            Vector256<float> lcolorB = BlendVariable(tmpColor1.Zs, defaultRGB, illumGraterThanZero);
+            Vector256<float> lcolorR = BlendVariable(defaultRGB, tmpColor1.Xs, illumGraterThanZero);
+            Vector256<float> lcolorG = BlendVariable(defaultRGB, tmpColor1.Ys, illumGraterThanZero);
+            Vector256<float> lcolorB = BlendVariable(defaultRGB, tmpColor1.Zs, illumGraterThanZero);
             ColorPacket256 lcolor = new ColorPacket256(lcolorR, lcolorG, lcolorB);
             Vector256<float> specular = VectorPacket256.DotProduct(livec, rds.Normalize());
             Vector256<float> specularGraterThanZero = Compare(specular, SetZeroVector256<float>(), FloatComparisonMode.GreaterThanOrderedSignaling);
             var tmpColor2 = VectorUtilities.Pow(specular, scene.Roughness(things)) * light.Color.ToColorPacket256();
-            Vector256<float> scolorR = BlendVariable(tmpColor2.Xs, defaultRGB, specularGraterThanZero);
-            Vector256<float> scolorG = BlendVariable(tmpColor2.Ys, defaultRGB, specularGraterThanZero);
-            Vector256<float> scolorB = BlendVariable(tmpColor2.Zs, defaultRGB, specularGraterThanZero);
+            Vector256<float> scolorR = BlendVariable(defaultRGB, tmpColor2.Xs, specularGraterThanZero);
+            Vector256<float> scolorG = BlendVariable(defaultRGB, tmpColor2.Ys, specularGraterThanZero);
+            Vector256<float> scolorB = BlendVariable(defaultRGB, tmpColor2.Zs, specularGraterThanZero);
             ColorPacket256 scolor = new ColorPacket256(scolorR, scolorG, scolorB);
 
             colors = colors + ColorPacket256Helper.Times(scene.Diffuse(things, pos), lcolor) + ColorPacket256Helper.Times(scene.Specular(things, pos), scolor);
