@@ -11,13 +11,13 @@ internal static class ColorPacket256Helper
         var one = SetAllVector256<float>(1.0f);
         var max = SetAllVector256<float>(255.0f);
 
-        var rsMask = Compare(colors.xs, one, FloatComparisonMode.GreaterThanOrderedNonSignaling);
-        var gsMask = Compare(colors.ys, one, FloatComparisonMode.GreaterThanOrderedNonSignaling);;
-        var bsMask = Compare(colors.zs, one, FloatComparisonMode.GreaterThanOrderedNonSignaling);
+        var rsMask = Compare(colors.Xs, one, FloatComparisonMode.GreaterThanOrderedSignaling);
+        var gsMask = Compare(colors.Ys, one, FloatComparisonMode.GreaterThanOrderedSignaling);
+        var bsMask = Compare(colors.Zs, one, FloatComparisonMode.GreaterThanOrderedSignaling);
 
-        var rs = BlendVariable(colors.xs, one, rsMask);
-        var gs = BlendVariable(colors.ys, one, gsMask);
-        var bs = BlendVariable(colors.zs, one, bsMask);
+        var rs = BlendVariable(colors.Xs, one, rsMask);
+        var gs = BlendVariable(colors.Ys, one, gsMask);
+        var bs = BlendVariable(colors.Zs, one, bsMask);
 
         var rsInt = ConvertToVector256Int32(Multiply(rs, max));
         var gsInt = ConvertToVector256Int32(Multiply(gs, max));
@@ -28,7 +28,7 @@ internal static class ColorPacket256Helper
 
     public static ColorPacket256 Times(ColorPacket256 left, ColorPacket256 right)
     {
-        return new VectorPacket256(Multiply(left.xs, right.xs), Multiply(left.ys, right.ys), Multiply(left.zs, right.zs));
+        return new VectorPacket256(Multiply(left.Xs, right.Xs), Multiply(left.Ys, right.Ys), Multiply(left.Zs, right.Zs));
     }
 
     public static ColorPacket256 BackgroundColor = new ColorPacket256(SetZeroVector256<float>());

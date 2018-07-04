@@ -2,7 +2,7 @@ using System.Runtime.Intrinsics.X86;
 using System.Runtime.Intrinsics;
 
 // Size is too large to treat as HVA, so define RayPacket256 as class
-internal class RayPacket256
+internal struct RayPacket256
 {
     public VectorPacket256 Starts {get; private set;}
     public VectorPacket256 Dirs {get; private set;}

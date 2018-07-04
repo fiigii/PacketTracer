@@ -13,7 +13,7 @@ internal static class Surfaces
             delegate (VectorPacket256 pos)
             {
                 // test this
-                var floored = ConvertToVector256Int32(Add(Floor(pos.zs), Floor(pos.xs)));
+                var floored = ConvertToVector256Int32(Add(Floor(pos.Zs), Floor(pos.Xs)));
                 var modMask = SetAllVector256<uint>(1);
                 var evenMaskUint = Avx2.And(StaticCast<int, uint>(floored), modMask);
                 var evenMask = Avx2.CompareEqual(evenMaskUint, modMask); 
@@ -21,9 +21,9 @@ internal static class Surfaces
                 var white = new ColorPacket256(SetAllVector256(1.0f));
                 var black = new ColorPacket256(new Vector(0.02f, 0.0f, 0.14f));
 
-                var resultX = BlendVariable(black.xs, white.xs, StaticCast<uint, float>(evenMask));
-                var resultY = BlendVariable(black.ys, white.ys, StaticCast<uint, float>(evenMask));
-                var resultZ = BlendVariable(black.zs, white.zs, StaticCast<uint, float>(evenMask));
+                var resultX = BlendVariable(black.Xs, white.Xs, StaticCast<uint, float>(evenMask));
+                var resultY = BlendVariable(black.Ys, white.Ys, StaticCast<uint, float>(evenMask));
+                var resultZ = BlendVariable(black.Zs, white.Zs, StaticCast<uint, float>(evenMask));
 
                 return new ColorPacket256(resultX, resultY, resultZ);
             },
@@ -31,7 +31,7 @@ internal static class Surfaces
             delegate (VectorPacket256 pos)
             {
                 // test this
-                var floored = ConvertToVector256Int32(Add(Floor(pos.zs), Floor(pos.xs)));
+                var floored = ConvertToVector256Int32(Add(Floor(pos.Zs), Floor(pos.Xs)));
                 var modMask = SetAllVector256<uint>(1);
                 var evenMaskUint = Avx2.And(StaticCast<int, uint>(floored), modMask);
                 var evenMask = Avx2.CompareEqual(evenMaskUint, modMask);
