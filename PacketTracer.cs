@@ -16,7 +16,7 @@ internal class Packet256Tracer
 {
     public int Width { get; private set; }
     public int Hight { get; private set; }
-    private static readonly int MaxDepth = 0;
+    private static readonly int MaxDepth = 5;
 
     public Packet256Tracer(int _width, int _hight)
     {

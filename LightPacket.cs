@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information.
 //
 
+using System.Runtime.CompilerServices;
 using ColorPacket256 = VectorPacket256;
 
 internal class LightPacket256
@@ -10,6 +11,7 @@ internal class LightPacket256
     public VectorPacket256 Positions;
     public ColorPacket256 Colors;
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public LightPacket256(Vector pos, Color col)
     {
         Positions = new VectorPacket256(pos.X, pos.Y, pos.Z);

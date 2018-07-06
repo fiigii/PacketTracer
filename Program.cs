@@ -8,14 +8,15 @@ using System.Runtime.Intrinsics.X86;
 
 class Program
 {
-    private const int _width = 248;
-    private const int _height = 248;
+    private const int _width = 2480;
+    private const int _height = 2480;
     static unsafe void Main(string[] args)
     {
         var onetwo = Avx.SetAllVector256<float>(1.2f);
         var pone = Avx.SetAllVector256<float>(0.1f);
-        Avx.Multiply(VectorMath.Exp(pone), VectorMath.Exp(onetwo)).Display();
-        VectorMath.Exp(Avx.Add(onetwo, pone)).Display();
+        VectorMath.Log(onetwo).Display();
+        VectorMath.Exp(VectorMath.Log(onetwo)).Display();
+        VectorMath.Log(VectorMath.Exp(onetwo)).Display();
         RenderTo("./pic.ppm");
     }
 
