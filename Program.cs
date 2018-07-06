@@ -3,8 +3,8 @@ using System.Runtime.Intrinsics.X86;
 
 class Program
 {
-    private const int _width = 248;
-    private const int _height = 248;
+    private const int _width = 2480;
+    private const int _height = 2480;
     static unsafe void Main(string[] args)
     {
         /* 
@@ -85,6 +85,7 @@ class Program
     {
         var packetTracer = new Packet256Tracer(_width, _height);
         var scene = packetTracer.DefaultScene;
+        
         var sphere2 = (Sphere)scene.Things[0];
         var baseY = sphere2.Radius;
         sphere2.Center.Y = sphere2.Radius;

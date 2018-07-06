@@ -9,18 +9,14 @@ internal struct Intersections
     public Vector256<float> Distances {get; set;}
     public Vector256<int> ThingIndeces {get; set;}
 
-    private static readonly float NullDistance = float.MaxValue;
-    private static readonly int NullIndex = -1;
+    public static readonly Vector256<float> NullDistance = SetAllVector256<float>(float.MaxValue);
+    public static readonly Vector256<int> NullIndex = SetAllVector256<int>(-1);
 
     public Intersections(Vector256<float> dis, Vector256<int> things)
     {
         Distances = dis;
         ThingIndeces = things;
     }
-
-    //public static Intersections Null { get {return new Intersections(SetAllVector256<float>(Intersections.NullValue), null);}}
-    public readonly static Intersections Null = new Intersections(SetAllVector256<float>(Intersections.NullDistance), 
-                                                                  SetAllVector256<int>(Intersections.NullIndex));
 
     public bool AllNullIntersections()
     {
@@ -29,7 +25,7 @@ internal struct Intersections
 
     public static bool AllNullIntersections(Vector256<float> dis)
     {
-        var cmp = Compare(dis, Null.Distances, FloatComparisonMode.EqualOrderedSignaling);
+        var cmp = Compare(dis, NullDistance, FloatComparisonMode.EqualOrderedNonSignaling);
         var zero = SetZeroVector256<int>();
         var mask = Avx2.CompareEqual(zero, zero);
         return TestC(cmp, StaticCast<int, float>(mask));

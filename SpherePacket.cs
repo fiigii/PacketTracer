@@ -23,19 +23,12 @@ internal class SpherePacket256 : ObjectPacket256
     {
         var eo = Centers - rayPacket256.Starts;
         var v = VectorPacket256.DotProduct(eo, rayPacket256.Dirs);
-
-        var zeroVMask = Compare(v, SetZeroVector256<float>(), FloatComparisonMode.LessThanOrderedSignaling);
-        var zero = SetZeroVector256<int>();
-        var allOneMask = Avx2.CompareEqual(zero, zero);
-        if (TestC(zeroVMask, StaticCast<int, float>(allOneMask)))
-        {
-            return Intersections.Null.Distances; // Null Intersections
-        }
-
+        var zero = SetZeroVector256<float>();
+        var vLessZeroMask = Compare(v, zero, FloatComparisonMode.LessThanOrderedNonSignaling);
         var discs = Subtract(Multiply(Radiuses, Radiuses), Subtract(VectorPacket256.DotProduct(eo, eo), Multiply(v, v)));
-        var zeroDiscMask = Compare(discs, SetZeroVector256<float>(), FloatComparisonMode.LessThanOrderedSignaling);
-        var dists = BlendVariable(Subtract(v, Sqrt(discs)), SetZeroVector256<float>(), Or(zeroVMask, zeroDiscMask));
-
-        return BlendVariable(dists, SetZeroVector256<float>(), zeroVMask);
+        var discLessZeroMask = Compare(discs, zero, FloatComparisonMode.LessThanOrderedNonSignaling);
+        var dists = BlendVariable(Subtract(v, Sqrt(discs)), zero, Or(vLessZeroMask, discLessZeroMask));
+        var isZero = Compare(dists, zero, FloatComparisonMode.EqualOrderedNonSignaling);
+        return BlendVariable(dists, Intersections.NullDistance, isZero);
     }
 }

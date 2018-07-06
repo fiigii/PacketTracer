@@ -22,8 +22,7 @@ internal class PlanePacket256 : ObjectPacket256
     {
         var denom = VectorPacket256.DotProduct(Norms, rayPacket256.Dirs);
         var dist = Divide(Add(VectorPacket256.DotProduct(Norms, rayPacket256.Starts), Offsets), Subtract(SetZeroVector256<float>(), denom));
-
-        var gtMask = Compare(denom, SetZeroVector256<float>(), FloatComparisonMode.GreaterThanOrderedSignaling);
-        return BlendVariable(dist, Intersections.Null.Distances, gtMask);
+        var gtMask = Compare(denom, SetZeroVector256<float>(), FloatComparisonMode.GreaterThanOrderedNonSignaling);
+        return BlendVariable(dist, Intersections.NullDistance, gtMask);
     }
 }

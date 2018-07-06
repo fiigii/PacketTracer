@@ -11,9 +11,9 @@ internal static class ColorPacket256Helper
         var one = SetAllVector256<float>(1.0f);
         var max = SetAllVector256<float>(255.0f);
 
-        var rsMask = Compare(colors.Xs, one, FloatComparisonMode.GreaterThanOrderedSignaling);
-        var gsMask = Compare(colors.Ys, one, FloatComparisonMode.GreaterThanOrderedSignaling);
-        var bsMask = Compare(colors.Zs, one, FloatComparisonMode.GreaterThanOrderedSignaling);
+        var rsMask = Compare(colors.Xs, one, FloatComparisonMode.GreaterThanOrderedNonSignaling);
+        var gsMask = Compare(colors.Ys, one, FloatComparisonMode.GreaterThanOrderedNonSignaling);
+        var bsMask = Compare(colors.Zs, one, FloatComparisonMode.GreaterThanOrderedNonSignaling);
 
         var rs = BlendVariable(colors.Xs, one, rsMask);
         var gs = BlendVariable(colors.Ys, one, gsMask);

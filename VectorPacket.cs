@@ -6,23 +6,21 @@ using System;
 
 internal struct VectorPacket256
 {
-    public Vector256<float> Xs {get; private set;}
-    public Vector256<float> Ys {get; private set;}
-    public Vector256<float> Zs {get; private set;}
+    public Vector256<float> Xs { get; private set; }
+    public Vector256<float> Ys { get; private set; }
+    public Vector256<float> Zs { get; private set; }
+    public Vector256<float> Lengths { get; private set; }
 
-    public Vector256<float> Lengths
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static Vector256<float> computeLengths(Vector256<float> Xs, Vector256<float> Ys, Vector256<float> Zs)
     {
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        get
-        {
-            var x2 = Multiply(Xs, Xs);
-            var y2 = Multiply(Ys, Ys);
-            var z2 = Multiply(Zs, Zs);
+        var x2 = Multiply(Xs, Xs);
+        var y2 = Multiply(Ys, Ys);
+        var z2 = Multiply(Zs, Zs);
 
-            var l2 = Add(x2, y2);
-            l2 = Add(l2, z2);
-            return Sqrt(l2);
-        }
+        var l2 = Add(x2, y2);
+        l2 = Add(l2, z2);
+        return Sqrt(l2);
     }
 
     public readonly static int Packet256Size = 8;
@@ -33,6 +31,7 @@ internal struct VectorPacket256
         Xs = init;
         Ys = init;
         Zs = init;
+        Lengths = computeLengths(Xs, Ys, Zs);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -41,6 +40,7 @@ internal struct VectorPacket256
         Xs = SetAllVector256(xs);
         Ys = SetAllVector256(ys);
         Zs = SetAllVector256(zs);
+        Lengths = computeLengths(Xs, Ys, Zs);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -48,7 +48,8 @@ internal struct VectorPacket256
     {
         Xs = _Xs;
         Ys = _ys;
-        Zs = _Zs; 
+        Zs = _Zs;
+        Lengths = computeLengths(Xs, Ys, Zs);
     }
 
     // Convert AoS vectors to SoA Packet256
@@ -65,12 +66,14 @@ internal struct VectorPacket256
         var xy = Shuffle(m14, m25, 2 << 6 | 1 << 4 | 3 << 2 | 2);
         var yz = Shuffle(m03, m14, 1 << 6 | 0 << 4 | 2 << 2 | 1);
         var _Xs = Shuffle(m03, xy, 2 << 6 | 0 << 4 | 3 << 2 | 0);
-        var _ys = Shuffle(yz, xy,  3 << 6 | 1 << 4 | 2 << 2 | 0);
+        var _ys = Shuffle(yz, xy, 3 << 6 | 1 << 4 | 2 << 2 | 0);
         var _Zs = Shuffle(yz, m25, 3 << 6 | 0 << 4 | 3 << 2 | 1);
 
         Xs = _Xs;
         Ys = _ys;
-        Zs = _Zs; 
+        Zs = _Zs;
+
+        Lengths = computeLengths(Xs, Ys, Zs);
     }
 
     // Convert SoA VectorPacket256 to AoS
@@ -95,7 +98,7 @@ internal struct VectorPacket256
         var _Xs = SetHighLow(m1, m0);
         var _ys = SetHighLow(m3, m2);
         var _Zs = SetHighLow(m5, m4);
-        
+
         return new VectorPacket256(_Xs, _ys, _Zs);
     }
 
@@ -133,7 +136,7 @@ internal struct VectorPacket256
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Vector256<float> DotProduct (VectorPacket256 left, VectorPacket256 right)
+    public static Vector256<float> DotProduct(VectorPacket256 left, VectorPacket256 right)
     {
         var x2 = Multiply(left.Xs, right.Xs);
         var y2 = Multiply(left.Ys, right.Ys);
@@ -165,17 +168,17 @@ internal struct VectorPacket256
     public unsafe void Display()
     {
         float[] buffer = new float[24];
-        fixed(float* ptr = buffer)
+        fixed (float* ptr = buffer)
         {
             Store(ptr, Xs);
-            Store(ptr+8, Ys);
-            Store(ptr+16, Zs);
+            Store(ptr + 8, Ys);
+            Store(ptr + 16, Zs);
         }
         for (int i = 0; i < 3; i++)
         {
             for (int j = 0; j < 8; j++)
             {
-                Console.Write(buffer[i*j] + ", ");
+                Console.Write(buffer[i * j] + ", ");
             }
             Console.WriteLine();
             Console.WriteLine("___");

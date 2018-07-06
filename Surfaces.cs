@@ -32,11 +32,11 @@ internal static class Surfaces
             {
                 // test this
                 var floored = ConvertToVector256Int32(Add(Floor(pos.Zs), Floor(pos.Xs)));
-                var modMask = SetAllVector256<uint>(1);
-                var evenMaskUint = Avx2.And(StaticCast<int, uint>(floored), modMask);
+                var modMask = SetAllVector256<int>(1);
+                var evenMaskUint = Avx2.And(floored, modMask);
                 var evenMask = Avx2.CompareEqual(evenMaskUint, modMask);
 
-                return BlendVariable(SetAllVector256(0.5f), SetAllVector256(0.1f), StaticCast<uint, float>(evenMask));
+                return BlendVariable(SetAllVector256(0.5f), SetAllVector256(0.1f), StaticCast<int, float>(evenMask));
             },
             150f);
 
