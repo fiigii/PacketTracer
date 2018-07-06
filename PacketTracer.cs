@@ -199,7 +199,7 @@ internal class Packet256Tracer
                 splColor.Zs = BlendVariable(splColor.Zs, spl.Zs, thingMask);
             }
 
-            var tmpColor2 = VectorUtilities.Pow(specular, roughness) * colorPacket;
+            var tmpColor2 = VectorMath.Pow(specular, roughness) * colorPacket;
             Vector256<float> scolorR = BlendVariable(defaultRGB, tmpColor2.Xs, specularGraterThanZero);
             Vector256<float> scolorG = BlendVariable(defaultRGB, tmpColor2.Ys, specularGraterThanZero);
             Vector256<float> scolorB = BlendVariable(defaultRGB, tmpColor2.Zs, specularGraterThanZero);

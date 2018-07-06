@@ -12,10 +12,10 @@ class Program
     private const int _height = 248;
     static unsafe void Main(string[] args)
     {
-        var s = new VectorPacket256(1, 2, 3);
-        s.Display();
-        s.FastTranspose().Display();
-        s.Transpose().Display();
+        var onetwo = Avx.SetAllVector256<float>(1.2f);
+        var pone = Avx.SetAllVector256<float>(0.1f);
+        Avx.Multiply(VectorMath.Exp(pone), VectorMath.Exp(onetwo)).Display();
+        VectorMath.Exp(Avx.Add(onetwo, pone)).Display();
         RenderTo("./pic.ppm");
     }
 
