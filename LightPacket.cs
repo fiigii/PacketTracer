@@ -2,8 +2,8 @@ using ColorPacket256 = VectorPacket256;
 
 internal class LightPacket256
 {
-    public VectorPacket256 Positions {get; private set;}
-    public ColorPacket256 Colors {get; private set;}
+    public VectorPacket256 Positions;
+    public ColorPacket256 Colors;
 
     public LightPacket256(Vector pos, Color col)
     {

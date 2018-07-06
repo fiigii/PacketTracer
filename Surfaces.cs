@@ -12,7 +12,6 @@ internal static class Surfaces
         new Surface(
             delegate (VectorPacket256 pos)
             {
-                // test this
                 var floored = ConvertToVector256Int32(Add(Floor(pos.Zs), Floor(pos.Xs)));
                 var modMask = SetAllVector256<int>(1);
                 var evenMaskint = Avx2.And(floored, modMask);
@@ -30,7 +29,6 @@ internal static class Surfaces
             delegate (VectorPacket256 pos) { return (new Color(1, 1, 1)).ToColorPacket256(); },
             delegate (VectorPacket256 pos)
             {
-                // test this
                 var floored = ConvertToVector256Int32(Add(Floor(pos.Zs), Floor(pos.Xs)));
                 var modMask = SetAllVector256<int>(1);
                 var evenMaskUint = Avx2.And(floored, modMask);

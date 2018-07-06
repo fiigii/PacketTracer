@@ -6,22 +6,24 @@ using System;
 
 internal struct VectorPacket256
 {
-    public Vector256<float> Xs { get; private set; }
-    public Vector256<float> Ys { get; private set; }
-    public Vector256<float> Zs { get; private set; }
-    public Vector256<float> Lengths { get; private set; }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static Vector256<float> computeLengths(Vector256<float> Xs, Vector256<float> Ys, Vector256<float> Zs)
+    public Vector256<float> Xs;
+    public Vector256<float> Ys;
+    public Vector256<float> Zs;
+    public Vector256<float> Lengths
     {
-        var x2 = Multiply(Xs, Xs);
-        var y2 = Multiply(Ys, Ys);
-        var z2 = Multiply(Zs, Zs);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        get
+        {
+            var x2 = Multiply(Xs, Xs);
+            var y2 = Multiply(Ys, Ys);
+            var z2 = Multiply(Zs, Zs);
 
-        var l2 = Add(x2, y2);
-        l2 = Add(l2, z2);
-        return Sqrt(l2);
+            var l2 = Add(x2, y2);
+            l2 = Add(l2, z2);
+            return Sqrt(l2);
+        }
     }
+
 
     public readonly static int Packet256Size = 8;
 
@@ -31,7 +33,6 @@ internal struct VectorPacket256
         Xs = init;
         Ys = init;
         Zs = init;
-        Lengths = computeLengths(Xs, Ys, Zs);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -40,7 +41,6 @@ internal struct VectorPacket256
         Xs = SetAllVector256(xs);
         Ys = SetAllVector256(ys);
         Zs = SetAllVector256(zs);
-        Lengths = computeLengths(Xs, Ys, Zs);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -49,7 +49,6 @@ internal struct VectorPacket256
         Xs = _Xs;
         Ys = _ys;
         Zs = _Zs;
-        Lengths = computeLengths(Xs, Ys, Zs);
     }
 
     // Convert AoS vectors to SoA Packet256
@@ -72,8 +71,6 @@ internal struct VectorPacket256
         Xs = _Xs;
         Ys = _ys;
         Zs = _Zs;
-
-        Lengths = computeLengths(Xs, Ys, Zs);
     }
 
     // Convert SoA VectorPacket256 to AoS
@@ -167,24 +164,10 @@ internal struct VectorPacket256
 
     public unsafe void Display()
     {
-        float[] buffer = new float[24];
-        fixed (float* ptr = buffer)
-        {
-            Store(ptr, Xs);
-            Store(ptr + 8, Ys);
-            Store(ptr + 16, Zs);
-        }
-        for (int i = 0; i < 3; i++)
-        {
-            for (int j = 0; j < 8; j++)
-            {
-                Console.Write(buffer[i * j] + ", ");
-            }
-            Console.WriteLine();
-            Console.WriteLine("___");
-        }
-        Console.WriteLine();
-        Console.WriteLine("-----------------------------------------------------");
+        Xs.Display();
+        Ys.Display();
+        Zs.Display();
+        Console.WriteLine("++++++++++++++++++++++++++++++++");
 
     }
 

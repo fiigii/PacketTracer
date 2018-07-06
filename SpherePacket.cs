@@ -2,11 +2,10 @@ using System.Runtime.Intrinsics.X86;
 using static System.Runtime.Intrinsics.X86.Avx;
 using System.Runtime.Intrinsics;
 
-internal class SpherePacket256 : ObjectPacket256
+internal sealed class SpherePacket256 : ObjectPacket256
 {
-    public VectorPacket256 Centers { get; private set; }
-    public Vector256<float> Radiuses { get; private set; }
-
+    public VectorPacket256 Centers;
+    public Vector256<float> Radiuses;
 
     public SpherePacket256(Sphere sphere) : base(sphere.Surface)
     {
