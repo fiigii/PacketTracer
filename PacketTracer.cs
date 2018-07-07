@@ -38,7 +38,7 @@ internal class Packet256Tracer
             {
                 float fx = (float)x;
                 Vector256<float> Xs = SetVector256(fx + 7, fx + 6, fx + 5, fx + 4, fx + 3, fx + 2, fx + 1, fx);
-                var dirs = GetVectorPacket256(Xs, SetAllVector256<float>(y), camera);
+                var dirs = GetPoints(Xs, SetAllVector256<float>(y), camera);
                 var rayPacket256 = new RayPacket256(camera.Pos, dirs);
                 var SoAcolors = TraceRay(rayPacket256, scene, 0);
 
@@ -138,11 +138,11 @@ internal class Packet256Tracer
         var pos = isect.Distances * ds + rays.Starts;
         var normals = scene.Normals(isect.ThingIndeces, pos);
         var reflectDirs = ds - (Multiply(VectorPacket256.DotProduct(normals, ds), SetAllVector256<float>(2)) * normals);
-        var colors = ColorPacket256Helper.DefaultColor + GetNaturalColor(isect.ThingIndeces, pos, normals, reflectDirs, scene);
+        var colors = GetNaturalColor(isect.ThingIndeces, pos, normals, reflectDirs, scene);
 
         if (depth >= MaxDepth)
         {
-            return colors + (new Color(.5f, .5f, .5f)).ToColorPacket256();
+            return colors + new ColorPacket256(.5f, .5f, .5f);
         }
 
         return colors + GetReflectionColor(isect.ThingIndeces, pos + (SetAllVector256<float>(0.001f) * reflectDirs), normals, reflectDirs, scene, depth);
@@ -154,29 +154,30 @@ internal class Packet256Tracer
         for (int i = 0; i < scene.Lights.Length; i++)
         {
             var light = scene.Lights[i];
-            var colorPacket = light.Color.ToColorPacket256();
             var lights = light.ToPacket256();
+            var zero = SetZeroVector256<float>();
+            var colorPacket = lights.Colors;
             var ldis = lights.Positions - pos;
             var livec = ldis.Normalize();
             var neatIsectDis = TestRay(new RayPacket256(pos, livec), scene);
 
             // is in shadow?
             var mask1 = Compare(neatIsectDis, ldis.Lengths, FloatComparisonMode.LessThanOrEqualOrderedNonSignaling);
-            var mask2 = Compare(neatIsectDis, SetZeroVector256<float>(), FloatComparisonMode.NotEqualOrderedNonSignaling);
+            var mask2 = Compare(neatIsectDis, zero, FloatComparisonMode.NotEqualOrderedNonSignaling);
             var isInShadow = And(mask1, mask2);
 
             Vector256<float> illum = VectorPacket256.DotProduct(livec, norms);
-            Vector256<float> illumGraterThanZero = Compare(illum, SetZeroVector256<float>(), FloatComparisonMode.GreaterThanOrderedNonSignaling);
+            Vector256<float> illumGraterThanZero = Compare(illum, zero, FloatComparisonMode.GreaterThanOrderedNonSignaling);
             var tmpColor1 = illum * colorPacket;
-            var defaultRGB = SetZeroVector256<float>();
+            var defaultRGB = zero;
             Vector256<float> lcolorR = BlendVariable(defaultRGB, tmpColor1.Xs, illumGraterThanZero);
             Vector256<float> lcolorG = BlendVariable(defaultRGB, tmpColor1.Ys, illumGraterThanZero);
             Vector256<float> lcolorB = BlendVariable(defaultRGB, tmpColor1.Zs, illumGraterThanZero);
             ColorPacket256 lcolor = new ColorPacket256(lcolorR, lcolorG, lcolorB);
-            
+
             Vector256<float> specular = VectorPacket256.DotProduct(livec, rds.Normalize());
-            Vector256<float> specularGraterThanZero = Compare(specular, SetZeroVector256<float>(), FloatComparisonMode.GreaterThanOrderedNonSignaling);
-            
+            Vector256<float> specularGraterThanZero = Compare(specular, zero, FloatComparisonMode.GreaterThanOrderedNonSignaling);
+
             var difColor = new ColorPacket256(1, 1, 1);
             var splColor = new ColorPacket256(1, 1, 1);
             var roughness = SetAllVector256<float>(1);
@@ -186,7 +187,7 @@ internal class Packet256Tracer
                 Vector256<float> thingMask = StaticCast<int, float>(CompareEqual(things, SetAllVector256<int>(j)));
                 var rgh = SetAllVector256<float>(scene.Things[j].Surface.Roughness);
                 var dif = scene.Things[j].Surface.Diffuse(pos);
-                var spl = scene.Things[j].Surface.Specular(pos);
+                var spl = scene.Things[j].Surface.Specular;
 
                 roughness = BlendVariable(roughness, rgh, thingMask);
 
@@ -220,7 +221,7 @@ internal class Packet256Tracer
         return scene.Reflect(things, pos) * TraceRay(new RayPacket256(pos, rds), scene, depth + 1);
     }
 
-    private VectorPacket256 GetVectorPacket256(Vector256<float> x, Vector256<float> y, Camera camera)
+    private VectorPacket256 GetPoints(Vector256<float> x, Vector256<float> y, Camera camera)
     {
         float widthRate1 = Width / 2.0f;
         float widthRate2 = Width * 2.0f;

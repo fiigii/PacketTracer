@@ -10,12 +10,12 @@ using ColorPacket256 = VectorPacket256;
 internal class Surface
 {
     public Func<VectorPacket256, ColorPacket256> Diffuse;
-    public Func<VectorPacket256, ColorPacket256> Specular;
+    public VectorPacket256 Specular;
     public Func<VectorPacket256, Vector256<float>> Reflect;
     public float Roughness;
 
     public Surface(Func<VectorPacket256, ColorPacket256> Diffuse,
-                    Func<VectorPacket256, ColorPacket256> Specular,
+                    VectorPacket256 Specular,
                     Func<VectorPacket256, Vector256<float>> Reflect,
                     float Roughness)
     {

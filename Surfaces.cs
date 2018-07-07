@@ -31,7 +31,7 @@ internal static class Surfaces
 
                 return new ColorPacket256(resultX, resultY, resultZ);
             },
-            delegate (VectorPacket256 pos) { return (new Color(1, 1, 1)).ToColorPacket256(); },
+            new VectorPacket256(1f, 1f, 1f),
             delegate (VectorPacket256 pos)
             {
                 var floored = ConvertToVector256Int32(Add(Floor(pos.Zs), Floor(pos.Xs)));
@@ -47,15 +47,15 @@ internal static class Surfaces
 
     public static readonly Surface Shiny =
         new Surface(
-            delegate (VectorPacket256 pos) { return (new Color(1f, 1f, 1f)).ToColorPacket256(); },
-            delegate (VectorPacket256 pos) { return (new Color(.5f, .5f, .5f)).ToColorPacket256(); },
+            delegate (VectorPacket256 pos) { return new VectorPacket256(1f, 1f, 1f); },
+            new VectorPacket256(.5f, .5f, .5f),
             delegate (VectorPacket256 pos) { return SetAllVector256<float>(0.7f); },
             250f);
 
     public static readonly Surface MatteShiny =
         new Surface(
-            delegate (VectorPacket256 pos) { return (new Color(1f, 1f, 1f)).ToColorPacket256(); },
-            delegate (VectorPacket256 pos) { return (new Color(.25f, .25f, .25f)).ToColorPacket256(); },
+            delegate (VectorPacket256 pos) { return new VectorPacket256(1f, 1f, 1f); },
+            new VectorPacket256(.25f, .25f, .25f),
             delegate (VectorPacket256 pos) { return SetAllVector256<float>(0.7f); },
             250f);
 }

@@ -15,6 +15,6 @@ internal class LightPacket256
     public LightPacket256(Vector pos, Color col)
     {
         Positions = new VectorPacket256(pos.X, pos.Y, pos.Z);
-        Colors = col.ToColorPacket256();
+        Colors = new ColorPacket256(col.R, col.G, col.B);
     }
 }

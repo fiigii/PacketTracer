@@ -6,12 +6,14 @@
 using System.Runtime.Intrinsics.X86;
 using static System.Runtime.Intrinsics.X86.Avx;
 using System.Runtime.Intrinsics;
+using System.Runtime.CompilerServices;
 
 internal sealed class PlanePacket256 : ObjectPacket256
 {
     public VectorPacket256 Norms;
     public Vector256<float> Offsets;
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public PlanePacket256(Plane plane) : base(plane.Surface)
     {
         Norms = new VectorPacket256(SetAllVector256(plane.Norm.X), SetAllVector256(plane.Norm.Y), SetAllVector256(plane.Norm.Z));

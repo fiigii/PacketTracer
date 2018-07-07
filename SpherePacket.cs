@@ -6,12 +6,14 @@
 using System.Runtime.Intrinsics.X86;
 using static System.Runtime.Intrinsics.X86.Avx;
 using System.Runtime.Intrinsics;
+using System.Runtime.CompilerServices;
 
 internal sealed class SpherePacket256 : ObjectPacket256
 {
     public VectorPacket256 Centers;
     public Vector256<float> Radiuses;
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public SpherePacket256(Sphere sphere) : base(sphere.Surface)
     {
         Centers = new VectorPacket256(SetAllVector256(sphere.Center.X), SetAllVector256(sphere.Center.Y), SetAllVector256(sphere.Center.Z));

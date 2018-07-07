@@ -9,7 +9,7 @@ using System.Runtime.Intrinsics;
 using System.Runtime.CompilerServices;
 using System;
 
-internal struct VectorPacket256
+internal class VectorPacket256
 {
     public Vector256<float> Xs;
     public Vector256<float> Ys;

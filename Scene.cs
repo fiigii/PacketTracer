@@ -8,6 +8,7 @@ using System.Runtime.Intrinsics.X86;
 using static System.Runtime.Intrinsics.X86.Avx;
 using static System.Runtime.Intrinsics.X86.Avx2;
 using System.Runtime.Intrinsics;
+using System.Runtime.CompilerServices;
 using System;
 
 internal class Scene
@@ -18,6 +19,7 @@ internal class Scene
 
     public Scene(SceneObject[] things, Light[] lights, Camera camera) { Things = things; Lights = lights; Camera = camera; }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public VectorPacket256 Normals(Vector256<int> things, VectorPacket256 pos)
     {
         VectorPacket256 norms = new VectorPacket256(1, 1, 1);
@@ -34,6 +36,7 @@ internal class Scene
         return norms;
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Vector256<float> Reflect(Vector256<int> things, VectorPacket256 pos)
     {
         Vector256<float> rfl =  SetAllVector256<float>(1);
