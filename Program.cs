@@ -4,39 +4,145 @@
 //
 
 using System;
-using System.Runtime.Intrinsics.X86;
+using System.Diagnostics;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Collections.Concurrent;
+//using Microsoft.Xunit.Performance;
+
+//[assembly: OptimizeForBenchmarks]
 
 class Program
 {
-    private const int _width = 2480;
-    private const int _height = 2480;
-    static unsafe void Main(string[] args)
+#if DEBUG
+
+    private const int RunningTime = 200;
+    private const int Width = 248;
+    private const int Height = 248;
+    private const int Iterations = 1;
+    private const int MaxIterations = 1000;
+
+#else
+
+    private const int RunningTime = 1000;
+    private const int Width = 248;
+    private const int Height = 248;
+    private const int Iterations = 7;
+    private const int MaxIterations = 1000;
+
+#endif
+
+    private double _framesPerSecond;
+    private bool _parallel;
+    private bool _showThreads;
+    private static int _width, _height;
+    private int _degreeOfParallelism = Environment.ProcessorCount;
+    private int _frames;
+    private CancellationTokenSource _cancellation;
+    private ObjectPool<int[]> _freeBuffers;
+
+    public Program()
     {
-        /* 
-        var onetwo = Avx.SetAllVector256<float>(1.2f);
-        var pone = Avx.SetAllVector256<float>(0.1f);
-        VectorMath.Log(onetwo).Display();
-        VectorMath.Exp(VectorMath.Log(onetwo)).Display();
-        VectorMath.Log(VectorMath.Exp(onetwo)).Display();
-        */
-        RenderTo("./pic.ppm");
+        _width = Width;
+        _height = Height;
+        _parallel = false;
+        _showThreads = false;
+        _freeBuffers = new ObjectPool<int[]>(() => new int[_width * 3 * _height]);
+    }
+
+    static unsafe int Main(string[] args)
+    {
+        // RenderTo("./pic.ppm");
+        var r = new Program();
+        bool result = r.Run();
+        return (result ? 100 : -1);
+    }
+
+    private void RenderTest()
+    {
+        _cancellation = new CancellationTokenSource(RunningTime);
+        RenderLoop(MaxIterations);
+    }
+
+    private void RenderBench()
+    {
+        _cancellation = new CancellationTokenSource();
+        RenderLoop(Iterations);
+    }
+
+    private unsafe void RenderLoop(int iterations)
+    {
+        // Create a ray tracer, and create a reference to "sphere2" that we are going to bounce
+        var packetTracer = new Packet256Tracer(_width, _height);
+        var scene = packetTracer.DefaultScene;
+        var sphere2 = (Sphere)scene.Things[0]; // The first item is assumed to be our sphere
+        var baseY = sphere2.Radius;
+        sphere2.Center.Y = sphere2.Radius;
+
+        // Timing determines how fast the ball bounces as well as diagnostics frames/second info
+        var renderingTime = new Stopwatch();
+        var totalTime = Stopwatch.StartNew();
+
+        // Keep rendering until the iteration count is hit
+        for (_frames = 0; _frames < iterations; _frames++)
+        {
+            // Or the rendering task has been canceled
+            if (_cancellation.IsCancellationRequested)
+            {
+                break;
+            }
+
+            // Get the next buffer
+            var rgbBuffer = _freeBuffers.GetObject();
+
+            // Determine the new position of the sphere based on the current time elapsed
+            double dy2 = 0.8 * Math.Abs(Math.Sin(totalTime.ElapsedMilliseconds * Math.PI / 3000));
+            sphere2.Center.Y = (float)(baseY + dy2);
+
+            // Render the scene
+            renderingTime.Reset();
+            renderingTime.Start();
+            ParallelOptions options = new ParallelOptions
+            {
+                MaxDegreeOfParallelism = _degreeOfParallelism,
+                CancellationToken = _cancellation.Token
+            };
+            fixed (int* ptr = rgbBuffer)
+            {
+                packetTracer.RenderVectorized(scene, ptr);
+            }
+
+            renderingTime.Stop();
+
+            _framesPerSecond = (1000.0 / renderingTime.ElapsedMilliseconds);
+            _freeBuffers.PutObject(rgbBuffer);
+        }
+    }
+
+    public bool Run()
+    {
+        RenderTest();
+        Console.WriteLine("{0} frames, {1} frames/sec",
+            _frames,
+            _framesPerSecond.ToString("F2"));
+        return true;
     }
 
     private static unsafe void RenderTo(string fileName)
     {
         var packetTracer = new Packet256Tracer(_width, _height);
         var scene = packetTracer.DefaultScene;
-        
+
         var sphere2 = (Sphere)scene.Things[0];
         var baseY = sphere2.Radius;
         sphere2.Center.Y = sphere2.Radius;
 
         var rgb = new int[_width * 3 * _height];
-        fixed(int* ptr = rgb)
+        fixed (int* ptr = rgb)
         {
             packetTracer.RenderVectorized(scene, ptr);
         }
-        
+
         var file = new System.IO.StreamWriter(fileName);
         file.WriteLine("P3");
         file.WriteLine(_width + " " + _height);

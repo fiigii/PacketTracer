@@ -166,14 +166,4 @@ internal class VectorPacket256
         var length = this.Lengths;
         return new VectorPacket256(Divide(Xs, length), Divide(Ys, length), Divide(Zs, length));
     }
-
-    public unsafe void Display()
-    {
-        Xs.Display();
-        Ys.Display();
-        Zs.Display();
-        Console.WriteLine("++++++++++++++++++++++++++++++++");
-
-    }
-
 }
