@@ -42,8 +42,7 @@ public static class VectorMath
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Vector256<float> Pow(Vector256<float> left, Vector256<float> right)
     {
-        //return Exp(Multiply(right, Log(left)));
-        return left;
+        return Exp(Multiply(right, Log(left)));
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -82,7 +81,7 @@ public static class VectorMath
         Vector256<int> ei = Avx2.ShiftRightLogical(StaticCast<float, int>(x), 23);
         x = Or(And(x, StaticCast<int, float>(MantMask)), Point5);
         ei = Avx2.Subtract(ei, Ox7);
-        Vector256<float> e = Add(StaticCast<int, float>(ei), One);
+        Vector256<float> e = Add(ConvertToVector256Single(ei), One);
         Vector256<float> mask = Compare(x, Sqrthf, FloatComparisonMode.LessThanOrderedNonSignaling);
         Vector256<float> tmp = And(x, mask);
         x = Subtract(x, One);

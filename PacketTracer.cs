@@ -18,6 +18,8 @@ internal class Packet256Tracer
     public int Hight { get; private set; }
     private static readonly int MaxDepth = 5;
 
+    private static readonly Vector256<float> SevenToZero = SetVector256(7f, 6f, 5f, 4f, 3f, 2f, 1f, 0f);
+
     public Packet256Tracer(int _width, int _hight)
     {
         if (_width % VectorPacket256.Packet256Size != 0)
@@ -37,22 +39,13 @@ internal class Packet256Tracer
             for (int x = 0; x < Width; x += VectorPacket256.Packet256Size)
             {
                 float fx = (float)x;
-                Vector256<float> Xs = SetVector256(fx + 7, fx + 6, fx + 5, fx + 4, fx + 3, fx + 2, fx + 1, fx);
+                Vector256<float> Xs = Add(SetAllVector256(fx), SevenToZero);
                 var dirs = GetPoints(Xs, SetAllVector256<float>(y), camera);
                 var rayPacket256 = new RayPacket256(camera.Pos, dirs);
                 var SoAcolors = TraceRay(rayPacket256, scene, 0);
 
                 var AoS = SoAcolors.FastTranspose();
                 var intAoS = AoS.ConvertToIntRGB();
-                /* 
-                SoAcolors.Display();
-                Console.WriteLine("AoS");
-
-                AoS.Display();
-                Console.WriteLine("Store");
-                */
-
-
 
                 int* output = &rgb[x + stride];
                 {

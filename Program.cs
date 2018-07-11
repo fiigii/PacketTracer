@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Collections.Concurrent;
+using System.Runtime.Intrinsics.X86;
 //using Microsoft.Xunit.Performance;
 
 //[assembly: OptimizeForBenchmarks]
@@ -25,8 +26,8 @@ class Program
 #else
 
     private const int RunningTime = 1000;
-    private const int Width = 248;
-    private const int Height = 248;
+    private const int Width = 2480;
+    private const int Height = 2480;
     private const int Iterations = 7;
     private const int MaxIterations = 1000;
 
@@ -52,10 +53,14 @@ class Program
 
     static unsafe int Main(string[] args)
     {
-        // RenderTo("./pic.ppm");
-        var r = new Program();
-        bool result = r.Run();
-        return (result ? 100 : -1);
+        if (Avx2.IsSupported)
+        {
+            var r = new Program();
+            r.RenderTo("./pic.ppm");
+            //bool result = r.Run();
+            //return (result ? 100 : -1);
+        }
+        return 100;
     }
 
     private void RenderTest()
@@ -128,7 +133,7 @@ class Program
         return true;
     }
 
-    private static unsafe void RenderTo(string fileName)
+    private unsafe void RenderTo(string fileName)
     {
         var packetTracer = new Packet256Tracer(_width, _height);
         var scene = packetTracer.DefaultScene;
