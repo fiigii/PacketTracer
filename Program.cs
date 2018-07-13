@@ -48,7 +48,7 @@ class Program
         _height = Height;
         _parallel = false;
         _showThreads = false;
-        _freeBuffers = new ObjectPool<int[]>(() => new int[_width * 3 * _height]);
+        _freeBuffers = new ObjectPool<int[]>(() => new int[_width * 3 * _height]); // Each pixel has 3 fields (RGB)
     }
 
     static unsafe int Main(string[] args)
@@ -56,7 +56,8 @@ class Program
         if (Avx2.IsSupported)
         {
             var r = new Program();
-            //r.RenderTo("./pic.ppm");
+            // We can use `RenderTo` to generate a picture in a PPM file for debugging
+            // r.RenderTo("./pic.ppm");
             bool result = r.Run();
             return (result ? 100 : -1);
         }
@@ -158,6 +159,7 @@ class Program
             {
                 for (int j = 0; j < _width; j++)
                 {
+                    // Each pixel has 3 fields (RGB)
                     int pos = (i * _width + j) * 3;
                     file.Write(rgb[pos] + " " + rgb[pos + 1] + " " + rgb[pos + 2] + " ");
                 }

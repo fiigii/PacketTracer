@@ -33,6 +33,7 @@ internal class Packet256Tracer
     internal unsafe void RenderVectorized(Scene scene, int* rgb)
     {
         Camera camera = scene.Camera;
+        // Iterate y then x in order to preserve cache locality.
         for (int y = 0; y < Height; y++)
         {
             int stride = y * Width;
@@ -44,10 +45,14 @@ internal class Packet256Tracer
                 var rayPacket256 = new RayPacket256(camera.Pos, dirs);
                 var SoAcolors = TraceRay(rayPacket256, scene, 0);
 
+                // `FastTranspose` returns an "incomplete" AoS structure,
+                // which can be written into memory 16-byte by 16-byte.
+                // Now, .NET Core does not guarantee the 32-byte alignment, 
+                // so we use 16-byte store by default to avoid the cache-line split 
                 var AoS = SoAcolors.FastTranspose();
                 var intAoS = AoS.ConvertToIntRGB();
 
-                int* output = &rgb[(x + stride) * 3];
+                int* output = &rgb[(x + stride) * 3]; // Each pixel has 3 fields (RGB)
                 {
                     Store(output, GetLowerHalf<int>(intAoS.Rs));
                     Store(output + 4, GetLowerHalf<int>(intAoS.Gs));
@@ -56,11 +61,14 @@ internal class Packet256Tracer
                     Avx2.ExtractVector128(output + 16, intAoS.Gs, 1);
                     Avx2.ExtractVector128(output + 20, intAoS.Bs, 1);
                 }
+
                 /* 
+                // `Transpose` returns a true AoS structure,
+                // which can be written into memory 32-byte by 32-byte.
                 var AoS = SoAcolors.Transpose();
                 var intAoS = AoS.ConvertToIntRGB();
 
-                int* output = &rgb[(x + stride) * 3];
+                int* output = &rgb[(x + stride) * 3]; // Each pixel has 3 fields (RGB)
                 {
                     Store(output, intAoS.Rs);
                     Store(output + 8, intAoS.Gs);
