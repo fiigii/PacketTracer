@@ -6,6 +6,7 @@
 using static System.Runtime.Intrinsics.X86.Avx;
 using System.Runtime.Intrinsics.X86;
 using System.Runtime.Intrinsics;
+using System.Runtime.CompilerServices;
 
 using ColorPacket256 = VectorPacket256;
 
@@ -31,6 +32,7 @@ internal static class ColorPacket256Helper
         return new Int32RGBPacket256(rsInt, gsInt, bsInt);
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ColorPacket256 Times(ColorPacket256 left, ColorPacket256 right)
     {
         return new VectorPacket256(Multiply(left.Xs, right.Xs), Multiply(left.Ys, right.Ys), Multiply(left.Zs, right.Zs));

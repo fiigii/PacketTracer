@@ -43,11 +43,11 @@ internal class Packet256Tracer
                 var dirs = GetPoints(Xs, SetAllVector256<float>(y), camera);
                 var rayPacket256 = new RayPacket256(camera.Pos, dirs);
                 var SoAcolors = TraceRay(rayPacket256, scene, 0);
-
+ 
                 var AoS = SoAcolors.FastTranspose();
                 var intAoS = AoS.ConvertToIntRGB();
 
-                int* output = &rgb[x + stride];
+                int* output = &rgb[(x + stride) * 3];
                 {
                     Store(output, GetLowerHalf<int>(intAoS.Rs));
                     Store(output + 4, GetLowerHalf<int>(intAoS.Gs));
@@ -60,14 +60,13 @@ internal class Packet256Tracer
                 var AoS = SoAcolors.Transpose();
                 var intAoS = AoS.ConvertToIntRGB();
 
-                int* output = &rgb[x + stride];
+                int* output = &rgb[(x + stride) * 3];
                 {
                     Store(output, intAoS.Rs);
                     Store(output + 8, intAoS.Gs);
                     Store(output + 16, intAoS.Bs);
                 }
                 */
-
             }
         }
 
@@ -85,7 +84,7 @@ internal class Packet256Tracer
         var backgroundColor = ColorPacket256Helper.BackgroundColor.Xs;
         return new ColorPacket256(BlendVariable(color.Xs, backgroundColor, isNull),
                                   BlendVariable(color.Ys, backgroundColor, isNull),
-                                  BlendVariable(color.Xs, backgroundColor, isNull));
+                                  BlendVariable(color.Zs, backgroundColor, isNull));
     }
 
     private Vector256<float> TestRay(RayPacket256 rayPacket256, Scene scene)

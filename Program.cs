@@ -26,8 +26,8 @@ class Program
 #else
 
     private const int RunningTime = 1000;
-    private const int Width = 2480;
-    private const int Height = 2480;
+    private const int Width = 248;
+    private const int Height = 248;
     private const int Iterations = 7;
     private const int MaxIterations = 1000;
 
@@ -56,9 +56,9 @@ class Program
         if (Avx2.IsSupported)
         {
             var r = new Program();
-            r.RenderTo("./pic.ppm");
-            //bool result = r.Run();
-            //return (result ? 100 : -1);
+            //r.RenderTo("./pic.ppm");
+            bool result = r.Run();
+            return (result ? 100 : -1);
         }
         return 100;
     }
@@ -155,9 +155,9 @@ class Program
 
         for (int i = 0; i < _height; i++)
         {
-            for (int j = 0; j < _width; j++)
+            for (int j = 0; j < _width; j ++)
             {
-                int pos = i * _height + j;
+                int pos = (i * _width + j) * 3;
                 file.Write(rgb[pos] + " " + rgb[pos + 1] + " " + rgb[pos + 2] + " ");
             }
             file.WriteLine();
