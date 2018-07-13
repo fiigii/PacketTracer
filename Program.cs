@@ -101,8 +101,8 @@ class Program
             var rgbBuffer = _freeBuffers.GetObject();
 
             // Determine the new position of the sphere based on the current time elapsed
-            double dy2 = 0.8 * Math.Abs(Math.Sin(totalTime.ElapsedMilliseconds * Math.PI / 3000));
-            sphere2.Center.Y = (float)(baseY + dy2);
+            float dy2 = 0.8f * MathF.Abs(MathF.Sin((float)(totalTime.ElapsedMilliseconds * Math.PI / 3000)));
+            sphere2.Center.Y = baseY + dy2;
 
             // Render the scene
             renderingTime.Reset();
@@ -148,19 +148,21 @@ class Program
             packetTracer.RenderVectorized(scene, ptr);
         }
 
-        var file = new System.IO.StreamWriter(fileName);
-        file.WriteLine("P3");
-        file.WriteLine(_width + " " + _height);
-        file.WriteLine("255");
-
-        for (int i = 0; i < _height; i++)
+        using (var file = new System.IO.StreamWriter(fileName))
         {
-            for (int j = 0; j < _width; j++)
+            file.WriteLine("P3");
+            file.WriteLine(_width + " " + _height);
+            file.WriteLine("255");
+
+            for (int i = 0; i < _height; i++)
             {
-                int pos = (i * _width + j) * 3;
-                file.Write(rgb[pos] + " " + rgb[pos + 1] + " " + rgb[pos + 2] + " ");
+                for (int j = 0; j < _width; j++)
+                {
+                    int pos = (i * _width + j) * 3;
+                    file.Write(rgb[pos] + " " + rgb[pos + 1] + " " + rgb[pos + 2] + " ");
+                }
+                file.WriteLine();
             }
-            file.WriteLine();
         }
     }
 }

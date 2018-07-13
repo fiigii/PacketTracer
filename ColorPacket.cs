@@ -12,22 +12,23 @@ using ColorPacket256 = VectorPacket256;
 
 internal static class ColorPacket256Helper
 {
+
+    private static readonly Vector256<float> One = SetAllVector256<float>(1.0f);
+    private static readonly Vector256<float> Max = SetAllVector256<float>(255.0f);
     public static Int32RGBPacket256 ConvertToIntRGB(this VectorPacket256 colors)
     {
-        var one = SetAllVector256<float>(1.0f);
-        var max = SetAllVector256<float>(255.0f);
 
-        var rsMask = Compare(colors.Xs, one, FloatComparisonMode.GreaterThanOrderedNonSignaling);
-        var gsMask = Compare(colors.Ys, one, FloatComparisonMode.GreaterThanOrderedNonSignaling);
-        var bsMask = Compare(colors.Zs, one, FloatComparisonMode.GreaterThanOrderedNonSignaling);
+        var rsMask = Compare(colors.Xs, One, FloatComparisonMode.GreaterThanOrderedNonSignaling);
+        var gsMask = Compare(colors.Ys, One, FloatComparisonMode.GreaterThanOrderedNonSignaling);
+        var bsMask = Compare(colors.Zs, One, FloatComparisonMode.GreaterThanOrderedNonSignaling);
 
-        var rs = BlendVariable(colors.Xs, one, rsMask);
-        var gs = BlendVariable(colors.Ys, one, gsMask);
-        var bs = BlendVariable(colors.Zs, one, bsMask);
+        var rs = BlendVariable(colors.Xs, One, rsMask);
+        var gs = BlendVariable(colors.Ys, One, gsMask);
+        var bs = BlendVariable(colors.Zs, One, bsMask);
 
-        var rsInt = ConvertToVector256Int32(Multiply(rs, max));
-        var gsInt = ConvertToVector256Int32(Multiply(gs, max));
-        var bsInt = ConvertToVector256Int32(Multiply(bs, max));
+        var rsInt = ConvertToVector256Int32(Multiply(rs, Max));
+        var gsInt = ConvertToVector256Int32(Multiply(gs, Max));
+        var bsInt = ConvertToVector256Int32(Multiply(bs, Max));
 
         return new Int32RGBPacket256(rsInt, gsInt, bsInt);
     }

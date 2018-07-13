@@ -13,7 +13,7 @@ using System;
 internal struct Intersections
 {
     public Vector256<float> Distances;
-    public Vector256<int> ThingIndeces;
+    public Vector256<int> ThingIndices;
 
     public static readonly Vector256<float> NullDistance = SetAllVector256<float>(float.MaxValue);
     public static readonly Vector256<int> NullIndex = SetAllVector256<int>(-1);
@@ -21,7 +21,7 @@ internal struct Intersections
     public Intersections(Vector256<float> dis, Vector256<int> things)
     {
         Distances = dis;
-        ThingIndeces = things;
+        ThingIndices = things;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

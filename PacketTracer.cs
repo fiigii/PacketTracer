@@ -15,30 +15,30 @@ using ColorPacket256 = VectorPacket256;
 internal class Packet256Tracer
 {
     public int Width { get; private set; }
-    public int Hight { get; private set; }
+    public int Height { get; private set; }
     private static readonly int MaxDepth = 5;
 
     private static readonly Vector256<float> SevenToZero = SetVector256(7f, 6f, 5f, 4f, 3f, 2f, 1f, 0f);
 
-    public Packet256Tracer(int _width, int _hight)
+    public Packet256Tracer(int _width, int _height)
     {
-        if (_width % VectorPacket256.Packet256Size != 0)
+        if ((_width % VectorPacket256.Packet256Size) != 0)
         {
             _width += VectorPacket256.Packet256Size - _width % VectorPacket256.Packet256Size;
         }
         Width = _width;
-        Hight = _hight;
+        Height = _height;
     }
 
     internal unsafe void RenderVectorized(Scene scene, int* rgb)
     {
         Camera camera = scene.Camera;
-        for (int y = 0; y < Hight; y++)
+        for (int y = 0; y < Height; y++)
         {
             int stride = y * Width;
             for (int x = 0; x < Width; x += VectorPacket256.Packet256Size)
             {
-                float fx = (float)x;
+                float fx = x;
                 Vector256<float> Xs = Add(SetAllVector256(fx), SevenToZero);
                 var dirs = GetPoints(Xs, SetAllVector256<float>(y), camera);
                 var rayPacket256 = new RayPacket256(camera.Pos, dirs);
@@ -111,13 +111,13 @@ internal class Packet256Tracer
                 var nullMinMask = Compare(mins.Distances, Intersections.NullDistance, FloatComparisonMode.EqualOrderedNonSignaling);
 
                 var lessMinMask = Compare(mins.Distances, distance, FloatComparisonMode.GreaterThanOrderedNonSignaling);
-                var minMask = And(notNullMask, (Or(nullMinMask, lessMinMask)));
+                var minMask = And(notNullMask, Or(nullMinMask, lessMinMask));
                 var minDis = BlendVariable(mins.Distances, distance, minMask);
-                var minIndeces = StaticCast<float, int>(BlendVariable(StaticCast<int, float>(mins.ThingIndeces),
+                var minIndices = StaticCast<float, int>(BlendVariable(StaticCast<int, float>(mins.ThingIndices),
                                                                       StaticCast<int, float>(SetAllVector256<int>(i)),
                                                                       minMask));
                 mins.Distances = minDis;
-                mins.ThingIndeces = minIndeces;
+                mins.ThingIndices = minIndices;
             }
         }
         return mins;
@@ -128,16 +128,16 @@ internal class Packet256Tracer
 
         var ds = rays.Dirs;
         var pos = isect.Distances * ds + rays.Starts;
-        var normals = scene.Normals(isect.ThingIndeces, pos);
+        var normals = scene.Normals(isect.ThingIndices, pos);
         var reflectDirs = ds - (Multiply(VectorPacket256.DotProduct(normals, ds), SetAllVector256<float>(2)) * normals);
-        var colors = GetNaturalColor(isect.ThingIndeces, pos, normals, reflectDirs, scene);
+        var colors = GetNaturalColor(isect.ThingIndices, pos, normals, reflectDirs, scene);
 
         if (depth >= MaxDepth)
         {
             return colors + new ColorPacket256(.5f, .5f, .5f);
         }
 
-        return colors + GetReflectionColor(isect.ThingIndeces, pos + (SetAllVector256<float>(0.001f) * reflectDirs), normals, reflectDirs, scene, depth);
+        return colors + GetReflectionColor(isect.ThingIndices, pos + (SetAllVector256<float>(0.001f) * reflectDirs), normals, reflectDirs, scene, depth);
     }
 
     private ColorPacket256 GetNaturalColor(Vector256<int> things, VectorPacket256 pos, VectorPacket256 norms, VectorPacket256 rds, Scene scene)
@@ -218,11 +218,11 @@ internal class Packet256Tracer
         float widthRate1 = Width / 2.0f;
         float widthRate2 = Width * 2.0f;
 
-        float hightRate1 = Hight / 2.0f;
-        float hightRate2 = Hight * 2.0f;
+        float heightRate1 = Height / 2.0f;
+        float heightRate2 = Height * 2.0f;
 
         var recenteredX = Divide(Subtract(x, SetAllVector256(widthRate1)), SetAllVector256(widthRate2));
-        var recenteredY = Subtract(SetZeroVector256<float>(), Divide(Subtract(y, SetAllVector256(hightRate1)), SetAllVector256(hightRate2)));
+        var recenteredY = Subtract(SetZeroVector256<float>(), Divide(Subtract(y, SetAllVector256(heightRate1)), SetAllVector256(heightRate2)));
 
         var result = camera.Forward +
                     (recenteredX * camera.Right) +
