@@ -43,7 +43,7 @@ internal class Packet256Tracer
                 var dirs = GetPoints(Xs, SetAllVector256<float>(y), camera);
                 var rayPacket256 = new RayPacket256(camera.Pos, dirs);
                 var SoAcolors = TraceRay(rayPacket256, scene, 0);
- 
+
                 var AoS = SoAcolors.FastTranspose();
                 var intAoS = AoS.ConvertToIntRGB();
 

@@ -20,8 +20,8 @@ internal static class Surfaces
                 var floored = ConvertToVector256Int32(Add(Floor(pos.Zs), Floor(pos.Xs)));
                 var modMask = SetAllVector256<int>(1);
                 var evenMaskint = Avx2.And(floored, modMask);
-                var evenMask = Avx2.CompareEqual(evenMaskint, modMask); 
-                
+                var evenMask = Avx2.CompareEqual(evenMaskint, modMask);
+
                 var white = new ColorPacket256(SetAllVector256(1.0f));
                 var black = new ColorPacket256(0.02f, 0.0f, 0.14f);
 

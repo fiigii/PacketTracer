@@ -155,7 +155,7 @@ class Program
 
         for (int i = 0; i < _height; i++)
         {
-            for (int j = 0; j < _width; j ++)
+            for (int j = 0; j < _width; j++)
             {
                 int pos = (i * _width + j) * 3;
                 file.Write(rgb[pos] + " " + rgb[pos + 1] + " " + rgb[pos + 2] + " ");
@@ -164,4 +164,3 @@ class Program
         }
     }
 }
-

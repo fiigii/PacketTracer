@@ -140,7 +140,7 @@ public static class VectorDXMath
         Vector256<float> isNaN = AndNot(t0, t1);
 
         Vector256<float> result = BlendVariable(log2, Infinity, isInfinite);
-        Vector256<float> tmp = BlendVariable(NegQNaN, Infinity, isZero); 
+        Vector256<float> tmp = BlendVariable(NegQNaN, Infinity, isZero);
         result = BlendVariable(tmp, result, isPositive);
         return BlendVariable(result, QNaN, isNaN);
     }
@@ -179,10 +179,10 @@ public static class VectorDXMath
         return StaticCast<int, float>(Avx2.CompareEqual(StaticCast<float, int>(left), StaticCast<float, int>(right)));
     }
 
-        internal unsafe static void Display(this Vector256<float> v)
+    internal unsafe static void Display(this Vector256<float> v)
     {
         float[] buffer = new float[8];
-        fixed(float* ptr = buffer)
+        fixed  (float* ptr = buffer)
         {
             Store(ptr, v);
         }
@@ -197,7 +197,7 @@ public static class VectorDXMath
     internal unsafe static void Display(this Vector256<int> v)
     {
         int[] buffer = new int[8];
-        fixed(int* ptr = buffer)
+        fixed  (int* ptr = buffer)
         {
             Store(ptr, v);
         }

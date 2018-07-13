@@ -39,5 +39,4 @@ internal struct Intersections
         return TestC(cmp, StaticCast<int, float>(mask));
     }
 
-    
 }

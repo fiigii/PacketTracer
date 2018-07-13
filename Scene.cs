@@ -39,7 +39,7 @@ internal class Scene
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Vector256<float> Reflect(Vector256<int> things, VectorPacket256 pos)
     {
-        Vector256<float> rfl =  SetAllVector256<float>(1);
+        Vector256<float> rfl = SetAllVector256<float>(1);
         for (int i = 0; i < Things.Length; i++)
         {
             Vector256<float> mask = StaticCast<int, float>(CompareEqual(things, SetAllVector256<int>(i)));

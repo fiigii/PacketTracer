@@ -9,9 +9,9 @@ using System.Runtime.CompilerServices;
 
 internal struct Color
 {
-    public float R {get; private set;}
-    public float G {get; private set;}
-    public float B {get; private set;}
+    public float R { get; private set; }
+    public float G { get; private set; }
+    public float B { get; private set; }
 
     public static readonly Color Background = new Color(0, 0, 0);
 
