@@ -57,7 +57,7 @@ class Program
         {
             var r = new Program();
             // We can use `RenderTo` to generate a picture in a PPM file for debugging
-            // r.RenderTo("./pic.ppm");
+            // r.RenderTo("./pic.ppm", true);
             bool result = r.Run();
             return (result ? 100 : -1);
         }
@@ -134,7 +134,7 @@ class Program
         return true;
     }
 
-    private unsafe void RenderTo(string fileName)
+    private unsafe void RenderTo(string fileName, bool wirteToFile)
     {
         var packetTracer = new Packet256Tracer(_width, _height);
         var scene = packetTracer.DefaultScene;
@@ -144,27 +144,39 @@ class Program
         sphere2.Center.Y = sphere2.Radius;
 
         var rgb = new int[_width * 3 * _height];
+        Stopwatch stopWatch = new Stopwatch();
+        stopWatch.Start();
         fixed (int* ptr = rgb)
         {
             packetTracer.RenderVectorized(scene, ptr);
         }
+        stopWatch.Stop();
+        TimeSpan ts = stopWatch.Elapsed;
+        string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
+           ts.Hours, ts.Minutes, ts.Seconds,
+           ts.Milliseconds / 10);
+        Console.WriteLine("RunTime " + elapsedTime);
 
-        using (var file = new System.IO.StreamWriter(fileName))
+        if (wirteToFile)
         {
-            file.WriteLine("P3");
-            file.WriteLine(_width + " " + _height);
-            file.WriteLine("255");
-
-            for (int i = 0; i < _height; i++)
+            using (var file = new System.IO.StreamWriter(fileName))
             {
-                for (int j = 0; j < _width; j++)
+                file.WriteLine("P3");
+                file.WriteLine(_width + " " + _height);
+                file.WriteLine("255");
+
+                for (int i = 0; i < _height; i++)
                 {
-                    // Each pixel has 3 fields (RGB)
-                    int pos = (i * _width + j) * 3;
-                    file.Write(rgb[pos] + " " + rgb[pos + 1] + " " + rgb[pos + 2] + " ");
+                    for (int j = 0; j < _width; j++)
+                    {
+                        // Each pixel has 3 fields (RGB)
+                        int pos = (i * _width + j) * 3;
+                        file.Write(rgb[pos] + " " + rgb[pos + 1] + " " + rgb[pos + 2] + " ");
+                    }
+                    file.WriteLine();
                 }
-                file.WriteLine();
             }
+
         }
     }
 }
