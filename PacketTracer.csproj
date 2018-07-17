@@ -6,9 +6,14 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <RuntimeIdentifier>win7-x64</RuntimeIdentifier>
     <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="System.Runtime.Intrinsics.Experimental" Version="4.5.0-preview2-26406-04" />
+    <PackageReference Include="System.Runtime.Intrinsics.Experimental" Version="4.6.0-preview3-26501-04" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="baseline\**" />
+  </ItemGroup>
+
 
 </Project>

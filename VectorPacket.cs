@@ -5,6 +5,7 @@
 
 using static System.Runtime.Intrinsics.X86.Avx;
 using static System.Runtime.Intrinsics.X86.Sse;
+using System.Runtime.Intrinsics.X86;
 using System.Runtime.Intrinsics;
 using System.Runtime.CompilerServices;
 using System;
@@ -20,11 +21,13 @@ internal class VectorPacket256
         get
         {
             var x2 = Multiply(Xs, Xs);
-            var y2 = Multiply(Ys, Ys);
-            var z2 = Multiply(Zs, Zs);
 
+            var y2 = Multiply(Ys, Ys);
             var l2 = Add(x2, y2);
+
+            var z2 = Multiply(Zs, Zs);
             l2 = Add(l2, z2);
+
             return Sqrt(l2);
         }
     }
@@ -140,10 +143,21 @@ internal class VectorPacket256
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Vector256<float> DotProduct(VectorPacket256 left, VectorPacket256 right)
     {
-        var x2 = Multiply(left.Xs, right.Xs);
-        var y2 = Multiply(left.Ys, right.Ys);
-        var z2 = Multiply(left.Zs, right.Zs);
-        return Add(Add(x2, y2), z2);
+        /* 
+        if (Fma.IsSupported)
+        {
+            var x2 = Multiply(left.Xs, right.Xs);
+            var l2 = Fma.MultiplyAdd(left.Ys, right.Ys, x2);
+            return Fma.MultiplyAdd(left.Zs, right.Zs, l2);
+        }
+        else
+        */
+        {
+            var x2 = Multiply(left.Xs, right.Xs);
+            var y2 = Multiply(left.Ys, right.Ys);
+            var z2 = Multiply(left.Zs, right.Zs);
+            return Add(Add(x2, y2), z2);
+        }
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
