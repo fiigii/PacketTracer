@@ -13,11 +13,11 @@ using System;
 
 internal class Scene
 {
-    public SceneObject[] Things;
-    public Light[] Lights;
+    public ObjectPacket256[] Things;
+    public LightPacket256[] Lights;
     public Camera Camera;
 
-    public Scene(SceneObject[] things, Light[] lights, Camera camera) { Things = things; Lights = lights; Camera = camera; }
+    public Scene(ObjectPacket256[] things, LightPacket256[] lights, Camera camera) { Things = things; Lights = lights; Camera = camera; }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public VectorPacket256 Normals(Vector256<int> things, VectorPacket256 pos)
@@ -27,7 +27,7 @@ internal class Scene
         for (int i = 0; i < Things.Length; i++)
         {
             Vector256<float> mask = StaticCast<int, float>(CompareEqual(things, SetAllVector256<int>(i)));
-            var n = Things[i].ToPacket256().Normals(pos);
+            var n = Things[i].Normals(pos);
             norms.Xs = BlendVariable(norms.Xs, n.Xs, mask);
             norms.Ys = BlendVariable(norms.Ys, n.Ys, mask);
             norms.Zs = BlendVariable(norms.Zs, n.Zs, mask);

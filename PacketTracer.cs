@@ -111,7 +111,7 @@ internal class Packet256Tracer
         Intersections mins = new Intersections(Intersections.NullDistance, Intersections.NullIndex);
         for (int i = 0; i < scene.Things.Length; i++)
         {
-            Vector256<float> distance = scene.Things[i].ToPacket256().Intersect(rayPacket256);
+            Vector256<float> distance = scene.Things[i].Intersect(rayPacket256);
 
             if (!Intersections.AllNullIntersections(distance))
             {
@@ -153,8 +153,7 @@ internal class Packet256Tracer
         var colors = ColorPacket256Helper.DefaultColor;
         for (int i = 0; i < scene.Lights.Length; i++)
         {
-            var light = scene.Lights[i];
-            var lights = light.ToPacket256();
+            var lights = scene.Lights[i];
             var zero = SetZeroVector256<float>();
             var colorPacket = lights.Colors;
             var ldis = lights.Positions - pos;
@@ -243,15 +242,15 @@ internal class Packet256Tracer
 
     private static Scene CreateDefaultScene()
     {
-        SceneObject[] things = {
-            new Sphere(new Vector(-0.5f, 1f, 1.5f), 0.5f, Surfaces.MatteShiny),
-            new Sphere(new Vector(0f, 1f, -0.25f), 1f, Surfaces.Shiny),
-            new Plane((new Vector(0, 1, 0)), 0, Surfaces.CheckerBoard)
+        ObjectPacket256[] things = {
+            new SpherePacket256(new VectorPacket256(-0.5f, 1f, 1.5f), SetAllVector256(0.5f), Surfaces.MatteShiny),
+            new SpherePacket256(new VectorPacket256(0f, 1f, -0.25f), SetAllVector256(1f), Surfaces.Shiny),
+            new PlanePacket256((new VectorPacket256(0, 1, 0)), SetAllVector256(0f), Surfaces.CheckerBoard)
         };
 
-        Light[] lights = {
-            new Light(new Vector(-2f,2.5f,0f),new Color(.5f,.45f,.41f)),
-            new Light(new Vector(2,4.5f,2), new Color(.99f,.95f,.8f))
+        LightPacket256[] lights = {
+            new LightPacket256(new Vector(-2f,2.5f,0f),new Color(.5f,.45f,.41f)),
+            new LightPacket256(new Vector(2,4.5f,2), new Color(.99f,.95f,.8f))
         };
 
         Camera camera = Camera.Create(new VectorPacket256(2.75f, 2f, 3.75f), new VectorPacket256(-0.6f, .5f, 0f));

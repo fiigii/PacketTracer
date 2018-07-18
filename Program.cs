@@ -26,8 +26,8 @@ class Program
 #else
 
     private const int RunningTime = 1000;
-    private const int Width = 248;
-    private const int Height = 248;
+    private const int Width = 2480;
+    private const int Height = 2480;
     private const int Iterations = 7;
     private const int MaxIterations = 1000;
 
@@ -57,9 +57,9 @@ class Program
         {
             var r = new Program();
             // We can use `RenderTo` to generate a picture in a PPM file for debugging
-            // r.RenderTo("./pic.ppm", true);
-            bool result = r.Run();
-            return (result ? 100 : -1);
+            r.RenderTo("./pic.ppm", true);
+            //bool result = r.Run();
+            //return (result ? 100 : -1);
         }
         return 100;
     }
@@ -81,9 +81,9 @@ class Program
         // Create a ray tracer, and create a reference to "sphere2" that we are going to bounce
         var packetTracer = new Packet256Tracer(_width, _height);
         var scene = packetTracer.DefaultScene;
-        var sphere2 = (Sphere)scene.Things[0]; // The first item is assumed to be our sphere
-        var baseY = sphere2.Radius;
-        sphere2.Center.Y = sphere2.Radius;
+        var sphere2 = (SpherePacket256)scene.Things[0]; // The first item is assumed to be our sphere
+        var baseY = sphere2.Radiuses;
+        sphere2.Centers.Ys = sphere2.Radiuses;
 
         // Timing determines how fast the ball bounces as well as diagnostics frames/second info
         var renderingTime = new Stopwatch();
@@ -103,7 +103,7 @@ class Program
 
             // Determine the new position of the sphere based on the current time elapsed
             float dy2 = 0.8f * MathF.Abs(MathF.Sin((float)(totalTime.ElapsedMilliseconds * Math.PI / 3000)));
-            sphere2.Center.Y = baseY + dy2;
+            sphere2.Centers.Ys = Avx.Add(baseY, Avx.SetAllVector256(dy2));
 
             // Render the scene
             renderingTime.Reset();
@@ -138,11 +138,6 @@ class Program
     {
         var packetTracer = new Packet256Tracer(_width, _height);
         var scene = packetTracer.DefaultScene;
-
-        var sphere2 = (Sphere)scene.Things[0];
-        var baseY = sphere2.Radius;
-        sphere2.Center.Y = sphere2.Radius;
-
         var rgb = new int[_width * 3 * _height];
         Stopwatch stopWatch = new Stopwatch();
         stopWatch.Start();
