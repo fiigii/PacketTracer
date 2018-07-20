@@ -14,10 +14,10 @@ internal sealed class PlanePacket256 : ObjectPacket256
     public Vector256<float> Offsets;
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public PlanePacket256(Plane plane) : base(plane.Surface)
+    public PlanePacket256(VectorPacket256 norms, Vector256<float> offsets, Surface surface) : base(surface)
     {
-        Norms = new VectorPacket256(SetAllVector256(plane.Norm.X), SetAllVector256(plane.Norm.Y), SetAllVector256(plane.Norm.Z));
-        Offsets = SetAllVector256(plane.Offset);
+        Norms = norms;
+        Offsets = offsets;
     }
 
     public override VectorPacket256 Normals(VectorPacket256 pos)

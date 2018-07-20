@@ -12,6 +12,9 @@ using System;
 
 internal static class Surfaces
 {
+
+    private static readonly ColorPacket256 White = new ColorPacket256(SetAllVector256(1.0f));
+    private static readonly ColorPacket256 Black = new ColorPacket256(0.02f, 0.0f, 0.14f);
     // Only works with X-Z plane.
     public static readonly Surface CheckerBoard =
         new Surface(
@@ -22,12 +25,9 @@ internal static class Surfaces
                 var evenMaskint = Avx2.And(floored, modMask);
                 var evenMask = Avx2.CompareEqual(evenMaskint, modMask);
 
-                var white = new ColorPacket256(SetAllVector256(1.0f));
-                var black = new ColorPacket256(0.02f, 0.0f, 0.14f);
-
-                var resultX = BlendVariable(black.Xs, white.Xs, StaticCast<int, float>(evenMask));
-                var resultY = BlendVariable(black.Ys, white.Ys, StaticCast<int, float>(evenMask));
-                var resultZ = BlendVariable(black.Zs, white.Zs, StaticCast<int, float>(evenMask));
+                var resultX = BlendVariable(Black.Xs, White.Xs, StaticCast<int, float>(evenMask));
+                var resultY = BlendVariable(Black.Ys, White.Ys, StaticCast<int, float>(evenMask));
+                var resultZ = BlendVariable(Black.Zs, White.Zs, StaticCast<int, float>(evenMask));
 
                 return new ColorPacket256(resultX, resultY, resultZ);
             },

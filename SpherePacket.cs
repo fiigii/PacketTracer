@@ -14,10 +14,10 @@ internal sealed class SpherePacket256 : ObjectPacket256
     public Vector256<float> Radiuses;
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public SpherePacket256(Sphere sphere) : base(sphere.Surface)
+    public SpherePacket256(VectorPacket256 centers, Vector256<float> radiuses, Surface surface) : base(surface)
     {
-        Centers = new VectorPacket256(SetAllVector256(sphere.Center.X), SetAllVector256(sphere.Center.Y), SetAllVector256(sphere.Center.Z));
-        Radiuses = SetAllVector256(sphere.Radius);
+        Centers = centers;
+        Radiuses = radiuses;
     }
 
     public override VectorPacket256 Normals(VectorPacket256 pos)

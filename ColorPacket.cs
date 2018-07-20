@@ -39,8 +39,8 @@ internal static class ColorPacket256Helper
         return new VectorPacket256(Multiply(left.Xs, right.Xs), Multiply(left.Ys, right.Ys), Multiply(left.Zs, right.Zs));
     }
 
-    public static ColorPacket256 BackgroundColor = new ColorPacket256(SetZeroVector256<float>());
-    public static ColorPacket256 DefaultColor = new ColorPacket256(SetZeroVector256<float>());
+    public static readonly ColorPacket256 BackgroundColor = new ColorPacket256(SetZeroVector256<float>());
+    public static readonly ColorPacket256 DefaultColor = new ColorPacket256(SetZeroVector256<float>());
 }
 
 internal struct Int32RGBPacket256
