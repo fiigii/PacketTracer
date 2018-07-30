@@ -14,20 +14,20 @@ using ColorPacket256 = VectorPacket256;
 
 internal class Packet256Tracer
 {
-    public int Width { get; private set; }
-    public int Height { get; private set; }
+    public int Width { get; }
+    public int Height { get; }
     private static readonly int MaxDepth = 5;
 
     private static readonly Vector256<float> SevenToZero = SetVector256(7f, 6f, 5f, 4f, 3f, 2f, 1f, 0f);
 
-    public Packet256Tracer(int _width, int _height)
+    public Packet256Tracer(int width, int height)
     {
-        if ((_width % VectorPacket256.Packet256Size) != 0)
+        if ((width % VectorPacket256.Packet256Size) != 0)
         {
-            _width += VectorPacket256.Packet256Size - _width % VectorPacket256.Packet256Size;
+            width += VectorPacket256.Packet256Size - (width % VectorPacket256.Packet256Size);
         }
-        Width = _width;
-        Height = _height;
+        Width = width;
+        Height = height;
     }
 
     internal unsafe void RenderVectorized(Scene scene, int* rgb)
@@ -45,26 +45,6 @@ internal class Packet256Tracer
                 var rayPacket256 = new RayPacket256(camera.Pos, dirs);
                 var SoAcolors = TraceRay(rayPacket256, scene, 0);
 
-                // `FastTranspose` returns an "incomplete" AoS structure,
-                // which can be written into memory 16-byte by 16-byte.
-                // Now, .NET Core does not guarantee the 32-byte alignment, 
-                // so we use 16-byte store by default to avoid the cache-line split 
-                var AoS = SoAcolors.FastTranspose();
-                var intAoS = AoS.ConvertToIntRGB();
-
-                int* output = &rgb[(x + stride) * 3]; // Each pixel has 3 fields (RGB)
-                {
-                    Store(output, GetLowerHalf<int>(intAoS.Rs));
-                    Store(output + 4, GetLowerHalf<int>(intAoS.Gs));
-                    Store(output + 8, GetLowerHalf<int>(intAoS.Bs));
-                    Avx2.ExtractVector128(output + 12, intAoS.Rs, 1);
-                    Avx2.ExtractVector128(output + 16, intAoS.Gs, 1);
-                    Avx2.ExtractVector128(output + 20, intAoS.Bs, 1);
-                }
-
-                /* 
-                // `Transpose` returns a true AoS structure,
-                // which can be written into memory 32-byte by 32-byte.
                 var AoS = SoAcolors.Transpose();
                 var intAoS = AoS.ConvertToIntRGB();
 
@@ -74,7 +54,7 @@ internal class Packet256Tracer
                     Store(output + 8, intAoS.Gs);
                     Store(output + 16, intAoS.Bs);
                 }
-                */
+                
             }
         }
 
@@ -220,20 +200,23 @@ internal class Packet256Tracer
         return scene.Reflect(things, pos) * TraceRay(new RayPacket256(pos, rds), scene, depth + 1);
     }
 
+    private readonly static Vector256<float> ConstTwo = SetAllVector256(2.0f);
+
     private VectorPacket256 GetPoints(Vector256<float> x, Vector256<float> y, Camera camera)
     {
-        float widthRate1 = Width / 2.0f;
-        float widthRate2 = Width * 2.0f;
+        var widthVector = SetAllVector256<float>(Width);
+        var heightVector = SetAllVector256<float>(Height);
 
-        float heightRate1 = Height / 2.0f;
-        float heightRate2 = Height * 2.0f;
+        var widthRate1 = Divide(widthVector, ConstTwo);
+        var widthRate2 = Multiply(widthVector, ConstTwo);
 
-        var recenteredX = Divide(Subtract(x, SetAllVector256(widthRate1)), SetAllVector256(widthRate2));
-        var recenteredY = Subtract(SetZeroVector256<float>(), Divide(Subtract(y, SetAllVector256(heightRate1)), SetAllVector256(heightRate2)));
+        var heightRate1 = Divide(heightVector, ConstTwo);
+        var heightRate2 = Multiply(heightVector, ConstTwo);
 
-        var result = camera.Forward +
-                    (recenteredX * camera.Right) +
-                    (recenteredY * camera.Up);
+        var recenteredX = Divide(Subtract(x, widthRate1), widthRate2);
+        var recenteredY = Subtract(SetZeroVector256<float>(), Divide(Subtract(y, heightRate1), heightRate2));
+
+        var result = camera.Forward + (recenteredX * camera.Right) + (recenteredY * camera.Up);
 
         return result.Normalize();
     }

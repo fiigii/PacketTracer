@@ -11,9 +11,9 @@ internal struct RayPacket256
     public VectorPacket256 Starts;
     public VectorPacket256 Dirs;
 
-    public RayPacket256(VectorPacket256 _starts, VectorPacket256 _dirs)
+    public RayPacket256(VectorPacket256 starts, VectorPacket256 dirs)
     {
-        Starts = _starts;
-        Dirs = _dirs;
+        Starts = starts;
+        Dirs = dirs;
     }
 }

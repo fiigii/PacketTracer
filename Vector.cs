@@ -9,10 +9,10 @@ internal struct Vector
     public float Y { get; set; }
     public float Z { get; set; }
 
-    public Vector(float _x, float _y, float _z)
+    public Vector(float x, float y, float z)
     {
-        X = _x;
-        Y = _y;
-        Z = _z;
+        X = x;
+        Y = y;
+        Z = z;
     }
 }

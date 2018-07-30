@@ -49,10 +49,10 @@ internal struct Int32RGBPacket256
     public Vector256<int> Gs;
     public Vector256<int> Bs;
 
-    public Int32RGBPacket256(Vector256<int> _rs, Vector256<int> _gs, Vector256<int> _bs)
+    public Int32RGBPacket256(Vector256<int> rs, Vector256<int> gs, Vector256<int> bs)
     {
-        Rs = _rs;
-        Gs = _gs;
-        Bs = _bs;
+        Rs = rs;
+        Gs = gs;
+        Bs = bs;
     }
 }
