@@ -6,7 +6,7 @@
 using System.Runtime.Intrinsics.X86;
 using System.Runtime.Intrinsics;
 
-internal struct RayPacket256
+internal class RayPacket256
 {
     public VectorPacket256 Starts;
     public VectorPacket256 Dirs;
