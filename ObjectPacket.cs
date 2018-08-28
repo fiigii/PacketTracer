@@ -9,7 +9,7 @@ internal abstract class ObjectPacket256
 {
     public Surface Surface { get; }
     public abstract Vector256<float> Intersect(RayPacket256 rayPacket256);
-    public abstract VectorPacket256 Normals(in VectorPacket256 pos);
+    public abstract VectorPacket256 Normals(VectorPacket256 pos);
 
     public ObjectPacket256(Surface surface)
     {

@@ -20,7 +20,7 @@ internal sealed class SpherePacket256 : ObjectPacket256
         Radiuses = radiuses;
     }
 
-    public override VectorPacket256 Normals(in VectorPacket256 pos)
+    public override VectorPacket256 Normals(VectorPacket256 pos)
     {
         return (pos - Centers).Normalize();
     }

@@ -27,7 +27,7 @@ internal class Scene
         for (int i = 0; i < Things.Length; i++)
         {
             Vector256<float> mask = StaticCast<int, float>(CompareEqual(things, SetAllVector256<int>(i)));
-            var n = Things[i].Normals(in pos);
+            var n = Things[i].Normals(pos);
             norms.Xs = BlendVariable(norms.Xs, n.Xs, mask);
             norms.Ys = BlendVariable(norms.Ys, n.Ys, mask);
             norms.Zs = BlendVariable(norms.Zs, n.Zs, mask);
