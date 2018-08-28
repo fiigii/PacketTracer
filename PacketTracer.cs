@@ -54,7 +54,7 @@ internal class Packet256Tracer
                     Store(output + 8, intAoS.Gs);
                     Store(output + 16, intAoS.Bs);
                 }
-                
+
             }
         }
 
@@ -67,7 +67,7 @@ internal class Packet256Tracer
         {
             return ColorPacket256Helper.BackgroundColor;
         }
-        var color = Shade(in isect, rayPacket256, scene, depth);
+        var color = Shade(isect, rayPacket256, scene, depth);
         var isNull = Compare(isect.Distances, Intersections.NullDistance, FloatComparisonMode.EqualOrderedNonSignaling);
         var backgroundColor = ColorPacket256Helper.BackgroundColor.Xs;
         return new ColorPacket256(BlendVariable(color.Xs, backgroundColor, isNull),
@@ -111,14 +111,14 @@ internal class Packet256Tracer
         return mins;
     }
 
-    private ColorPacket256 Shade(in Intersections isect, RayPacket256 rays, Scene scene, int depth)
+    private ColorPacket256 Shade(Intersections isect, RayPacket256 rays, Scene scene, int depth)
     {
 
         var ds = rays.Dirs;
         var pos = isect.Distances * ds + rays.Starts;
         var normals = scene.Normals(isect.ThingIndices, pos);
         var reflectDirs = ds - (Multiply(VectorPacket256.DotProduct(normals, ds), SetAllVector256<float>(2)) * normals);
-        var colors = GetNaturalColor(isect.ThingIndices, in pos, in normals, in reflectDirs, scene);
+        var colors = GetNaturalColor(isect.ThingIndices, pos, normals, reflectDirs, scene);
 
         if (depth >= MaxDepth)
         {
@@ -128,7 +128,7 @@ internal class Packet256Tracer
         return colors + GetReflectionColor(isect.ThingIndices, pos + (SetAllVector256<float>(0.001f) * reflectDirs), normals, reflectDirs, scene, depth);
     }
 
-    private ColorPacket256 GetNaturalColor(Vector256<int> things, in VectorPacket256 pos, in VectorPacket256 norms, in VectorPacket256 rds, Scene scene)
+    private ColorPacket256 GetNaturalColor(Vector256<int> things, VectorPacket256 pos, VectorPacket256 norms, VectorPacket256 rds, Scene scene)
     {
         var colors = ColorPacket256Helper.DefaultColor;
         for (int i = 0; i < scene.Lights.Length; i++)

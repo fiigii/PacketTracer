@@ -20,7 +20,7 @@ internal sealed class PlanePacket256 : ObjectPacket256
         Offsets = offsets;
     }
 
-    public override VectorPacket256 Normals(in VectorPacket256 pos)
+    public override VectorPacket256 Normals(VectorPacket256 pos)
     {
         return Norms;
     }
