@@ -2,16 +2,13 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <RuntimeIdentifier>win7-x64</RuntimeIdentifier>
+
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="System.Runtime.Intrinsics.Experimental" Version="4.6.0-preview3-26501-04" />
-  </ItemGroup>
   <ItemGroup>
     <Compile Remove="baseline\**" />
   </ItemGroup>
