@@ -6,7 +6,6 @@
 using System.Runtime.Intrinsics;
 using System.Runtime.Intrinsics.X86;
 using static System.Runtime.Intrinsics.X86.Avx;
-using System.Runtime.Intrinsics;
 internal class Camera
 {
 
