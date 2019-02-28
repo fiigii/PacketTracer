@@ -36,7 +36,7 @@ internal struct Intersections
         var cmp = Compare(dis, NullDistance, FloatComparisonMode.EqualOrderedNonSignaling);
         var zero = Vector256<int>.Zero;
         var mask = Avx2.CompareEqual(zero, zero);
-        return TestC(cmp, mask.As<float>());
+        return TestC(cmp, mask.AsSingle());
     }
 
 }

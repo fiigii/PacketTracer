@@ -25,9 +25,9 @@ internal static class Surfaces
                 var evenMaskint = Avx2.And(floored, modMask);
                 var evenMask = Avx2.CompareEqual(evenMaskint, modMask);
 
-                var resultX = BlendVariable(Black.Xs, White.Xs, evenMask.As<float>());
-                var resultY = BlendVariable(Black.Ys, White.Ys, evenMask.As<float>());
-                var resultZ = BlendVariable(Black.Zs, White.Zs, evenMask.As<float>());
+                var resultX = BlendVariable(Black.Xs, White.Xs, evenMask.AsSingle());
+                var resultY = BlendVariable(Black.Ys, White.Ys, evenMask.AsSingle());
+                var resultZ = BlendVariable(Black.Zs, White.Zs, evenMask.AsSingle());
 
                 return new ColorPacket256(resultX, resultY, resultZ);
             },
@@ -39,7 +39,7 @@ internal static class Surfaces
                 var evenMaskUint = Avx2.And(floored, modMask);
                 var evenMask = Avx2.CompareEqual(evenMaskUint, modMask);
 
-                return BlendVariable(Vector256.Create(0.5f), Vector256.Create(0.1f), evenMask.As<float>());
+                return BlendVariable(Vector256.Create(0.5f), Vector256.Create(0.1f), evenMask.AsSingle());
             },
             150f);
 

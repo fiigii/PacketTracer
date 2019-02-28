@@ -70,16 +70,16 @@ public static class VectorMath
         pow2n = Avx2.Add(pow2n, Ox7);
         pow2n = Avx2.ShiftLeftLogical(pow2n, 23);
 
-        return Multiply(y, pow2n.As<float>());
+        return Multiply(y, pow2n.AsSingle());
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Vector256<float> Log(Vector256<float> value)
     {
         Vector256<float> invalidMask = Compare(value, Vector256<float>.Zero, FloatComparisonMode.LessThanOrEqualOrderedNonSignaling);
-        Vector256<float> x = Max(value, MinNormPos.As<float>());
-        Vector256<int> ei = Avx2.ShiftRightLogical(x.As<int>(), 23);
-        x = Or(And(x, MantMask.As<float>()), Point5);
+        Vector256<float> x = Max(value, MinNormPos.AsSingle());
+        Vector256<int> ei = Avx2.ShiftRightLogical(x.AsInt32(), 23);
+        x = Or(And(x, MantMask.AsSingle()), Point5);
         ei = Avx2.Subtract(ei, Ox7);
         Vector256<float> e = Add(ConvertToVector256Single(ei), One);
         Vector256<float> mask = Compare(x, Sqrthf, FloatComparisonMode.LessThanOrderedNonSignaling);

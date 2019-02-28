@@ -103,7 +103,7 @@ internal class Packet256Tracer
                 var minDis = BlendVariable(mins.Distances, distance, minMask);
                 var minIndices = BlendVariable(mins.ThingIndices,
                                                Vector256.Create(i),
-                                               minMask.As<int>());
+                                               minMask.AsInt32());
                 mins.Distances = minDis;
                 mins.ThingIndices = minIndices;
             }
@@ -163,7 +163,7 @@ internal class Packet256Tracer
 
             for (int j = 0; j < scene.Things.Length; j++)
             {
-                Vector256<float> thingMask = CompareEqual(things, Vector256.Create(j)).As<float>();
+                Vector256<float> thingMask = CompareEqual(things, Vector256.Create(j)).AsSingle();
                 var rgh = Vector256.Create(scene.Things[j].Surface.Roughness);
                 var dif = scene.Things[j].Surface.Diffuse(pos);
                 var spl = scene.Things[j].Surface.Specular;

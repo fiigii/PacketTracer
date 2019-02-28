@@ -26,7 +26,7 @@ internal class Scene
 
         for (int i = 0; i < Things.Length; i++)
         {
-            Vector256<float> mask = CompareEqual(things, Vector256.Create(i)).As<float>();
+            Vector256<float> mask = CompareEqual(things, Vector256.Create(i)).AsSingle();
             var n = Things[i].Normals(pos);
             norms.Xs = BlendVariable(norms.Xs, n.Xs, mask);
             norms.Ys = BlendVariable(norms.Ys, n.Ys, mask);
@@ -42,7 +42,7 @@ internal class Scene
         Vector256<float> rfl = Vector256.Create(1f);
         for (int i = 0; i < Things.Length; i++)
         {
-            Vector256<float> mask = CompareEqual(things, Vector256.Create(i)).As<float>();
+            Vector256<float> mask = CompareEqual(things, Vector256.Create(i)).AsSingle();
             rfl = BlendVariable(rfl, Things[i].Surface.Reflect(pos), mask);
         }
         return rfl;
